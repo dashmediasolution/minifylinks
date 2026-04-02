@@ -1,11 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { Redis } from '@upstash/redis'
 import { userAgent } from 'next/server'
+import { redis } from './lib/redis'
 
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL!,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-})
+interface AnalyticsLogData {
+  shortCode: string;
+  timestamp: string;
+  ip: string;
+  userAgent: string | null;
+  referrer: string;
+  country: string;
+  city: string;
+  device: string;
+  browser: string | undefined;
+  os: string | undefined;
+}
 
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname
@@ -42,8 +50,10 @@ export default async function middleware(req: NextRequest) {
           const { device, browser, os } = userAgent(req)
           const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'Unknown'
           const referrer = req.headers.get('referer') || 'Direct'
-          let country = (req as any).geo?.country
-          let city = (req as any).geo?.city
+          
+          const geoReq = req as NextRequest & { geo?: { country?: string; city?: string } }
+          let country = geoReq.geo?.country
+          let city = geoReq.geo?.city
 
           if (!country) {
             country = req.headers.get('x-vercel-ip-country') || req.headers.get('x-country') || 'Unknown'
@@ -52,7 +62,7 @@ export default async function middleware(req: NextRequest) {
             city = req.headers.get('x-vercel-ip-city') || req.headers.get('x-city') || 'Unknown'
           }
 
-          const logData = {
+          const logData: AnalyticsLogData = {
             shortCode,
             timestamp: new Date().toISOString(),
             ip,

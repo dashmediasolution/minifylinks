@@ -4,6 +4,7 @@ import { FeaturedBlogCard } from '@/components/blog-page/FeaturedBlogCard'
 import { BlogSidebar } from '@/components/blog-page/BlogSidebar'
 import { BlogPagination } from '@/components/blog-page/BlogPagination' 
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { BlogPost } from '@/types/blog' 
 import { Prisma } from '@prisma/client'
 import { unstable_cache } from 'next/cache' // <--- IMPORT THIS
@@ -176,9 +177,9 @@ export default async function BlogListPage({ searchParams }: BlogPageProps) {
             <div className="p-12 text-center border-2 border-dashed border-gray-200 rounded-3xl bg-gray-50">
               <h3 className="text-xl font-medium text-gray-600">No articles found.</h3>
               <p className="text-gray-500 mt-2">Try adjusting your search or category.</p>
-              <button className="mt-4 text-blue-600 hover:underline text-sm font-medium">
-                 <a href="/blog">Clear all filters</a>
-              </button>
+              <Link href="/blog" className="inline-block mt-4 text-blue-600 hover:underline text-sm font-medium">
+                 Clear all filters
+              </Link>
             </div>
           )}
         </div>

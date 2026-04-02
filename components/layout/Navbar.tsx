@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react"; 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 
 export function Navbar() {
@@ -41,11 +42,9 @@ export function Navbar() {
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
             >
-              <Link href="/" className="flex items-center gap-2 group">
-                <span className="font-semibold text-xl md:text-2xl tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-700">
-                  MinifyLinks
-                </span>
-              </Link>
+              
+                <Image src="/logos/android-chrome-512x512.png"  alt="MinifyLinks Logo" width={40} height={40} />
+             
             </motion.div>
           </div>
 

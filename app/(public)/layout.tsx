@@ -1,6 +1,5 @@
 import { Navbar } from "@/components/layout/Navbar"; // Assuming you have this
 import { Footer } from "@/components/layout/Footer"; // Assuming you have this
-import { AdSidebar } from "@/components/ads/AdSidebar";
 
 export default function PublicLayout({
   children,
@@ -22,7 +21,6 @@ export default function PublicLayout({
         <main className="flex-1 w-full min-h-screen pt-10 md:pt-15">
           {children}
         </main>
-
       </div>
 
       {/* 3. Footer spans full width */}

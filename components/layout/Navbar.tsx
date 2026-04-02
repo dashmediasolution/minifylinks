@@ -43,7 +43,7 @@ export function Navbar() {
               transition={{ duration: 0.3 }}
             >
               
-                <Image src="/logos/android-chrome-512x512.png"  alt="MinifyLinks Logo" width={40} height={40} />
+                <Image src="/logos/minifylinks-logo.svg"  alt="MinifyLinks Logo" width={40} height={40} />
              
             </motion.div>
           </div>

@@ -7,7 +7,7 @@ export default function PublicLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-neutral-950">
+    <>
       
       {/* 1. Navbar spans full width */}
       <Navbar />
@@ -25,6 +25,6 @@ export default function PublicLayout({
 
       {/* 3. Footer spans full width */}
       <Footer />
-    </div>
+    </>
   );
 }

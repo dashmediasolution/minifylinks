@@ -6,6 +6,21 @@ export const metadata: Metadata = {
   verification: {
     google: "X37qC0cyl0pVnqHXob64N9G16lfmqDM9s_tkOWwgch4",
   },
+  openGraph: {
+    type: "website",
+    images: [
+      {
+        url: "/images/minifylinks-shortener.webp",
+        width: 1200,
+        height: 630,
+        alt: "MinifyLinks - Best URL Shortener",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/images/minifylinks-shortener.webp"],
+  },
 };
 
 export default function PublicLayout({

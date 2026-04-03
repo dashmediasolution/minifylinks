@@ -1,5 +1,12 @@
+import { Metadata } from "next";
 import { Navbar } from "@/components/layout/Navbar"; // Assuming you have this
 import { Footer } from "@/components/layout/Footer"; // Assuming you have this
+
+export const metadata: Metadata = {
+  verification: {
+    google: "X37qC0cyl0pVnqHXob64N9G16lfmqDM9s_tkOWwgch4",
+  },
+};
 
 export default function PublicLayout({
   children,

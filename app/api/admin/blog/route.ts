@@ -5,6 +5,9 @@ import { revalidateTag } from 'next/cache'
 
 const SECRET_KEY = process.env.JWT_SECRET || 'super-secret-key-change-this'
 
+// Force Next.js to always fetch fresh data for this API route
+export const dynamic = 'force-dynamic'
+
 // Middleware helper to verify admin access
 const isAuthenticated = (req: NextRequest) => {
   const token = req.cookies.get('admin_token')?.value
@@ -61,7 +64,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json()
-    
+
     // Basic validation
     if (!body.title || !body.slug || !body.content) {
       return NextResponse.json({ error: 'Missing required fields (Title, Slug, Content)' }, { status: 400 })
@@ -75,9 +78,9 @@ export async function POST(req: NextRequest) {
         slug: body.slug.toLowerCase().trim().replace(/[^a-z0-9-]/g, '-'),
         content: body.content,
         excerpt: body.excerpt || '',
-        
+
         // Save Banner Image
-        image: body.image || '', 
+        image: body.image || '',
 
         categories: body.categories || [],
 
@@ -86,28 +89,29 @@ export async function POST(req: NextRequest) {
         metaDescription: body.metaDescription || '',
         metaKeywords: body.metaKeywords || '',
         focusKeyword: body.focusKeyword || '',
-        
+
         isPublished: body.isPublished || false,
-        
+
         // Note: publishedAt defaults to now() automatically via Schema, 
         // but you can override it here if needed.
       }
     })
 
-    revalidateTag('blog-posts', 'default')
-    revalidateTag('blog-categories-list', 'default')
+    revalidateTag('blog-posts') // Refreshes the blog grid/cards
+    revalidateTag('categories')
+
 
     return NextResponse.json(newPost)
 
-  } catch (error: any) {
+  } catch (error) {
     // Handle Duplicate Slug Error (Prisma code P2002)
-    if (error.code === 'P2002') {
+    if (error instanceof Error && 'code' in error && error.code === 'P2002') {
       return NextResponse.json(
-        { error: 'A post with this URL slug already exists. Please change the slug.' }, 
+        { error: 'A post with this URL slug already exists. Please change the slug.' },
         { status: 409 }
       )
     }
-    
+
     console.error("Blog Create Error:", error)
     return NextResponse.json({ error: 'Failed to create post' }, { status: 500 })
   }

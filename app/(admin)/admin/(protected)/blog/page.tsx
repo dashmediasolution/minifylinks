@@ -28,14 +28,21 @@ export default function BlogPage() {
   const fetchPosts = async () => {
     try {
       setLoading(true)
-      const res = await fetch(`/api/admin/blog?page=${page}`)
+      // Add a timestamp and cache headers to prevent the browser from caching the stale list
+      const timestamp = new Date().getTime()
+      const res = await fetch(`/api/admin/blog?page=${page}&_t=${timestamp}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+        }
+      })
 
       if (res.ok) {
         const data = await res.json()
 
         // FIX: Extract the posts array specifically
         // If your API returns { posts: [...], pagination: {...} }
-        const postsArray = data.posts || (Array.isArray(data) ? data : [])
+        const postsArray: BlogPostData[] = data.posts || (Array.isArray(data) ? data : [])
         setPosts(postsArray)
 
         setPagination({
@@ -60,7 +67,7 @@ export default function BlogPage() {
     setIsFormOpen(true)
   }
 
-  const handleEdit = (post: any) => {
+  const handleEdit = (post: BlogPostData) => {
     setEditingPost(post)
     setIsFormOpen(true)
   }
@@ -118,7 +125,7 @@ export default function BlogPage() {
                       <TableCell className="py-4 pl-6">
                         {post.image ? (
                           <div className="relative h-10 w-16 rounded-lg overflow-hidden border border-gray-100">
-                            <Image src={post.image} alt="Thumbnail" fill className="object-cover" />
+                            <Image src={post.image} alt="Thumbnail" fill sizes="64px" className="object-cover" />
                           </div>
                         ) : (
                           <div className="h-10 w-16 bg-gray-50 rounded-lg border border-gray-100 flex items-center justify-center">

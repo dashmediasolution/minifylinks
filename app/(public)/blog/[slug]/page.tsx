@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: post.metaTitle || post.title,
     description: post.metaDescription || post.excerpt,
     keywords: post.metaKeywords?.split(',').map(k => k.trim()) || [],
-    authors: [{ name: 'SwiftLink Team' }],
+    authors: [{ name: 'MinifyLinks Team' }],
     alternates: {
       canonical: `/blog/${post.slug}`,
     },
@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           alt: post.title,
         },
       ],
-      siteName: 'SwiftLink',
+      siteName: 'MinifyLinks',
     },
     twitter: {
       card: 'summary_large_image',

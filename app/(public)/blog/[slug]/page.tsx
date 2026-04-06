@@ -112,7 +112,7 @@ export default async function SingleBlogPage({ params }: Props) {
   };
 
   return (
-    <body>
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -219,6 +219,6 @@ export default async function SingleBlogPage({ params }: Props) {
 
         </div>
       </article>
-    </body>
+    </>
   )
 }

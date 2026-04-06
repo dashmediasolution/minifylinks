@@ -44,9 +44,11 @@ export function BlogCard({ post, className,priority = false }: BlogCardProps) {
            <div className="flex flex-wrap gap-2">
              {post.categories && post.categories.length > 0 ? (
                post.categories.slice(0, 2).map((cat, idx) => (
-                 <Badge key={idx} variant="secondary" className="font-normal bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-md px-2 py-0.5">
-                   {cat}
-                 </Badge>
+                 <Link key={idx} href={`/blog/category/${cat.toLowerCase().replace(/\s+/g, '-')}`}>
+                   <Badge variant="secondary" className="font-normal bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-md px-2 py-0.5 cursor-pointer">
+                     {cat}
+                   </Badge>
+                 </Link>
                ))
              ) : (
                <span className="text-gray-400 italic">Uncategorized</span>

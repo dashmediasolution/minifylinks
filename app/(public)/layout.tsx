@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { Navbar } from "@/components/layout/Navbar"; // Assuming you have this
 import { Footer } from "@/components/layout/Footer"; // Assuming you have this
+import Script from "next/script";
 
 export const metadata: Metadata = {
   verification: {
@@ -30,7 +31,25 @@ export default function PublicLayout({
 }) {
   return (
     <>
-      
+      {/* Google Tag Manager */}
+      <Script id="google-tag-manager" strategy="afterInteractive">
+        {`
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-M8HDJ8P9');
+        `}
+      </Script>
+      <noscript>
+        <iframe
+          src="https://www.googletagmanager.com/ns.html?id=GTM-M8HDJ8P9"
+          height="0"
+          width="0"
+          style={{ display: "none", visibility: "hidden" }}
+        />
+      </noscript>
+
       {/* 1. Navbar spans full width */}
       <Navbar />
 

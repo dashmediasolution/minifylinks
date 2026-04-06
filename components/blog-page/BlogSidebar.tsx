@@ -2,7 +2,7 @@
 
 import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useDebounce } from "use-debounce"; 
 
@@ -13,9 +13,17 @@ interface BlogSidebarProps {
 export function BlogSidebar({ categories }: BlogSidebarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   const currentSearch = searchParams.get('search') || '';
-  const activeCategory = searchParams.get('category') || 'All';
+  
+  let activeCategory = 'All';
+  if (pathname.startsWith('/blog/category/')) {
+    const slug = decodeURIComponent(pathname.split('/blog/category/')[1]);
+    activeCategory = categories.find(cat => cat.toLowerCase().replace(/\s+/g, '-') === slug) || 'All';
+  } else if (searchParams.get('category')) {
+    activeCategory = searchParams.get('category') || 'All';
+  }
 
   // Initialize state directly from URL to prevent "flicker" clearing
   const [text, setText] = useState(currentSearch);
@@ -46,21 +54,21 @@ export function BlogSidebar({ categories }: BlogSidebarProps) {
     // Always reset to Page 1 on search change
     params.delete('page');
 
-    router.push(`/blog?${params.toString()}`, { scroll: false });
-  }, [query, router, searchParams, currentSearch]);
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  }, [query, router, searchParams, currentSearch, pathname]);
 
 
   const handleCategoryClick = (category: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    
-    if (category === 'All') {
-      params.delete('category');
-    } else {
-      params.set('category', category);
-    }
     params.delete('page'); // Reset page
+    params.delete('category'); // Clear old param if present
 
-    router.push(`/blog?${params.toString()}`, { scroll: false });
+    if (category === 'All') {
+      router.push(`/blog?${params.toString()}`, { scroll: false });
+    } else {
+      const slug = category.toLowerCase().replace(/\s+/g, '-');
+      router.push(`/blog/category/${slug}?${params.toString()}`, { scroll: false });
+    }
   };
 
   return (

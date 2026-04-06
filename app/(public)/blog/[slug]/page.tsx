@@ -135,9 +135,11 @@ export default async function SingleBlogPage({ params }: Props) {
              <div className="text-center space-y-6">
                 <div className="flex flex-wrap justify-center gap-2 mb-4">
                   {post.categories && post.categories.length > 0 && post.categories.map((cat, idx) => (
-                    <Badge key={idx} variant="secondary" className="bg-blue-50 text-blue-700 hover:bg-blue-100 px-3 py-1 text-xs sm:text-sm">
-                      {cat}
-                    </Badge>
+                    <Link key={idx} href={`/blog/category/${cat.toLowerCase().replace(/\s+/g, '-')}`}>
+                      <Badge variant="secondary" className="bg-blue-50 text-blue-700 hover:bg-blue-100 px-3 py-1 text-xs sm:text-sm cursor-pointer transition-colors">
+                        {cat}
+                      </Badge>
+                    </Link>
                   ))}
                 </div>
 

@@ -10,6 +10,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     select: {
       slug: true,
       updatedAt: true,
+      categories: true,
+      image: true,
     },
   })
 
@@ -19,9 +21,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: post.updatedAt,
     changeFrequency: 'weekly' as const,
     priority: 0.8, // Blogs are important, but less than the homepage
+    images: post.image ? [post.image] : undefined,
   }))
 
-  // 3. Define your static pages (Home, Blog List, Privacy)
+  // 3. Get unique categories and format them for the sitemap
+  const uniqueCategories = Array.from(
+    new Set(
+      posts
+        .flatMap((post) => post.categories || [])
+        .map((cat) => cat.trim())
+        .filter((cat) => cat.length > 0)
+    )
+  )
+  const categoryUrls = uniqueCategories.map((category) => ({
+    url: `${baseUrl}/blog/category/${category.toLowerCase().replace(/\s+/g, '-')}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.7, // Category archives are slightly lower priority than individual articles
+  }))
+
+  // 4. Define your static pages (Home, Blog List, Privacy)
   const staticRoutes = [
     {
       url: baseUrl,
@@ -43,6 +62,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ]
 
-  // 4. Combine them
-  return [...staticRoutes, ...blogUrls]
+  // 5. Combine them
+  return [...staticRoutes,...categoryUrls, ...blogUrls ]
 }

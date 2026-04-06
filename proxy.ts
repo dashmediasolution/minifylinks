@@ -29,7 +29,7 @@ export default async function middleware(req: NextRequest) {
 
   // 2. SHORT LINK LOGIC
   const shortCode = path.split('/')[1]
-  const ignoredPaths = ['api', '_next', 'favicon.ico', 'admin', 'result', 'login', '']
+  const ignoredPaths = ['api', '_next', 'favicon.ico', 'admin', 'result', 'login', '', 'sw.js', 'robots.txt', 'sitemap.xml', 'sitemap.ts']
   
   if (ignoredPaths.includes(shortCode)) {
     return NextResponse.next()
@@ -100,5 +100,5 @@ export default async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|sw\\.js|robots\\.txt|sitemap\\.xml).*)'],
 }

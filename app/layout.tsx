@@ -5,13 +5,10 @@ import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
-;export const metadata: Metadata = {
-  metadataBase: new URL('https://minifylinks.com'), 
-  alternates: {
-    canonical: './', 
-  },
+export const metadata: Metadata = {
+  metadataBase: new URL("https://minifylinks.com"),
   title: {
-    default: "Free URL Shortener",
+    default: "Free URL Shortener | MinifyLinks",
     template: "%s | MinifyLinks",
   },
   description: "Simplify your links, amplify your reach. A powerful, free tool to shrink long links.",
@@ -27,12 +24,12 @@ const inter = Inter({ subsets: ["latin"] });
   },
   icons: {
     icon: [
-      { url: '/logos/favicon.ico' },
-      { url: '/logos/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/logos/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: "/logos/favicon.ico" },
+      { url: "/logos/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/logos/favicon-32x32.png", sizes: "32x32", type: "image/png" },
     ],
-    shortcut: '/logos/favicon.ico',
-    apple: '/logos/apple-touch-icon.png',
+    shortcut: "/logos/favicon.ico",
+    apple: "/logos/apple-touch-icon.png",
   },
 };
 
@@ -42,10 +39,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head />
       <body className={inter.className}>
         {children}
-        <Toaster/>
+        <Toaster position="bottom-right" richColors />
       </body>
     </html>
   );

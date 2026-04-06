@@ -12,6 +12,9 @@ import { unstable_cache } from 'next/cache' // <--- IMPORT THIS
 export const metadata: Metadata = {
   title: 'Blogs',
   description: 'Latest news, tips, and insights about URL shortening and digital marketing.',
+  alternates: {
+    canonical: 'https://minifylinks.com/blog',
+  },
 }
 
 const PAGE_SIZE = 10;

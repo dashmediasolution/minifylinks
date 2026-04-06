@@ -29,7 +29,7 @@ export default async function middleware(req: NextRequest) {
 
   // 2. SHORT LINK LOGIC
   const shortCode = path.split('/')[1]
-  const ignoredPaths = ['api', '_next', 'favicon.ico', 'admin', 'result', 'login', '', 'sw.js', 'robots.txt', 'sitemap.xml', 'sitemap.ts']
+  const ignoredPaths = ['api', '_next', 'favicon.ico', 'admin', 'result', 'login', '', 'sw.js', 'robots.txt', 'sitemap.xml', 'sitemap.ts', 'blog', 'faqs', 'privacy', 'terms', 'manifest.webmanifest', 'logos', 'images']
   
   if (ignoredPaths.includes(shortCode)) {
     return NextResponse.next()
@@ -82,7 +82,8 @@ export default async function middleware(req: NextRequest) {
       // --- SAMPLING LOGIC END ---
       
       // --- NEW: CACHED REDIRECT (24 HOURS) ---
-      const response = NextResponse.redirect(new URL(longUrl))
+      // Use 301 (Moved Permanently) to pass SEO link equity (PageRank) to the destination
+      const response = NextResponse.redirect(new URL(longUrl), { status: 301 })
       
       // max-age=86400 seconds = 24 Hours
       response.headers.set(
@@ -100,5 +101,5 @@ export default async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|sw\\.js|robots\\.txt|sitemap\\.xml).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|sw\\.js|robots\\.txt|sitemap\\.xml|manifest\\.webmanifest).*)'],
 }

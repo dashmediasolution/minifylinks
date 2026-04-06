@@ -41,13 +41,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     keywords: post.metaKeywords?.split(',').map(k => k.trim()) || [],
     authors: [{ name: 'MinifyLinks Team' }],
     alternates: {
-      canonical: `/blog/${post.slug}`,
+      canonical: `https://minifylinks.com/blog/${post.slug}`,
     },
     openGraph: {
       title: post.metaTitle || post.title,
       description: post.metaDescription || post.excerpt,
       type: 'article',
-      url: `/blog/${post.slug}`,
+      url: `https://minifylinks.com/blog/${post.slug}`,
       publishedTime: new Date(post.publishedAt).toISOString(), // Safe date conversion
       modifiedTime: new Date(post.updatedAt).toISOString(),
       images: [

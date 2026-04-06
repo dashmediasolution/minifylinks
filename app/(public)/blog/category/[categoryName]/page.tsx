@@ -92,6 +92,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${formattedCategory} Articles | MinifyLinks Blog`,
     description: `Read the latest articles and updates about ${formattedCategory} on MinifyLinks.`,
+    alternates: {
+      canonical: `/blog/category/${resolvedParams.categoryName}`,
+    },
   };
 }
 

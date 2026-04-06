@@ -7,6 +7,9 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: "Terms of Service",
   description: "Read the Terms of Service for MinifyLinks. Understand the rules, usage limits, and your rights when using our URL shortener.",
+  alternates: {
+    canonical: "/terms",
+  },
 };
 
 export default function TermsPage() {
@@ -49,7 +52,7 @@ export default function TermsPage() {
                 1. Acceptance of Terms
               </h2>
               <p className="text-gray-600 leading-relaxed">
-                By accessing and using <strong>MinifyLinks</strong> ("the Service"), you accept and agree to be bound by the terms and provisions of this agreement. 
+                By accessing and using <strong>MinifyLinks</strong> (&quot;the Service&quot;), you accept and agree to be bound by the terms and provisions of this agreement. 
                 If you do not agree to abide by these terms, please do not use this Service.
               </p>
             </section>
@@ -62,7 +65,7 @@ export default function TermsPage() {
                 <CheckCircle2 className="w-5 h-5 text-blue-500" /> 2. Usage & Limits
               </h2>
               <p className="text-gray-600 leading-relaxed">
-                MinifyLinks is a free service provided on an "as is" basis. No account registration is required to use the basic features of the platform.
+                MinifyLinks is a free service provided on an &quot;as is&quot; basis. No account registration is required to use the basic features of the platform.
               </p>
               
               <div className="bg-blue-50 p-4 rounded-lg border border-blue-100 text-sm text-blue-800 space-y-2">

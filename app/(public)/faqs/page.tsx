@@ -9,6 +9,9 @@ import {
 export const metadata: Metadata = {
   title: "Frequently Asked Questions | MinifyLinks",
   description: "Answers to common questions about MinifyLinks and URL shortening.",
+  alternates: {
+    canonical: "/faqs",
+  },
 };
 
 const faqs = [

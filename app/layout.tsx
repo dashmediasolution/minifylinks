@@ -18,14 +18,34 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
+    title: "Free URL Shortener | MinifyLinks",
+    description: "Simplify your links, amplify your reach. A powerful, free tool to shrink long links.",
     locale: "en_US",
-    url: "/",
+    url: "https://minifylinks.com/",
     siteName: "MinifyLinks",
+    images: [
+      {
+        url: "/logos/apple-touch-icon.png", // Or the path to a larger OG image if you have one
+        width: 1200,
+        height: 630,
+        alt: "MinifyLinks Logo",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
+    title: "Free URL Shortener | MinifyLinks",
+    description: "Simplify your links, amplify your reach. A powerful, free tool to shrink long links.",
     site: "@MinifyLinks",
     creator: "@MinifyLinks",
+    images: [
+      {
+        url: "/logos/apple-touch-icon.png",
+        width: 1200,
+        height: 630,
+        alt: "MinifyLinks Logo",
+      },
+    ],
   },
   icons: {
     icon: [

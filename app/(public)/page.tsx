@@ -7,7 +7,8 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: "Free URL Shortener & Custom Links",
-  description: "Turn long URLs into smart, branded short links with MinifyLinks. Track clicks, use custom aliases, and grow your reach with a fast, reliable, and free URL shortener.",
+  description: "Minifylinks offers a fast and reliable shortening service with advanced features like enterprise-grade encryption and a global edge network with 99.9% uptime. We also keep your links short and manageable, helping you create branded URLs that boost trust and provide deep analytics to grow your brand.",
+  keywords: ["minifylinks", "free url shortener", "link shortener", "free url shortener"],
   alternates: {
     canonical: "https://minifylinks.com",
   },

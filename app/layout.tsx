@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   metadataBase: new URL("https://minifylinks.com"),
   title: {
-    default: "Free URL Shortener | MinifyLinks",
+    default: "Free URL Shortener",
     template: "%s | MinifyLinks",
   },
   description: "Simplify your links, amplify your reach. A powerful, free tool to shrink long links.",

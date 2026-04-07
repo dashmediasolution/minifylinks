@@ -175,7 +175,7 @@ export default async function SingleBlogPage({ params }: Props) {
              {post.image && (
                 <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden mb-10">
                   <Image 
-                    src={post.image} 
+                    src={`${post.image}?t=${new Date(post.updatedAt).getTime()}`} 
                     alt={post.title} 
                     fill 
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

@@ -13,14 +13,19 @@ export const metadata: Metadata = {
   },
   description: "Simplify your links, amplify your reach. A powerful, free tool to shrink long links.",
   keywords: ["url shortener", "link shortener", "free url shortener"],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://minifylinks.com",
+    url: "/",
     siteName: "MinifyLinks",
   },
   twitter: {
     card: "summary_large_image",
+    site: "@MinifyLinks",
+    creator: "@MinifyLinks",
   },
   icons: {
     icon: [
@@ -30,6 +35,17 @@ export const metadata: Metadata = {
     ],
     shortcut: "/logos/favicon.ico",
     apple: "/logos/apple-touch-icon.png",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 

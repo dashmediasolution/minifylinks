@@ -32,7 +32,7 @@ export async function RelatedPosts({ currentSlug, categories }: RelatedPostsProp
             {/* Small Thumbnail */}
             <div className="relative w-20 h-20 shrink-0 rounded-lg overflow-hidden bg-gray-100">
               {post.image ? (
-                <Image src={post.image} alt={post.title} fill className="object-cover" />
+                <Image src={post.image} alt={post.title} fill sizes="80px" className="object-cover" />
               ) : (
                 <div className="w-full h-full bg-gray-200" />
               )}

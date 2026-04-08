@@ -27,26 +27,28 @@ export function BlogPagination({ currentPage, totalPages }: BlogPaginationProps)
   if (totalPages <= 1) return null;
 
   return (
-    <div className="flex items-center justify-center space-x-4 mt-12 pt-8 border-t border-gray-100">
+    <div className="flex items-center justify-center space-x-4 sm:space-x-6 mt-16 pt-10 border-t border-slate-100">
       <Button
         variant="outline"
+        size="lg"
         disabled={currentPage <= 1}
         onClick={() => handlePageChange(currentPage - 1)}
-        className="flex items-center gap-2 pl-2.5"
+        className="flex items-center gap-2 pl-4 pr-5 rounded-full shadow-sm border-slate-200 hover:border-blue-600 hover:text-blue-600 hover:bg-blue-50 transition-all font-semibold"
       >
         <ChevronLeft className="h-4 w-4" />
         <span>Previous</span>
       </Button>
 
-      <span className="text-sm font-medium text-gray-600">
+      <span className="text-sm font-bold text-slate-500 px-2">
         Page {currentPage} of {totalPages}
       </span>
 
       <Button
         variant="outline"
+        size="lg"
         disabled={currentPage >= totalPages}
         onClick={() => handlePageChange(currentPage + 1)}
-        className="flex items-center gap-2 pr-2.5"
+        className="flex items-center gap-2 pl-5 pr-4 rounded-full shadow-sm border-slate-200 hover:border-blue-600 hover:text-blue-600 hover:bg-blue-50 transition-all font-semibold"
       >
         <span>Next</span>
         <ChevronRight className="h-4 w-4" />

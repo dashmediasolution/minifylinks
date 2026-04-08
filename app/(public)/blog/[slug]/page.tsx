@@ -176,8 +176,8 @@ export default async function SingleBlogPage({ params }: Props) {
                     src={`${post.image}?t=${new Date(post.updatedAt).getTime()}`} 
                     alt={post.title} 
                     fill 
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 66vw"
-                    className="object-cover aspect-[16/9]"
+                    // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 66vw"
+                    className="aspect-[16/9]"
                     priority
                   />
                 </div>

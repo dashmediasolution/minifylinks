@@ -67,7 +67,7 @@ export function BlogSidebar({ categories }: BlogSidebarProps) {
       router.push(`/blog?${params.toString()}`, { scroll: false });
     } else {
       const slug = category.toLowerCase().replace(/\s+/g, '-');
-      router.push(`/blog/category/${slug}?${params.toString()}`, { scroll: false });
+      router.push(`/category/${slug}?${params.toString()}`, { scroll: false });
     }
   };
 

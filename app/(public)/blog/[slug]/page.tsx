@@ -199,13 +199,25 @@ export default async function SingleBlogPage({ params }: Props) {
                     <h4 className="text-sm font-bold text-slate-900 uppercase tracking-widest mb-5 flex items-center gap-2">Tags & Keywords</h4>
                     <div className="flex flex-wrap gap-2">
                        {post.focusKeyword && (
-                          <span className="px-4 py-2 bg-blue-50 text-blue-700 text-sm rounded-xl font-semibold">#{post.focusKeyword.trim()}</span>
+                          <Link 
+                            href={`/tags/${post.focusKeyword.trim().toLowerCase().replace(/\s+/g, '-')}`}
+                            className="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 text-sm rounded-xl font-semibold transition-colors"
+                          >
+                            #{post.focusKeyword.trim()}
+                          </Link>
                        )}
-                       {post.metaKeywords?.split(',').map((tag, i) => (
-                          <span key={i} className="px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 text-sm rounded-xl font-medium transition-colors cursor-default">
-                            #{tag.trim()}
-                          </span>
-                       ))}
+                       {post.metaKeywords?.split(',').map((tag, i) => {
+                          const cleanTag = tag.trim();
+                          if (!cleanTag) return null;
+                          if (post.focusKeyword && cleanTag.toLowerCase() === post.focusKeyword.trim().toLowerCase()) {
+                            return null;
+                          }
+                          return (
+                            <Link key={i} href={`/tags/${cleanTag.toLowerCase().replace(/\s+/g, '-')}`} className="px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 text-sm rounded-xl font-medium transition-colors">
+                              #{cleanTag}
+                            </Link>
+                          );
+                       })}
                     </div>
                  </div>
                )}

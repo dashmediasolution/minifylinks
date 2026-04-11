@@ -12,6 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       updatedAt: true,
       categories: true,
       image: true,
+      metaKeywords: true,
     },
   })
 
@@ -34,13 +35,32 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     )
   )
   const categoryUrls = uniqueCategories.map((category) => ({
-    url: `${baseUrl}/blog/category/${category.toLowerCase().replace(/\s+/g, '-')}`,
+    url: `${baseUrl}/category/${category.toLowerCase().replace(/\s+/g, '-')}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.7, // Category archives are slightly lower priority than individual articles
   }))
 
-  // 4. Define your static pages (Home, Blog List, Privacy)
+  // 4. Get unique tags and format them for the sitemap
+  const uniqueTags = Array.from(
+    new Set(
+      posts
+        .flatMap((post) => {
+          if (!post.metaKeywords) return [];
+          return post.metaKeywords.split(',').map((t) => t.trim());
+        })
+        .filter((tag) => tag.length > 0)
+        .map((tag) => tag.toLowerCase().replace(/\s+/g, '-'))
+    )
+  )
+  const tagUrls = uniqueTags.map((tagSlug) => ({
+    url: `${baseUrl}/tags/${tagSlug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.6, // Individual tag archives
+  }))
+
+  // 5. Define your static pages (Home, Blog List, Privacy, Tags Index)
   const staticRoutes = [
     {
       url: baseUrl,
@@ -60,8 +80,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly' as const,
       priority: 0.5, // Legal pages are low priority for search ranking
     },
+    {
+      url: `${baseUrl}/tags`,
+
+      lastModified: new Date(), // You can hardcode a date here if you rarely update it
+      changeFrequency: 'monthly' as const,
+      priority: 0.5, // Legal pages are low priority for search ranking
+    },
+    {
+      url: `${baseUrl}/faqs`,
+
+      lastModified: new Date(), // You can hardcode a date here if you rarely update it
+      changeFrequency: 'monthly' as const,
+      priority: 0.5, // Legal pages are low priority for search ranking
+    },
+    {
+      url: `${baseUrl}/terms`,
+
+      lastModified: new Date(), // You can hardcode a date here if you rarely update it
+      changeFrequency: 'monthly' as const,
+      priority: 0.5, // Legal pages are low priority for search ranking
+    },
   ]
 
-  // 5. Combine them
-  return [...staticRoutes,...categoryUrls, ...blogUrls ]
+  // 6. Combine them
+  return [...staticRoutes, ...categoryUrls, ...blogUrls, ...tagUrls]
 }

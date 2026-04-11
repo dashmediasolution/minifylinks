@@ -18,6 +18,11 @@ interface AnalyticsLogData {
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname
 
+  // Redirect empty /category to /blog
+  if (path === '/category' || path === '/category/') {
+    return NextResponse.redirect(new URL('/blog', req.url), { status: 301 })
+  }
+
   // 1. ADMIN PROTECTION
   
   if (path.startsWith('/admin')) {
@@ -29,7 +34,7 @@ export default async function middleware(req: NextRequest) {
 
   // 2. SHORT LINK LOGIC
   const shortCode = path.split('/')[1]
-  const ignoredPaths = ['api', '_next', 'favicon.ico', 'admin', 'result', 'login', '', 'sw.js', 'robots.txt', 'sitemap.xml', 'sitemap.ts', 'blog', 'faqs', 'privacy', 'terms', 'manifest.webmanifest', 'logos', 'images']
+  const ignoredPaths = ['api', '_next', 'favicon.ico', 'admin', 'result', 'login', '', 'sw.js', 'robots.txt', 'sitemap.xml', 'sitemap.ts', 'blog', 'faqs', 'privacy', 'terms', 'manifest.webmanifest', 'logos', 'images', 'category', 'tags']
   
   if (ignoredPaths.includes(shortCode)) {
     return NextResponse.next()

@@ -38,8 +38,126 @@ const faqs = [
 ];
 
 export default function FaqsPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "MinifyLinks",
+        "url": "https://minifylinks.com/",
+        "logo": "https://minifylinks.com/logos/favicon-32x32.png",
+        "description": "MinifyLinks is the best URL shortener platform to create custom short links, track clicks, and manage URLs securely.",
+        "sameAs": []
+      },
+      {
+        "@type": "LocalBusiness",
+        "name": "MinifyLinks",
+        "image": "https://minifylinks.com/logos/favicon-32x32.png",
+        "url": "https://minifylinks.com/",
+        "priceRange": "Free",
+        "areaServed": [
+          "United States",
+          "India",
+          "United Kingdom",
+          "Canada",
+          "Australia",
+          "Worldwide"
+        ],
+        "description": "Free URL shortener with custom links, analytics, and fast global redirects.",
+        "openingHours": "Mo-Su 00:00-23:59"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://minifylinks.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "FAQs",
+            "item": "https://minifylinks.com/faqs"
+          }
+        ]
+      },
+      {
+        "@type": "Service",
+        "name": "URL Shortener Service",
+        "provider": {
+          "@type": "Organization",
+          "name": "MinifyLinks"
+        },
+        "areaServed": {
+          "@type": "Place",
+          "name": "Worldwide"
+        },
+        "serviceType": [
+          "URL Shortener",
+          "Best URL Shortener",
+          "Custom URL Shortener",
+          "Link Tracking",
+          "Analytics",
+          "Secure Redirects"
+        ],
+        "description": "Best URL shortener tool to create fast, secure, and custom short links with analytics."
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Which URL shortener is most popular?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Popular URL shorteners include tools like MinifyLinks that offer fast redirects, analytics, and custom short links."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the need for a URL shortener?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A URL shortener helps convert long links into short, clean, and shareable URLs for better user experience and tracking."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What are the benefits of MinifyLinks?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "MinifyLinks offers fast link shortening, custom URLs, analytics, secure HTTPS links, and global performance."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is a free URL shortener safe?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, trusted tools like MinifyLinks use HTTPS encryption and security measures to ensure safe link redirection."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the best free URL shortener service?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The best free URL shortener offers speed, security, custom links, and analytics, all of which MinifyLinks provides."
+            }
+          }
+        ]
+      }
+    ]
+  };
+
   return (
     <div className="py-16 md:py-24 px-6 max-w-3xl mx-auto min-h-[70vh]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       
       {/* --- Header --- */}
       <div className="text-center mb-16 space-y-4">

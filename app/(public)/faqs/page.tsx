@@ -7,8 +7,14 @@ import {
 } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
-  title: "Frequently Asked Questions | MinifyLinks",
-  description: "Answers to common questions about MinifyLinks and URL shortening.",
+  title: "Best URL Shortener Guide | FAQs, Custom Links & More",
+  description: "Looking for the best URL shortener? Get answers on safety, custom links, and features. MinifyLinks makes link sharing fast and secure.",
+  keywords: ["url shortener", "link shortener", "free url shortener", "best url shortener", "custom links", "link tracking", "analytics", "secure redirects", "minifylinks", "url shortener faq", "url shortener guide", "url shortener features", "url shortener safety", "url shortener benefits", "url shortener comparison", "url shortener alternatives", "free URL shortener ", "custom URL shortener",
+    "best URL shortener",
+    "link shortener tool",
+    "shorten long URLs",
+    "URL shortener with custom domain"],
+  authors: [{ name: "MinifyLinks Team" }],
   alternates: {
     canonical: "/faqs",
   },
@@ -158,7 +164,7 @@ export default function FaqsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      
+
       {/* --- Header --- */}
       <div className="text-center mb-16 space-y-4">
         <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-blue-600 bg-blue-100/50 px-4 py-2 rounded-full">

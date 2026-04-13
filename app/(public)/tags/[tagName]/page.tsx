@@ -54,8 +54,29 @@ export default async function TagPage({ params }: TagPageProps) {
     notFound();
   }
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": `Posts tagged "${decodedTag}" | Minifylinks`,
+    "description": `Read all blog posts related to ${decodedTag}`,
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": posts.map((post, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "url": `https://minifylinks.com/blog/${post.slug}`,
+        "name": post.title,
+        "description": post.excerpt || undefined,
+      })),
+    },
+  };
+
   return (
     <div className="container mx-auto px-4 pt-20 pb-12 max-w-4xl">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="mb-8 text-center sm:text-left">
         <Link href="/tags" className="text-blue-500 hover:text-blue-600 mb-4 inline-block font-medium">
           &larr; Browse all tags

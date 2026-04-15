@@ -7,10 +7,9 @@ import {
 } from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
-  title: "Best URL Shortener Guide | FAQs, Custom Links & More",
+  title: "Best URL Shortener Guide | FAQs, Custom Links",
   description: "Looking for the best URL shortener? Get answers on safety, custom links, and features. MinifyLinks makes link sharing fast and secure.",
-  keywords: ["url shortener", "link shortener", "free url shortener", "best url shortener", "custom links", "link tracking", "analytics", "secure redirects", "minifylinks", "url shortener faq", "url shortener guide", "url shortener features", "url shortener safety", "url shortener benefits", "url shortener comparison", "url shortener alternatives", "free URL shortener ", "custom URL shortener",
-    "best URL shortener",
+  keywords: ["url shortener safety", "url shortener benefits", "url shortener comparison", "url shortener alternatives", "free URL shortener ", "custom URL shortener", "best URL shortener",
     "link shortener tool",
     "shorten long URLs",
     "URL shortener with custom domain"],

@@ -10,8 +10,8 @@ import { Prisma } from '@prisma/client'
 import { unstable_cache } from 'next/cache' // <--- IMPORT THIS
 
 export const metadata: Metadata = {
-  title: 'Blogs',
-  description: 'Latest news, tips, and insights about URL shortening and digital marketing.',
+  title: 'Best url shortener, Boost Clicks | Blog & Tips',
+  description: 'Discover the latest tips, updates, and strategies on the best URL shortener. Grow your clicks & boost SEO with MinifyLinks blog insights today.',
   alternates: {
     canonical: 'https://minifylinks.com/blog',
   },

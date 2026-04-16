@@ -8,13 +8,18 @@ interface RelatedPostsProps {
 }
 
 export async function RelatedPosts({ currentSlug, categories }: RelatedPostsProps) {
+  // Optimization: If the current post has no categories, we can't find related posts.
+  if (!categories || categories.length === 0) {
+    return null;
+  }
+
   // 1. Find up to 3 posts that have ANY of the same categories
   // AND are not the current post.
   const related = await prisma.blogPost.findMany({
     where: {
       isPublished: true,
       slug: { not: currentSlug }, // Exclude current
-      categories: { hasSome: categories }, // Match category
+      categoryIds: { hasSome: categories }, // FIX: Use `hasSome` on the `categoryIds` scalar list
     },
     take: 3,
     orderBy: { publishedAt: 'desc' },

@@ -24,7 +24,8 @@ export type BlogPostData = {
   content: string
   excerpt: string
   image: string
-  categories: string[]
+  categoryIds: string[]
+  categories?: any[] // Optional array to accept legacy populated data structure smoothly
   metaTitle: string
   metaDescription: string
   metaKeywords: string
@@ -40,7 +41,7 @@ const initialFormState: BlogPostData = {
   content: '',
   excerpt: '',
   image: '',
-  categories: [],
+  categoryIds: [],
   metaTitle: '',
   metaDescription: '',
   metaKeywords: '',
@@ -59,15 +60,23 @@ export function BlogFormDialog({ open, onOpenChange, postToEdit, onSuccess }: Bl
   const [formData, setFormData] = useState<BlogPostData>(initialFormState)
   const [loading, setLoading] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
-  const [categoryInput, setCategoryInput] = useState('')
+  const [availableCategories, setAvailableCategories] = useState<{id: string, name: string}[]>([])
 
   useEffect(() => {
     if (open) {
+      // Fetch actual available categories from the database
+      fetch('/api/category')
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data)) setAvailableCategories(data)
+        })
+        .catch(err => console.error("Failed to load categories", err))
+
       if (postToEdit) {
         setFormData({ 
             ...postToEdit, 
             image: postToEdit.image || '',
-            categories: postToEdit.categories || [] 
+            categoryIds: postToEdit.categoryIds || postToEdit.categories?.map((c: any) => typeof c === 'string' ? c : c.id).filter(Boolean) || [] 
         })
       } else {
         setFormData(initialFormState)
@@ -107,32 +116,6 @@ export function BlogFormDialog({ open, onOpenChange, postToEdit, onSuccess }: Bl
     }
   }
 
-  const handleCategoryKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' || e.key === ',') {
-      e.preventDefault()
-      
-      // FIX: Trim the input immediately
-      const newCat = categoryInput.trim() 
-
-      // Check if it exists (case-insensitive check is even better)
-      const exists = formData.categories.some(
-         c => c.toLowerCase() === newCat.toLowerCase()
-      )
-
-      if (newCat && !exists) {
-        setFormData(prev => ({ ...prev, categories: [...prev.categories, newCat] }))
-      }
-      setCategoryInput('')
-    }
-  }
-
-  const removeCategory = (catToRemove: string) => {
-    setFormData(prev => ({
-      ...prev,
-      categories: prev.categories.filter(c => c !== catToRemove)
-    }))
-  }
-
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
@@ -167,10 +150,13 @@ export function BlogFormDialog({ open, onOpenChange, postToEdit, onSuccess }: Bl
       const url = postToEdit ? `/api/admin/blog/${postToEdit.id}` : '/api/admin/blog'
       const method = postToEdit ? 'PUT' : 'POST'
 
+      // Exclude populated categories property so Prisma accepts the payload for categoryIds
+      const { categories, ...payloadToSave } = formData
+
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payloadToSave)
       })
 
       if (res.ok) {
@@ -214,29 +200,30 @@ export function BlogFormDialog({ open, onOpenChange, postToEdit, onSuccess }: Bl
             <div className="space-y-2">
               <Label>Categories</Label>
               <div className="bg-white p-3 border rounded-md shadow-sm">
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {formData.categories.map((cat, i) => (
-                    <Badge key={i} variant="secondary" className="px-2 py-1 flex items-center gap-1">
-                      {cat}
-                      {/* FIX: Wrapped X in a button to ensure click registers properly */}
-                      <button
-                        type="button"
-                        onClick={() => removeCategory(cat)}
-                        className="ml-1 text-gray-500 hover:text-red-500 focus:outline-none transition-colors"
+                <div className="flex flex-wrap gap-2">
+                  {availableCategories.length > 0 ? availableCategories.map((cat) => {
+                    const isSelected = formData.categoryIds?.includes(cat.id);
+                    return (
+                      <Badge 
+                        key={cat.id} 
+                        variant={isSelected ? "default" : "outline"} 
+                        className={`cursor-pointer px-3 py-1.5 transition-colors select-none ${isSelected ? 'bg-purple-600 hover:bg-purple-700 text-white border-purple-600' : 'hover:bg-gray-50 text-gray-700'}`}
+                        onClick={() => {
+                          setFormData(prev => ({
+                            ...prev,
+                            categoryIds: isSelected 
+                              ? (prev.categoryIds || []).filter(id => id !== cat.id) 
+                              : [...(prev.categoryIds || []), cat.id]
+                          }))
+                        }}
                       >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </Badge>
-                  ))}
-                  {formData.categories.length === 0 && <span className="text-gray-400 text-sm">No categories added yet.</span>}
+                        {cat.name}
+                      </Badge>
+                    )
+                  }) : (
+                    <span className="text-gray-400 text-sm p-1">No categories available. Please create some in the Category Manager.</span>
+                  )}
                 </div>
-                <Input 
-                  value={categoryInput}
-                  onChange={(e) => setCategoryInput(e.target.value)}
-                  onKeyDown={handleCategoryKeyDown}
-                  placeholder="Type category and press Enter..." 
-                  className="border-none shadow-none focus-visible:ring-0 px-0 h-auto"
-                />
               </div>
             </div>
 

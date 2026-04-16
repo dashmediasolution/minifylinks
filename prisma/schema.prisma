@@ -43,7 +43,8 @@ model BlogPost {
   content         String   
   excerpt         String
   image           String?
-  categories      String[]
+  categoryIds     String[]   @db.ObjectId
+  categories      Category[] @relation(fields: [categoryIds], references: [id])
   
   // SEO
   metaTitle       String
@@ -89,4 +90,17 @@ model ClickLog {
   device      String? 
   os          String?    
   browser     String?     
+}
+
+// 7. Category Model for Blog Posts
+model Category {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  name        String     @unique
+  slug        String     @unique
+  description String?
+  keywords    String?    // New field for category keywords
+  postIds     String[]   @db.ObjectId
+  posts       BlogPost[] @relation(fields: [postIds], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }

@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     const posts = await prisma.blogPost.findMany({
       where: {
         isPublished: true,
-        categories: {
+        categoryIds: {
           has: category,
         },
       },

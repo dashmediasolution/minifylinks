@@ -30,12 +30,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     new Set(
       posts
         .flatMap((post) => post.categories || [])
-        .map((cat) => cat.trim())
-        .filter((cat) => cat.length > 0)
+        .map((cat) => cat.slug) // Extract the slug from the category object
+        .filter((slug) => slug) // Filter out any empty/null slugs
     )
   )
-  const categoryUrls = uniqueCategories.map((category) => ({
-    url: `${baseUrl}/category/${category.toLowerCase().replace(/\s+/g, '-')}`,
+  const categoryUrls = uniqueCategories.map((slug) => ({
+    // Use the slug directly as it's already URL-safe
+    url: `${baseUrl}/category/${slug}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.7, // Category archives are slightly lower priority than individual articles

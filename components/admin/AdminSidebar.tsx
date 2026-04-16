@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
-import { LayoutDashboard, BarChart2, FileText, LogOut } from "lucide-react";
+import { LayoutDashboard, BarChart2, FileText, LogOut, Tag } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -40,6 +40,12 @@ export function AdminSidebar({ children, userRole, username }: AdminSidebarProps
       label: "Blog Posts",
       href: "/admin/blog",
       icon: <FileText className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
+      roles: ['ADMIN', 'EMPLOYEE'], 
+    },
+    {
+      label: "Categories",
+      href: "/admin/category",
+      icon: <Tag className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
       roles: ['ADMIN', 'EMPLOYEE'], 
     },
   ];

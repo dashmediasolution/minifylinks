@@ -8,6 +8,9 @@ const SECRET_KEY = process.env.JWT_SECRET || 'super-secret-key-change-this'
 // Force Next.js to always fetch fresh data for this API route
 export const dynamic = 'force-dynamic'
 
+// Bypassing any localized Next.js cache type corruptions
+const safeRevalidateTag = revalidateTag as (tag: string) => void;
+
 // Middleware helper to verify admin access
 const isAuthenticated = (req: NextRequest) => {
   const token = req.cookies.get('admin_token')?.value
@@ -82,7 +85,7 @@ export async function POST(req: NextRequest) {
         // Save Banner Image
         image: body.image || '',
 
-        categories: body.categories || [],
+        categoryIds: body.categoryIds || [],
 
         // SEO Fields
         metaTitle: body.metaTitle || body.title,
@@ -97,17 +100,28 @@ export async function POST(req: NextRequest) {
       }
     })
 
-    // @ts-expect-error - Bypassing incorrect Next.js type definitions (runtime strictly expects 1 argument)
-    revalidateTag('blog-posts') // Refreshes the blog grid/cards
-    // @ts-expect-error - Bypassing incorrect Next.js type definitions
-    revalidateTag('categories')
+    // Sync the many-to-many relation by adding the new post's ID to the selected categories
+    const newPostId = newPost.id;
+    const categoryIds = body.categoryIds || [];
+    if (categoryIds.length > 0) {
+      await prisma.category.updateMany({
+        where: { id: { in: categoryIds } },
+        data: {
+          postIds: { push: newPostId }
+        }
+      });
+    }
 
+    // Revalidate caches
+    safeRevalidateTag('blog-posts') // Refreshes the blog grid/cards
+    safeRevalidateTag('categories')
 
-    return NextResponse.json(newPost)
+    return NextResponse.json(newPost, { status: 201 })
 
-  } catch (error) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
     // Handle Duplicate Slug Error (Prisma code P2002)
-    if (error instanceof Error && 'code' in error && error.code === 'P2002') {
+    if (error?.code === 'P2002') {
       return NextResponse.json(
         { error: 'A post with this URL slug already exists. Please change the slug.' },
         { status: 409 }

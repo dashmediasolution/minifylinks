@@ -43,10 +43,11 @@ export function BlogCard({ post, className,priority = false }: BlogCardProps) {
         <div className="flex items-center justify-between text-xs text-slate-500 mb-1">
            <div className="flex flex-wrap gap-2">
              {post.categories && post.categories.length > 0 ? (
-               post.categories.slice(0, 2).map((cat, idx) => (
-                 <Link key={idx} href={`/blog/category/${cat.toLowerCase().replace(/\s+/g, '-')}`}>
+               // eslint-disable-next-line @typescript-eslint/no-explicit-any
+               post.categories.slice(0, 2).map((cat: any, idx: number) => (
+                 <Link key={idx} href={`/category/${cat.slug || cat}`}>
                    <Badge variant="secondary" className="font-medium bg-blue-50 text-blue-700 hover:bg-blue-100 border-none rounded-lg px-2.5 py-0.5 cursor-pointer transition-colors">
-                     {cat}
+                     {cat.name || cat}
                    </Badge>
                  </Link>
                ))

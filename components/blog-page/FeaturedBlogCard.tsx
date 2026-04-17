@@ -17,7 +17,7 @@ export function FeaturedBlogCard({ post }: { post: BlogPost }) {
               fill
               loading="eager"
               fetchPriority="high"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              sizes="(max-width: 1024px) 100vw, 800px"
               className="object-cover  group-hover:scale-105 transition-transform duration-700 ease-out"
             />
           ) : (
@@ -52,15 +52,15 @@ export function FeaturedBlogCard({ post }: { post: BlogPost }) {
                  </Badge>
                ))
              ) : (
-               <span className="text-slate-400 italic text-sm">Uncategorized</span>
+               <span className="text-slate-500 italic text-sm">Uncategorized</span>
              )}
           </div>
 
           <div className="space-y-4">
             <Link href={`/blog/${post.slug}`} className="block focus:outline-none">
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight group-hover:text-blue-600 transition-colors tracking-tight">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight group-hover:text-blue-600 transition-colors tracking-tight">
               {post.title}
-            </h3>
+            </h2>
             </Link>
             <p className="text-slate-500 text-base sm:text-lg line-clamp-3 leading-relaxed">
               {post.excerpt}

@@ -22,7 +22,7 @@ export function BlogCard({ post, className,priority = false }: BlogCardProps) {
               alt={post.title} 
               fill 
               priority={priority}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              sizes="(max-width: 768px) 100vw, 600px"
               className="object-cover aspect-[16/9] group-hover:scale-105 transition-transform duration-700 ease-out"
             />
          ) : (
@@ -52,7 +52,7 @@ export function BlogCard({ post, className,priority = false }: BlogCardProps) {
                  </Link>
                ))
              ) : (
-               <span className="text-slate-400 italic">Uncategorized</span>
+               <span className="text-slate-500 italic">Uncategorized</span>
              )}
            </div>
            <div className="flex items-center font-medium">

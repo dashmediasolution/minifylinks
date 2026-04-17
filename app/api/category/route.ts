@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { slugify } from '@/lib/utils';
 
 /**
  * GET /api/category
@@ -40,11 +41,7 @@ export async function POST(request: Request) {
     }
     
     const trimmedName = name.trim();
-    const slug = trimmedName
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '') // remove invalid chars
-      .trim()
-      .replace(/\s+/g, '-'); // replace spaces with dashes
+    const slug = slugify(trimmedName);
 
     const existingCategory = await prisma.category.findFirst({
       where: {
@@ -97,21 +94,18 @@ export async function PUT(request: Request) {
     }
 
     const trimmedName = name.trim();
-    const slug = trimmedName
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '')
-      .trim()
-      .replace(/\s+/g, '-');
+    const slug = slugify(trimmedName);
 
     const existingCategory = await prisma.category.findFirst({
       where: {
-        NOT: { id },
+        id: { not: id }, // explicitly use 'not' filter on the id field
         OR: [{ name: { equals: trimmedName, mode: 'insensitive' } }, { slug }],
       },
     });
 
     if (existingCategory) {
-      return NextResponse.json({ error: 'Another category with this name or slug already exists.' }, { status: 409 });
+      const isNameConflict = existingCategory.name.toLowerCase() === trimmedName.toLowerCase();
+      return NextResponse.json({ error: `Another category with this ${isNameConflict ? 'name' : 'slug'} already exists.` }, { status: 409 });
     }
 
     const updatedCategory = await prisma.category.update({

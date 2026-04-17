@@ -1,13 +1,15 @@
 import { prisma } from '@/lib/prisma'
 import { BlogCard } from '@/components/blog-page/BlogCard'
 import { FeaturedBlogCard } from '@/components/blog-page/FeaturedBlogCard'
-import { BlogSidebar } from '@/components/blog-page/BlogSidebar'
-import { BlogPagination } from '@/components/blog-page/BlogPagination' 
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { BlogPost } from '@/types/blog' 
 import { Prisma } from '@prisma/client'
 import { unstable_cache } from 'next/cache' // <--- IMPORT THIS
+import dynamic from 'next/dynamic'
+
+const BlogSidebar = dynamic(() => import('@/components/blog-page/BlogSidebar').then(mod => mod.BlogSidebar))
+const BlogPagination = dynamic(() => import('@/components/blog-page/BlogPagination').then(mod => mod.BlogPagination))
 
 export const metadata: Metadata = {
   title: 'Best URL Shortener, Boost Clicks | Blog & Tips',

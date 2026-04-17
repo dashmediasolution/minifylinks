@@ -1,9 +1,12 @@
 import { HeroSection } from "@/components/home-page/HeroSection";
-import { HowItWorks } from "@/components/home-page/HowItWorks";
-import { FeaturesBento } from "@/components/home-page/FeaturesBento";
-import { FaqSection } from "@/components/home-page/FaqSection";
-import { AbstractCtaBanner } from "@/components/home-page/CtaBanner";
 import { Metadata } from 'next';
+import dynamic from 'next/dynamic';
+
+// Dynamically import below-the-fold components to reduce initial JS/CSS bundle size
+const HowItWorks = dynamic(() => import("@/components/home-page/HowItWorks").then((mod) => mod.HowItWorks));
+const FeaturesBento = dynamic(() => import("@/components/home-page/FeaturesBento").then((mod) => mod.FeaturesBento));
+const FaqSection = dynamic(() => import("@/components/home-page/FaqSection").then((mod) => mod.FaqSection));
+const AbstractCtaBanner = dynamic(() => import("@/components/home-page/CtaBanner").then((mod) => mod.AbstractCtaBanner));
 
 export const metadata: Metadata = {
   title: "Free URL Shortener & Custom Links",

@@ -1,14 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Badge } from "@/components/ui/badge"
-import { Loader2, Upload, Trash2, X, Sparkles } from 'lucide-react' // Added Sparkles icon
+import { Loader2, Upload, Trash2, Sparkles } from 'lucide-react' // Added Sparkles icon
 import { toast } from "sonner"
 import Image from 'next/image'
 import { RichTextEditor } from "@/components/admin/RichTextEditor"
@@ -30,6 +31,7 @@ export type BlogPostData = {
   metaDescription: string
   metaKeywords: string
   focusKeyword: string
+  schemaData?: string | null
   isPublished: boolean
   publishedAt?: string | Date; 
   updatedAt?: string | Date;
@@ -46,6 +48,7 @@ const initialFormState: BlogPostData = {
   metaDescription: '',
   metaKeywords: '',
   focusKeyword: '',
+  schemaData: '',
   isPublished: false
 }
 
@@ -75,7 +78,9 @@ export function BlogFormDialog({ open, onOpenChange, postToEdit, onSuccess }: Bl
       if (postToEdit) {
         setFormData({ 
             ...postToEdit, 
+            schemaData: postToEdit.schemaData || '',
             image: postToEdit.image || '',
+             
             categoryIds: postToEdit.categoryIds || postToEdit.categories?.map((c: any) => typeof c === 'string' ? c : c.id).filter(Boolean) || [] 
         })
       } else {
@@ -134,6 +139,7 @@ export function BlogFormDialog({ open, onOpenChange, postToEdit, onSuccess }: Bl
       } else {
         toast.error("Upload failed", { id: toastId })
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Error uploading", { id: toastId })
     } finally {
@@ -151,7 +157,22 @@ export function BlogFormDialog({ open, onOpenChange, postToEdit, onSuccess }: Bl
       const method = postToEdit ? 'PUT' : 'POST'
 
       // Exclude populated categories property so Prisma accepts the payload for categoryIds
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { categories, ...payloadToSave } = formData
+
+      // If user provided a custom schema, validate and format it. 
+      // Otherwise, set to null so page.tsx auto-generates it dynamically on the live site.
+      if (payloadToSave.schemaData && payloadToSave.schemaData.trim() !== '') {
+        try {
+          const parsedSchema = JSON.parse(payloadToSave.schemaData)
+          payloadToSave.schemaData = JSON.stringify(parsedSchema, null, 2)
+        } catch (e) {
+          toast.error("Invalid JSON in Features Schema. Please check your formatting.", { id: toastId })
+          return
+        }
+      } else {
+        payloadToSave.schemaData = null
+      }
 
       const res = await fetch(url, {
         method,
@@ -167,6 +188,7 @@ export function BlogFormDialog({ open, onOpenChange, postToEdit, onSuccess }: Bl
         const data = await res.json()
         toast.error(data.error || "Operation failed", { id: toastId })
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Something went wrong", { id: toastId })
     } finally {
@@ -180,6 +202,9 @@ export function BlogFormDialog({ open, onOpenChange, postToEdit, onSuccess }: Bl
         
         <DialogHeader className="px-6 py-4 border-b bg-white z-10">
           <DialogTitle>{postToEdit ? "Edit Blog Post" : "Create New Post"}</DialogTitle>
+          <DialogDescription className="sr-only">
+            {postToEdit ? "Edit the details of your blog post below." : "Fill in the details below to create a new blog post."}
+          </DialogDescription>
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto px-6 py-6 bg-gray-50/50">
@@ -257,6 +282,12 @@ export function BlogFormDialog({ open, onOpenChange, postToEdit, onSuccess }: Bl
                   </div>
                 )}
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Features Schema (JSON-LD)</Label>
+              <Textarea value={formData.schemaData || ''} onChange={e => setFormData({...formData, schemaData: e.target.value})} placeholder='{"@context": "https://schema.org", "@type": "Article", ...}' className="bg-white font-mono text-sm h-32" />
+              <p className="text-xs text-gray-500">Optional: Add custom JSON-LD schema markup. If left blank, a default BlogPosting schema will be automatically generated on submission.</p>
             </div>
 
             <div className="space-y-2">

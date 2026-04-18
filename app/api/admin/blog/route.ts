@@ -9,7 +9,7 @@ const SECRET_KEY = process.env.JWT_SECRET || 'super-secret-key-change-this'
 export const dynamic = 'force-dynamic'
 
 // Bypassing any localized Next.js cache type corruptions
-const safeRevalidateTag = revalidateTag as (tag: string) => void;
+const safeRevalidateTag = revalidateTag as (tag: string, type?: string) => void;
 
 // Middleware helper to verify admin access
 const isAuthenticated = (req: NextRequest) => {
@@ -32,7 +32,8 @@ export async function GET(req: NextRequest) {
   try {
     // 1. Pagination Parameters
     const { searchParams } = new URL(req.url);
-    const page = parseInt(searchParams.get('page') || '1');
+    let page = parseInt(searchParams.get('page') || '1', 10);
+    if (isNaN(page) || page < 1) page = 1;
     const limit = 10;
     const skip = (page - 1) * limit;
 
@@ -92,6 +93,7 @@ export async function POST(req: NextRequest) {
         metaDescription: body.metaDescription || '',
         metaKeywords: body.metaKeywords || '',
         focusKeyword: body.focusKeyword || '',
+        schemaData: body.schemaData || null,
 
         isPublished: body.isPublished || false,
 
@@ -113,15 +115,14 @@ export async function POST(req: NextRequest) {
     }
 
     // Revalidate caches
-    safeRevalidateTag('blog-posts') // Refreshes the blog grid/cards
-    safeRevalidateTag('categories')
+    safeRevalidateTag('blog-posts', 'max') // Refreshes the blog grid/cards
+    safeRevalidateTag('categories', 'max')
 
     return NextResponse.json(newPost, { status: 201 })
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Handle Duplicate Slug Error (Prisma code P2002)
-    if (error?.code === 'P2002') {
+    if (typeof error === 'object' && error !== null && (error as { code?: string }).code === 'P2002') {
       return NextResponse.json(
         { error: 'A post with this URL slug already exists. Please change the slug.' },
         { status: 409 }

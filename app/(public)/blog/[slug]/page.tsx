@@ -95,8 +95,31 @@ export default async function BlogPostPage({ params }: Props) {
     notFound()
   }
 
+  const defaultJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.metaDescription,
+    image: post.image ? [post.image] : [],
+    datePublished: new Date(post.publishedAt).toISOString(),
+    dateModified: new Date(post.updatedAt).toISOString(),
+    author: [
+      {
+        '@type': 'Organization',
+        name: 'MinifyLinks Team',
+      },
+    ],
+  }
+
+  // Use custom schema from DB if it exists, otherwise fall back to the default JSON
+  const finalSchemaLd = post.schemaData && post.schemaData.trim() !== '' ? post.schemaData : JSON.stringify(defaultJsonLd);
+
   return (
     <main className="bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: finalSchemaLd }}
+      />
       <article className="py-12 sm:py-16">
         {/* Post Header */}
         <header className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10">

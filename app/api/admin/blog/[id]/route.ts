@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import jwt from 'jsonwebtoken'
-import { revalidateTag } from 'next/cache'
+import { revalidateTag, revalidatePath } from 'next/cache'
 
 const SECRET_KEY = process.env.JWT_SECRET || 'super-secret-key-change-this'
 
@@ -18,7 +18,7 @@ const isAuthenticated = (req: NextRequest) => {
 }
 
 // Bypassing any localized Next.js cache type corruptions
-const safeRevalidateTag = revalidateTag as (tag: string) => void;
+const safeRevalidateTag = revalidateTag as (tag: string, type?: string) => void;
 
 // UPDATE A POST
 export async function PUT(
@@ -62,6 +62,7 @@ export async function PUT(
         metaDescription: body.metaDescription || '',
         metaKeywords: body.metaKeywords || '',
         focusKeyword: body.focusKeyword || '',
+        schemaData: body.schemaData || null,
         isPublished: Boolean(body.isPublished),
       }
     })
@@ -91,14 +92,15 @@ export async function PUT(
       });
     }
 
-    safeRevalidateTag('blog-posts')
-    safeRevalidateTag('categories')
+    safeRevalidateTag('blog-posts', 'max')
+    safeRevalidateTag('categories', 'max')
+    revalidatePath(`/blog/${updatedPost.slug}`, 'page')
+    revalidatePath('/blog', 'page')
 
     return NextResponse.json(updatedPost)
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    if (error?.code === 'P2002') {
+  } catch (error: unknown) {
+    if (typeof error === 'object' && error !== null && (error as { code?: string }).code === 'P2002') {
       return NextResponse.json(
         { error: 'A post with this URL slug already exists. Please change the slug.' },
         { status: 409 }
@@ -121,6 +123,12 @@ export async function DELETE(
     try {
         const { id } = await context.params;
 
+        // Fetch the slug before deleting so we can clear its specific cache
+        const postToDelete = await prisma.blogPost.findUnique({
+            where: { id },
+            select: { slug: true }
+        });
+
         // First, remove the post's ID from all associated categories
         const categoriesToUpdate = await prisma.category.findMany({
             where: { postIds: { has: id } },
@@ -139,14 +147,17 @@ export async function DELETE(
             where: { id },
         });
 
-        safeRevalidateTag('blog-posts');
-        safeRevalidateTag('categories');
+        safeRevalidateTag('blog-posts', 'max');
+        safeRevalidateTag('categories', 'max');
+        if (postToDelete) {
+            revalidatePath(`/blog/${postToDelete.slug}`, 'page');
+        }
+        revalidatePath('/blog', 'page');
 
         return NextResponse.json({ message: 'Post deleted successfully' }, { status: 200 });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-        if (error?.code === 'P2025') { // Prisma: Record to delete not found
+    } catch (error: unknown) {
+        if (typeof error === 'object' && error !== null && (error as { code?: string }).code === 'P2025') { // Prisma: Record to delete not found
             return NextResponse.json({ error: 'Post not found.' }, { status: 404 });
         }
         console.error("Blog Delete Error:", error);

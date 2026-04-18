@@ -51,6 +51,7 @@ model BlogPost {
   metaDescription String
   metaKeywords    String
   focusKeyword    String
+  schemaData      String?
   
   publishedAt     DateTime @default(now())
   updatedAt       DateTime @updatedAt

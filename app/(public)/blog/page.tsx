@@ -147,8 +147,41 @@ export default async function BlogListPage({ searchParams }: BlogPageProps) {
     );
   };
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    name: 'MinifyLinks Blog & Tips',
+    description: 'Minifylinks, the best URL shortener, transforms long URLs into short, professional links. Read our blog for guides on boosting clicks and engagement with our free tool.',
+    url: 'https://minifylinks.com/blog',
+    publisher: {
+      '@type': 'Organization',
+      name: 'MinifyLinks',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://minifylinks.com/logos/favicon-32x32.png',
+      },
+    },
+    blogPost: posts.map((post) => ({
+      '@type': 'BlogPosting',
+      headline: post.title,
+      description: post.excerpt,
+      image: post.image ? [post.image] : [],
+      url: `https://minifylinks.com/blog/${post.slug}`,
+      datePublished: post.publishedAt,
+      dateModified: post.updatedAt,
+      author: {
+        '@type': 'Organization',
+        name: 'MinifyLinks Team',
+      },
+    })),
+  };
+
   return (
     <div className="min-h-screen bg-white pt-20 px-6">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="sm:mb-10 text-center max-w-3xl mx-auto">
          <span className="text-sm font-bold uppercase tracking-wider text-gray-500">
             Read Our Blogs

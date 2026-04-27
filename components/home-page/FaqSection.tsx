@@ -26,10 +26,10 @@ export function FaqSection() {
           {/* 1. Free (Removed ad mention) */}
           <AccordionItem value="item-1" className="bg-white px-6 border-b rounded-none">
             <AccordionTrigger className="text-md font-semibold text-gray-800 hover:text-blue-600 hover:no-underline py-6 text-left">
-              Is SwiftLink completely free to use?
+              Is MinifyLInks completely free to use?
             </AccordionTrigger>
             <AccordionContent className="text-gray-600 text-sm leading-relaxed pb-6">
-              Yes! SwiftLink is 100% free. You can use our URL shortening features instantly without any subscriptions, hidden fees, or payment requirements.
+              Yes! MinifyLInks is 100% free. You can use our URL shortening features instantly without any subscriptions, hidden fees, or payment requirements.
             </AccordionContent>
           </AccordionItem>
 

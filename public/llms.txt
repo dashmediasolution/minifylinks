@@ -1,18 +1,48 @@
-# SwiftLink
+# Minifylinks
 
-> A powerful, free tool to shrink long links into memorable short URLs and boost brand visibility.
+> Minifylinks is a free URL shortener that allows users to create short, branded links instantly without signup. It provides advanced analytics, QR code generation, and permanent links for marketers, businesses, and creators.
 
-## Core Pages
+## About
+- **Website:** https://minifylinks.com/
+- **Business Type:** URL Shortener / Link Management Tool
+- **Category:** SaaS, Marketing Tool, SEO Tool
+- **Service Area:** Global
 
-- [Home](https://minifylinks.com)
-- [Blogs](https://minifylinks.com/blog)
-- [Privacy Policy](https://minifylinks.com/privacy)
+## Core Features
+- Free URL shortening (no hidden cost)
+- Custom branded short links
+- Click tracking & analytics (device, location, referrer)
+- QR code generation for each link
+- Permanent links (no expiration)
+- No signup required for basic use
+- Fast redirection (low latency)
+- HTTPS secure links
 
-## Features
+## Use Cases
+- Social media marketing (Instagram, Twitter, TikTok)
+- Affiliate marketing & tracking
+- Email campaigns
+- Offline marketing (QR codes)
+- SEO link management
+- Content creators & influencers
 
-- **Shortening**: Instant URL shortening with analytics tracking.
+## Target Audience
+- Digital marketers
+- Bloggers & content creators
+- Small businesses
+- Agencies
+- Developers (basic usage)
 
-## API Usage
+## Key Pages
+- [Homepage](https://minifylinks.com/): Primary Tool / SaaS Homepage
+- [Blog](https://minifylinks.com/blog): Knowledge Base & SEO Guides
+- [FAQs](https://minifylinks.com/faqs): Frequently Asked Questions
 
-Our platform provides endpoints for:
-- Creating short links
+## Trust & Security
+- Secure HTTPS platform
+- Fast global link redirection
+- Accurate click analytics
+- Free and transparent usage model
+- Built for marketers & businesses worldwide
+- No spam or unsafe redirect policy
+- Scalable cloud-based infrastructure

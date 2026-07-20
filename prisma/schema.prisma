@@ -17,51 +17,51 @@ enum Role {
 
 // 2. Unified User Model
 model User {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  username String @unique
-  password String 
-  role     Role   @default(EMPLOYEE)
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  username  String   @unique
+  password  String
+  role      Role     @default(EMPLOYEE)
   createdAt DateTime @default(now())
 }
 
 // 3. Short Links (Public Utility)
 model ShortLink {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
   originalUrl String
-  shortCode   String   @unique
-  createdAt   DateTime @default(now())
-  creatorIP   String?  
-  clicks      Int      @default(0)
+  shortCode   String     @unique
+  createdAt   DateTime   @default(now())
+  creatorIP   String?
+  clicks      Int        @default(0)
   logs        ClickLog[]
 }
 
 // 4. Blog Posts
 model BlogPost {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  title           String
-  slug            String   @unique
-  content         String   
-  excerpt         String
-  image           String?
-  categoryIds     String[]   @db.ObjectId
-  categories      Category[] @relation(fields: [categoryIds], references: [id])
-  
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  slug        String     @unique
+  content     String
+  excerpt     String
+  image       String?
+  categoryIds String[]   @db.ObjectId
+  categories  Category[] @relation(fields: [categoryIds], references: [id])
+
   // SEO
   metaTitle       String
   metaDescription String
   metaKeywords    String
   focusKeyword    String
   schemaData      String?
-  
-  publishedAt     DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  isPublished     Boolean  @default(false)
+
+  publishedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  isPublished Boolean  @default(false)
 }
 
 // 5. Global Settings
 model AdminSettings {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
-  adRedirectUrl String @default("https://google.com") 
+  adRedirectUrl String @default("https://google.com")
   totalAdClicks Int    @default(0)
 }
 
@@ -72,25 +72,25 @@ model AdBounceLog {
   ipAddress String?
   userAgent String?
   targetUrl String?
-  device    String?  
-  os        String? 
+  device    String?
+  os        String?
   browser   String?
 }
 
 model ClickLog {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  shortLinkId String   @db.ObjectId
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  shortLinkId String    @db.ObjectId
   shortLink   ShortLink @relation(fields: [shortLinkId], references: [id])
-  
-  timestamp   DateTime @default(now())
-  ipAddress   String?
-  userAgent   String?  
-  referrer    String?  
-  country     String?  
-  city        String?  
-  device      String? 
-  os          String?    
-  browser     String?     
+
+  timestamp DateTime @default(now())
+  ipAddress String?
+  userAgent String?
+  referrer  String?
+  country   String?
+  city      String?
+  device    String?
+  os        String?
+  browser   String?
 }
 
 // 7. Category Model for Blog Posts
@@ -99,9 +99,19 @@ model Category {
   name        String     @unique
   slug        String     @unique
   description String?
-  keywords    String?    // New field for category keywords
+  keywords    String? // New field for category keywords
   postIds     String[]   @db.ObjectId
   posts       BlogPost[] @relation(fields: [postIds], references: [id])
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+}
+
+model Banner {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String   @unique
+  description String?
+  redirectTo  String?
+  image       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

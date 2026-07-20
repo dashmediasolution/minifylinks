@@ -1,7 +1,7 @@
 import { HeroSection } from "@/components/home-page/HeroSection";
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
-
+import Banner from "@/components/home-page/banner";
 // Dynamically import below-the-fold components to reduce initial JS/CSS bundle size
 const HowItWorks = dynamic(() => import("@/components/home-page/HowItWorks").then((mod) => mod.HowItWorks));
 const FeaturesBento = dynamic(() => import("@/components/home-page/FeaturesBento").then((mod) => mod.FeaturesBento));
@@ -175,9 +175,9 @@ export default function Home() {
       {/* 1. Hero */}
       <HeroSection />
 
+      <Banner/>
       {/* 3. Steps */}
       <HowItWorks />
-
       {/* 4. Features */}
       <FeaturesBento />
 

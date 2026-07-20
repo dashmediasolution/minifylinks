@@ -12,7 +12,7 @@ export const dynamic = 'force-dynamic'
 const safeRevalidateTag = revalidateTag as (tag: string, type?: string) => void;
 
 // Middleware helper to verify admin access
-const isAuthenticated = (req: NextRequest) => {
+export const isAuthenticated = (req: NextRequest) => {
   const token = req.cookies.get('admin_token')?.value
   if (!token) return false
   try {

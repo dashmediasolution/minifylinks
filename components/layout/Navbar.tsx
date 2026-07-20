@@ -35,7 +35,8 @@ export function Navbar() {
         <div className="flex items-center justify-between px-6 py-3 bg-white/90 backdrop-blur-md rounded-full shadow-lg border border-gray-100 w-full max-w-4xl relative z-10 pointer-events-auto">
           
           {/* LOGO (Left) */}
-          <div className="flex items-center">
+          <Link href="/">
+          <div className="flex items-center ">
             <motion.div
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
@@ -47,7 +48,7 @@ export function Navbar() {
              
             </motion.div>
           </div>
-
+        </Link>
           {/* DESKTOP NAV (Right) */}
           <nav className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
@@ -73,12 +74,7 @@ export function Navbar() {
             transition={{ duration: 0.3, delay: 0.2 }}
             whileHover={{ scale: 1.05 }}
           >
-            <Link
-              href="/#hero-section"
-              className="inline-flex items-center justify-center px-6 py-2.5 text-sm text-white bg-blue-600 rounded-full hover:bg-blue-700 hover:shadow-[0_10px_20px_-10px_rgba(37,99,235,0.6)] transition-all font-bold"
-            >
-              Get Started
-            </Link>
+            <div></div>
           </motion.div>
 
           {/* MOBILE TOGGLE */}

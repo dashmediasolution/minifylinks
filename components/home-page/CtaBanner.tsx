@@ -41,17 +41,7 @@ export function AbstractCtaBanner() {
             <br className="hidden sm:block"/> Join thousands of users today.
           </p>
 
-          <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row items-center justify-center">
-            <Button 
-              size="lg" 
-              className="h-12 sm:h-14 px-6 sm:px-10 bg-blue-600 text-white hover:bg-blue-700 font-medium text-md sm:text-lg rounded-full shadow-lg sm:w-auto"
-              asChild
-            >
-              <Link href="/#hero-section">
-                Create Short Link <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-          </div>
+   
         </div>
 
       </div>

@@ -77,12 +77,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head />
+      <head>
+        </head>      
       <body className={inter.className}>
         {children}
         <Toaster position="bottom-right" richColors />
       </body>
-      <GoogleAnalytics gaId="G-EZTG9YH5PJ" />
+      <GoogleAnalytics gaId="G-RS65SSVNEX" />
     </html>
   );
 }

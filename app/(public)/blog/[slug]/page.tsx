@@ -56,18 +56,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: `/blog/${post.slug}`,
     },
     openGraph: {
-        title: post.metaTitle,
-        description: post.metaDescription,
-        url: `/blog/${post.slug}`,
-        images: post.image ? [{
-            url: post.image,
-            width: 1200,
-            height: 630,
-            alt: post.title,
-        }] : [],
-        type: 'article',
-        publishedTime: new Date(post.publishedAt).toISOString(),
-        modifiedTime: new Date(post.updatedAt).toISOString(),
+      title: post.metaTitle,
+      description: post.metaDescription,
+      url: `/blog/${post.slug}`,
+      images: post.image ? [{
+        url: post.image,
+        width: 1200,
+        height: 630,
+        alt: post.title,
+      }] : [],
+      type: 'article',
+      publishedTime: new Date(post.publishedAt).toISOString(),
+      modifiedTime: new Date(post.updatedAt).toISOString(),
     },
   }
 }
@@ -80,7 +80,7 @@ export async function generateStaticParams() {
     where: { isPublished: true },
     select: { slug: true },
   });
- 
+
   return posts.map((post) => ({
     slug: post.slug,
   }));
@@ -155,12 +155,13 @@ export default async function BlogPostPage({ params }: Props) {
         {/* Hero Image */}
         {post.image && (
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 sm:mb-12">
-            <div className="relative w-full aspect-[16/9] rounded-2xl lg:rounded-3xl overflow-hidden shadow-lg">
-              <Image 
-                src={post.image} 
-                alt={post.title} 
-                fill 
-                className="object-cover" 
+            <div className="rounded-2xl lg:rounded-3xl overflow-hidden shadow-lg">
+              <Image
+                src={post.image}
+                alt={post.title}
+                width={1200}
+                height={400}
+                className="w-full h-auto"
                 priority
                 fetchPriority="high"
                 sizes="(max-width: 768px) 100vw, (max-width: 1280px) 80vw, 1200px"
@@ -168,10 +169,10 @@ export default async function BlogPostPage({ params }: Props) {
             </div>
           </div>
         )}
-        
+
         {/* Post Body & Sidebars */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8 xl:gap-12">
-          
+
           {/* Left Sidebar: Share Widget (Sticky) */}
           <aside className="hidden lg:block w-20 shrink-0">
             <div className="sticky top-28">
@@ -181,12 +182,12 @@ export default async function BlogPostPage({ params }: Props) {
 
           {/* Main Content */}
           <div className="flex-1 min-w-0">
-            <div 
+            <div
               className="prose prose-lg max-w-none prose-slate 
                          prose-headings:font-bold prose-headings:text-slate-800 
                          prose-a:text-blue-600 hover:prose-a:text-blue-700 prose-a:transition-colors
-                         prose-img:rounded-xl" 
-              dangerouslySetInnerHTML={{ __html: post.content }} 
+                         prose-img:rounded-xl"
+              dangerouslySetInnerHTML={{ __html: post.content }}
             />
           </div>
 

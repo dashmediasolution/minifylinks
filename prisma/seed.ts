@@ -11,7 +11,7 @@ async function main() {
     console.log("🔌 Connected to:", process.env.DATABASE_URL.substring(0, 15) + "...");
   }
 
-  const password = 'password123'
+  const password = 'minify@links0011'
   const hashedPassword = await bcrypt.hash(password, 10)
 
   // 2. Create ADMIN User

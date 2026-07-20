@@ -11,18 +11,13 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 })
 
-/**
- * Helper function to extract Cloudinary Public ID from a full image URL
- * E.g., "https://res.cloudinary.com/demo/image/upload/v123456/banners/flight_abc123.jpg" 
- * extraction returns: "banners/flight_abc123"
- */
+
 function extractPublicId(url: string): string | null {
   try {
     const parts = url.split('/upload/')
     if (parts.length < 2) return null
     
-    // Remove version segment (v1234567/) if present, and strip file extension (.jpg)
-    const publicIdWithExt = parts[1].replace(/^v\d+\//, '')
+     const publicIdWithExt = parts[1].replace(/^v\d+\//, '')
     return publicIdWithExt.substring(0, publicIdWithExt.lastIndexOf('.'))
   } catch (error) {
     console.error("Failed to parse Cloudinary Public ID:", error)

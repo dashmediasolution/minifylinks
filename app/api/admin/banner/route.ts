@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { isAuthenticated } from '../blog/route'
 import { revalidateTag } from 'next/cache'
+
+export const dynamic = 'force-dynamic'
 // Add this export to change the body parsing limit for this specific API route
 export const config = {
   api: {
@@ -17,7 +19,6 @@ export async function POST(req: NextRequest) {
 
     try {
         const body = await req.json()
-        console.log(body ,"banner body")
         if (!body.title || !body.image) {
             return NextResponse.json(
                 { error: 'Missing required fields: title and image are mandatory.' },
@@ -66,10 +67,6 @@ export async function GET(req: NextRequest) {
 
      return NextResponse.json(banners, {
       status: 200,
-      headers: {
-         'Cache-Control': 'public, s-maxage=31536000, stale-while-revalidate=60',
-        'x-next-cache-tags': 'banners', // Attaches the cache tag for our revalidateTag calls
-      },
     })
 
   } catch (error: unknown) {

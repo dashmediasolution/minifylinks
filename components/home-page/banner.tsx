@@ -50,21 +50,13 @@ export default function Banner() {
     }
 
     if (banners.length === 0) {
-        return (
-            <div className="w-full bg-slate-50 pt-24 pb-12 px-4 md:px-8">
-                <div className="mx-auto w-full sm:max-w-xl md:max-w-3xl lg:max-w-5xl xl:max-w-6xl">
-                    <div className="flex flex-col items-center justify-center p-12 bg-white rounded-3xl border border-dashed border-slate-200 text-slate-400">
-                        <ImageIcon className="h-8 w-8 mb-2" />
-                        <p className="text-sm font-medium">No active promotional banners found.</p>
-                    </div>
-                </div>
-            </div>
-        );
+        return 
     }
 
     // 3. Dynamic Carousel View
     return (
-        <div className="w-full bg-slate-50 pt-24 pb-12 px-4 md:px-8">
+        
+        <div className="w-full bg-slate-50 pt-10 pb-12 px-4 md:px-8">
             <div className="mx-auto w-full sm:max-w-xl md:max-w-3xl lg:max-w-5xl xl:max-w-6xl">
 
                 <div className="relative z-10 mb-16 text-center sm:mb-20 max-w-2xl mx-auto space-y-4">

@@ -9,14 +9,15 @@ import confetti from 'canvas-confetti';
 import Link from 'next/link';
 import QRCodeGenerator from '../home-page/QRCodeGenerator';
 import { ChatInput, ChatInputTextArea } from "@/components/ui/chat-input";
-
+import { useSearchParams } from 'next/navigation';
 interface ResultHeroProps {
     initialCode: string;
 }
 
 export function ResultHero({ initialCode }: ResultHeroProps) {
     const router = useRouter();
-
+    const searchParams = useSearchParams();
+    const isQrRequested = searchParams.get('qr') === 'true';
     const [displayUrl, setDisplayUrl] = useState<string>('');
     const [displayOriginal, setDisplayOriginal] = useState<string | null>(null);
     const [storageKey, setStorageKey] = useState('');
@@ -32,6 +33,7 @@ export function ResultHero({ initialCode }: ResultHeroProps) {
 
     // Default redirect to Google if fetch fails
     const [activeRedirectUrl, setActiveRedirectUrl] = useState("https://republicnews.us");
+
 
     useEffect(() => {
         setMounted(true);
@@ -164,8 +166,8 @@ export function ResultHero({ initialCode }: ResultHeroProps) {
                                         size="lg"
                                         onClick={handleCopyAction}
                                         className={`h-12 px-8 font-bold rounded-xl transition-all shadow-md transform active:scale-95 ${isCopied
-                                                ? 'bg-green-400 hover:bg-green-500 text-white ring-2 ring-green-200'
-                                                : 'bg-blue-600 hover:bg-blue-700 text-white ring-2 ring-blue-100'
+                                            ? 'bg-green-400 hover:bg-green-500 text-white ring-2 ring-green-200'
+                                            : 'bg-blue-600 hover:bg-blue-700 text-white ring-2 ring-blue-100'
                                             }`}
                                     >
                                         {isCopied ? (
@@ -199,27 +201,32 @@ export function ResultHero({ initialCode }: ResultHeroProps) {
                             </div>
                         </div>
                     </div>
-                    <QRCodeGenerator url={displayUrl} />                    {/* --- Destination Context --- */}
-                    {displayOriginal && (
-                        <div className="relative">
-                            <div className="absolute left-6 -top-6 w-px h-6 bg-blue-500" /> {/* Connector Line */}
-                            <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-start gap-3">
-                                <CornerDownRight className="w-4 h-4 text-blue-400 mt-1 shrink-0" />
-                                <div className="text-left overflow-hidden">
-                                    <p className="text-[10px] font-bold text-gray-600 uppercase tracking-wider mb-0.5">Redirects to</p>
-                                    <a
-                                        href={decodeURIComponent(displayOriginal)}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-sm text-slate-600 font-medium  block hover:text-blue-600 hover:underline transition-colors"
-                                    >
-                                        {decodeURIComponent(displayOriginal)}
-                                        <ExternalLink className="w-3 h-3 inline-block ml-1 opacity-50" />
-                                    </a>
+                    {
+                        isQrRequested &&
+                        <>
+                            <QRCodeGenerator url={displayUrl} />
+                            {displayOriginal && (
+                                <div className="relative">
+                                    <div className="absolute left-6 -top-6 w-px h-6 bg-blue-500" /> {/* Connector Line */}
+                                    <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-start gap-3">
+                                        <CornerDownRight className="w-4 h-4 text-blue-400 mt-1 shrink-0" />
+                                        <div className="text-left overflow-hidden">
+                                            <p className="text-[10px] font-bold text-gray-600 uppercase tracking-wider mb-0.5">Redirects to</p>
+                                            <a
+                                                href={decodeURIComponent(displayOriginal)}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-sm text-slate-600 font-medium  block hover:text-blue-600 hover:underline transition-colors"
+                                            >
+                                                {decodeURIComponent(displayOriginal)}
+                                                <ExternalLink className="w-3 h-3 inline-block ml-1 opacity-50" />
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    )}
+                            )}
+                        </>
+                    }
                 </CardContent>
             </Card>
 

@@ -1,130 +1,199 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
-import { Input } from "@/components/ui/input"
-import { ChatInput, ChatInputTextArea, ChatInputSubmit } from "@/components/ui/chat-input";
-function StatItem({ number, label }: { number: string, label: string }) {
+import { ArrowRight, Link2, QrCode, Sparkles, Loader2 } from 'lucide-react';
+
+function StatItem({ number, label }: { number: string; label: string }) {
   return (
     <div className="flex flex-col items-center space-y-1">
-      <span className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight drop-shadow-sm">{number}</span>
-      <span className="text-[10px] sm:text-sm font-bold text-blue-100 uppercase tracking-widest">{label}</span>
+      <span className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight drop-shadow-sm">
+        {number}
+      </span>
+      <span className="text-xs sm:text-sm font-bold text-blue-100 uppercase tracking-widest">
+        {label}
+      </span>
     </div>
-  )
+  );
 }
 
 export function HeroSection() {
   const [url, setUrl] = useState('');
-  const [disable, setDisble] = useState(true)
-  const [customUrl, setCustomUrl] = useState("")
+  const [customUrl, setCustomUrl] = useState('');
+  const [generateQr, setGenerateQr] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (e?: React.FormEvent) => {
-    e?.preventDefault(); // ChatInputSubmit handles click, but good to have safeguard
-    if (!url) return;
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!url) {
+      toast.error("Please enter a URL to shorten.");
+      return;
+    }
+
     setLoading(true);
-     
+
     try {
       const res = await fetch('/api/shorten', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url, customUrl }),
+        body: JSON.stringify({
+          url,
+          customUrl: customUrl.trim(),
+          generateQr
+        }),
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        toast.success("Link shortened successfully!")
+        toast.success("Link shortened successfully!");
 
-        // --- 1. Save Real Data to Session Storage ---
+        // Save metadata to session storage for the results screen
         sessionStorage.setItem('latest_short_code', data.shortCode);
         sessionStorage.setItem('latest_original_url', url);
+        if (data.qrCodeUrl) {
+          sessionStorage.setItem('latest_qr_code', data.qrCodeUrl);
+        }
 
-        // --- 2. Redirect to existing page with a GENERIC placeholder ---
-        router.push('/result/success');
-
+        router.push(`/result/success?qr=${generateQr}`);
       } else {
-        toast.error(data.error || "Failed to shorten link.")
+        toast.error(data.error || "Failed to shorten link.");
       }
     } catch (err) {
-      toast.error("Network Error.")
+      toast.error("Network error. Please try again.");
     } finally {
       setLoading(false);
     }
   };
- 
+
   return (
     <>
-      <section className="relative pt-32 sm:pt-40 pb-12 sm:pb-20 text-center px-6 lg:px-0 overflow-hidden" id='hero-section'>
-        {/* Ambient Background Gradients */}
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[400px] sm:w-[600px] lg:w-[1000px] h-[400px] lg:h-[600px] bg-gradient-to-tr from-blue-100/60 to-indigo-100/40 blur-[80px] rounded-full pointer-events-none z-0" />
-        <div className="absolute top-40 left-1/4 w-[300px] h-[300px] bg-sky-100/50 blur-[60px] rounded-full pointer-events-none z-0" />
+      <section className="relative pt-24 sm:pt-32 pb-16 text-center px-4 sm:px-6 lg:px-8 overflow-hidden" id="hero-section">
+        {/* Ambient Background Glows */}
+        <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[500px] sm:w-[800px] h-[350px] bg-gradient-to-tr from-blue-200/50 to-indigo-200/40 blur-[100px] rounded-full pointer-events-none -z-10" />
 
-        <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-0 space-y-8">
-          {/* <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs sm:text-sm font-bold tracking-wide uppercase mb-2">
-          <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span></span>
-          Free URL Shortener
-        </div> */}
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-slate-900 tracking-tight leading-[1.1] mb-6">
-            URL Shortener: <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-700">
-              Enhance Your Outreach Potential.
+        <div className="relative z-10 max-w-4xl mx-auto space-y-6">
+          {/* Tagline Badge */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs sm:text-sm font-semibold tracking-wide">
+            <Sparkles className="w-4 h-4 text-blue-500" />
+            <span>Fast, Reliable & Free URL Shortener</span>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">
+            Shorten links, create QR codes, <br className="hidden sm:inline" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+              and expand your reach.
             </span>
           </h1>
-          <p className="text-sm sm:text-base md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed font-medium">
-            Minifylinks is a free, powerful URL shortener that transforms your long, messy links into clean and memorable links in seconds.
+
+          <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto font-normal">
+            Minifylinks gives you total control over your short links with custom alias branding and instant QR code generation.
           </p>
 
-          <Card className="max-w-2xl lg:max-w-3xl mx-auto bg-transparent border-none relative z-10 py-6 sm:py-8 mb-4">
-            <CardContent className="px-0 sm:px-8 gap-4 flex flex-col">
-              <ChatInput
-                variant="default"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                onSubmit={handleSubmit}
-                loading={loading}
-                className='border-2 border-blue-500 bg-white/90 backdrop-blur-sm shadow-[0_0_40px_-10px_rgba(37,99,235,0.2)] rounded-3xl'
-              >
-                <ChatInputTextArea placeholder="Paste your long link here..." className="text-sm md:text-lg min-h-[50px]" />
-                <ChatInputSubmit className="bg-blue-600 hover:bg-blue-700 text-white border-transparent h-10 w-10 sm:h-12 sm:w-12 rounded-xl transition-transform hover:scale-105" />
-              </ChatInput>
-              <div className="w-full max-w-md mx-auto my-6 p-6 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col items-center text-center space-y-4">
-                <div className="space-y-1">
-                  <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200">
-                    Write your Custom Name here
-                  </h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
-                    Enter a custom alias below to personalize your shortened link.
-                  </p>
+          {/* TinyURL-Style Unified Input Box */}
+          <Card className="max-w-2xl mx-auto bg-white/90 backdrop-blur-md border border-slate-200 shadow-xl shadow-blue-500/5 rounded-3xl overflow-hidden mt-8 text-left">
+            <CardContent className="p-6 sm:p-8 space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-5">
+
+                {/* Long URL Input */}
+                <div className="space-y-2">
+                  <Label htmlFor="long-url" className="text-sm font-semibold text-slate-700">
+                    Destination URL <span className="text-red-500">*</span>
+                  </Label>
+                  <div className="relative flex items-center">
+                    <Link2 className="absolute left-3.5 w-5 h-5 text-slate-400 pointer-events-none" />
+                    <Input
+                      id="long-url"
+                      type="url"
+                      required
+                      placeholder="https://example.com/my-very-long-link-path"
+                      value={url}
+                      onChange={(e) => setUrl(e.target.value)}
+                      className="pl-11 h-12 text-base border-slate-200 focus-visible:ring-2 focus-visible:ring-blue-600 rounded-xl"
+                    />
+                  </div>
                 </div>
 
-                <Input
-                  type="text"
-                  placeholder="e.g. my-custom-link"
-                  value={customUrl}
-                  onChange={(e) => setCustomUrl(e.target.value.trim())}
-                  className="w-full max-w-xs border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 transition-colors focus:border-2 focus:!border-blue-600 focus:outline-none focus:ring-0 focus-visible:ring-0"
-                />
-              
-              </div>
-              <p className="text-xs text-slate-500 mt-4 z-10 relative font-medium">By using this service, you agree to our Terms of Service.</p>
+                {/* Custom Alias & Domain Container */}
+                <div className="space-y-2">
+                  <Label htmlFor="custom-alias" className="text-sm font-semibold text-slate-700">
+                    Customize your link <span className="text-slate-400 font-normal">(Optional)</span>
+                  </Label>
+                  <div className="flex flex-col sm:flex-row items-stretch gap-2">
+                    <div className="flex items-center px-3.5 h-12 bg-slate-100 border border-slate-200 text-slate-600 text-sm font-medium rounded-xl select-none sm:w-1/2">
+                      minifylinks.com/
+                    </div>
+                    <Input
+                      id="custom-alias"
+                      type="text"
+                      placeholder="custom-alias"
+                      value={customUrl}
+                      onChange={(e) => setCustomUrl(e.target.value.trim())}
+                      className="h-12 text-base border-slate-200 focus-visible:ring-2 focus-visible:ring-blue-600 rounded-xl sm:w-1/2"
+                    />
+                  </div>
+                </div>
+
+                {/* Options / Checkboxes */}
+                <div className="pt-1 flex items-center space-x-2">
+                  <Checkbox
+                    id="qr-option"
+                    checked={generateQr}
+                    onCheckedChange={(checked) => setGenerateQr(!!checked)}
+                    className="border-slate-300 data-[state=checked]:bg-blue-600"
+                  />
+                  <Label
+                    htmlFor="qr-option"
+                    className="text-sm text-slate-600 font-medium cursor-pointer flex items-center gap-1.5"
+                  >
+                    <QrCode className="w-4 h-4 text-slate-500" />
+                    Generate a QR code for this link
+                  </Label>
+                </div>
+
+                {/* Submit Action Button */}
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full h-12 text-base font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md transition-all flex items-center justify-center gap-2"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Shortening...
+                    </>
+                  ) : (
+                    <>
+                      Shorten URL
+                      <ArrowRight className="w-5 h-5" />
+                    </>
+                  )}
+                </Button>
+
+              </form>
+
+              <p className="text-xs text-center text-slate-400 font-medium pt-2">
+                By clicking Shorten URL, you agree to our Terms of Service & Privacy Policy.
+              </p>
             </CardContent>
           </Card>
         </div>
-
       </section>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-0 py-12 sm:py-16 px-6 sm:px-10 bg-gradient-to-r from-blue-600 to-indigo-700 max-w-full mx-0 relative z-10 shadow-inner">
+      {/* Analytics Banner */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 py-12 px-6 sm:px-10 bg-gradient-to-r from-blue-600 to-indigo-700 max-w-full mx-0 relative z-10 shadow-inner">
         <StatItem number="350K+" label="Short Links Created" />
         <StatItem number="5M+" label="Clicks this Month" />
         <StatItem number="99.9%" label="Uptime Guarantee" />
         <StatItem number="100%" label="Free to Use" />
       </div>
-
     </>
-  )
+  );
 }

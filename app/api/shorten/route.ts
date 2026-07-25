@@ -7,13 +7,14 @@ import { redis, checkRateLimit } from "@/lib/redis";
 
 const bodySchema = z.object({
   url: z.string().min(1, "URL is required").url("Invalid URL format"),
+  customUrl: z.string()
 });
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const validation = bodySchema.safeParse(body);
-
+    let shortCode =validation?.data?.customUrl
     if (!validation.success) {
       return NextResponse.json(
         { error: "Invalid URL provided" },
@@ -37,9 +38,19 @@ export async function POST(req: NextRequest) {
       }
     }
     // --- NEW CHANGE END ---
-
+    const data = await prisma.shortLink.findUnique({where:{shortCode}})
+    if(data)
+    {
+       return NextResponse.json(
+          { error: "This custom name is already taken." },
+          { status: 400 },
+        );
+    }
     // 2. Generate Code
-    const shortCode = nanoid(6);
+     if (!shortCode) {
+   
+      shortCode = nanoid(6);
+    }
 
     // 3. Save to MongoDB
     await prisma.shortLink.create({

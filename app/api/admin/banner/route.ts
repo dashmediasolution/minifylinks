@@ -4,14 +4,7 @@ import { isAuthenticated } from '../blog/route'
 import { revalidateTag } from 'next/cache'
 
 export const dynamic = 'force-dynamic'
-// Add this export to change the body parsing limit for this specific API route
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '10mb', // Adjust this value up to what your media library demands
-    },
-  },
-}
+ 
 export async function POST(req: NextRequest) {
     if (!isAuthenticated(req)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })

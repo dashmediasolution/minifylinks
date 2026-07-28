@@ -30,9 +30,9 @@ export async function POST(req: NextRequest) {
     if (process.env.NODE_ENV !== "development") {
       const usage = await checkRateLimit(ip);
 
-      if (usage > 5) {
+      if (usage > 3) {
         return NextResponse.json(
-          { error: "Daily limit reached (5 URLs/day). Try again tomorrow." },
+          { error: "Daily limit reached (3 URLs/day). Try again tomorrow." },
           { status: 429 },
         );
       }
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     if(data)
     {
        return NextResponse.json(
-          { error: "This custom name is already taken." },
+          { error: "This custom name is already taken" },
           { status: 400 },
         );
     }

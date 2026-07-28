@@ -43,7 +43,7 @@ export default function PublicLayout({
 
         {/* --- MAIN CONTENT CENTER --- */}
         {/* flex-1 allows it to take remaining space.*/}
-        <main className="flex-1 w-full min-h-screen pt-10 md:pt-15">
+        <main className="flex-1 w-full min-h-screen  ">
           {children}
         </main>
       </div>

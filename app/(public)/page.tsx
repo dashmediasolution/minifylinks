@@ -7,8 +7,9 @@ const HowItWorks = dynamic(() => import("@/components/home-page/HowItWorks").the
 const FeaturesBento = dynamic(() => import("@/components/home-page/FeaturesBento").then((mod) => mod.FeaturesBento));
 const FaqSection = dynamic(() => import("@/components/home-page/FaqSection").then((mod) => mod.FaqSection));
 const AbstractCtaBanner = dynamic(() => import("@/components/home-page/CtaBanner").then((mod) => mod.AbstractCtaBanner));
+const QRPlatformSection = dynamic(() => import("@/components/QRComponent").then((mod) => mod.QRPlatformSection));
 
-export const metadata: Metadata = {
+ export const metadata: Metadata = {
   title: "Free URL Shortener & Custom Links",
   description: "Minifylinks offers a fast and reliable shortening service with advanced features like enterprise-grade encryption and a global edge network with 99.9% uptime. We also keep your links short and manageable, helping you create branded URLs that boost trust and provide deep analytics to grow your brand.",
   keywords: ["minifylinks", "free url shortener", "link shortener", "free url shortener"],
@@ -182,11 +183,11 @@ export default function Home() {
       <FeaturesBento />
 
       {/* 5. FAQ */}
-      <FaqSection />
-
       {/* 6. NEW CTA BANNER */}
       <AbstractCtaBanner />
+      <QRPlatformSection/>
 
+      <FaqSection />
     </div>
   );
 }

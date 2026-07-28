@@ -177,7 +177,7 @@ export default async function BlogListPage({ searchParams }: BlogPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-white pt-20 px-6">
+    <div className="min-h-screen bg-white pt-25 px-6">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

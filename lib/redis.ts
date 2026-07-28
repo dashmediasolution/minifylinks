@@ -9,10 +9,15 @@ export async function checkRateLimit(ip: string) {
   const key = `rate:${ip}`
   const count = await redis.incr(key)
   
-  // If first request of the day, set expiry to 24 hours (86400 seconds)
   if (count === 1) {
     await redis.expire(key, 86400)
   }
   
   return count
+}
+
+// Reset rate limit for a specific IP address
+export async function resetRateLimit(ip: string) {
+  const key = `rate:${ip}`
+  return await redis.del(key)
 }

@@ -42,7 +42,7 @@ const faqs = [
   }
 ];
 
-export default function FaqsPage() {
+export default function   FaqsPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [

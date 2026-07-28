@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { GoogleAnalytics } from '@next/third-parties/google';
-
+import { ThemeProvider } from "@/components/themep-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -80,7 +80,9 @@ export default function RootLayout({
       <head>
         </head>      
       <body className={inter.className}>
+        <ThemeProvider>
         {children}
+        </ThemeProvider>
         <Toaster position="bottom-right" richColors />
       </body>
       <GoogleAnalytics gaId="G-RS65SSVNEX" />

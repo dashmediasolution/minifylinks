@@ -7,8 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { X, Copy, Check, ArrowLeft, Share2, ExternalLink, ClipboardCheck, Sparkles, CornerDownRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import Link from 'next/link';
-import QRCodeGenerator from '../home-page/QRCodeGenerator';
-import { ChatInput, ChatInputTextArea } from "@/components/ui/chat-input";
+ import { ChatInput, ChatInputTextArea } from "@/components/ui/chat-input";
 import { useSearchParams } from 'next/navigation';
 interface ResultHeroProps {
     initialCode: string;
@@ -21,7 +20,7 @@ export function ResultHero({ initialCode }: ResultHeroProps) {
     const [displayUrl, setDisplayUrl] = useState<string>('');
     const [displayOriginal, setDisplayOriginal] = useState<string | null>(null);
     const [storageKey, setStorageKey] = useState('');
-
+    const [qrCodeImage, setQrCodeImage] = useState<string | null>(null);
     // Button state
     const [isCopied, setIsCopied] = useState(false);
 
@@ -34,7 +33,12 @@ export function ResultHero({ initialCode }: ResultHeroProps) {
     // Default redirect to Google if fetch fails
     const [activeRedirectUrl, setActiveRedirectUrl] = useState("https://republicnews.us");
 
-
+    useEffect(() => {
+        const storedQr = sessionStorage.getItem('latest_custom_qr_image');
+        if (storedQr) {
+            setQrCodeImage(storedQr);
+        }
+    }, []);
     useEffect(() => {
         setMounted(true);
 
@@ -201,32 +205,21 @@ export function ResultHero({ initialCode }: ResultHeroProps) {
                             </div>
                         </div>
                     </div>
-                    {
-                        isQrRequested &&
-                        <>
-                            <QRCodeGenerator url={displayUrl} />
-                            {displayOriginal && (
-                                <div className="relative">
-                                    <div className="absolute left-6 -top-6 w-px h-6 bg-blue-500" /> {/* Connector Line */}
-                                    <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-start gap-3">
-                                        <CornerDownRight className="w-4 h-4 text-blue-400 mt-1 shrink-0" />
-                                        <div className="text-left overflow-hidden">
-                                            <p className="text-[10px] font-bold text-gray-600 uppercase tracking-wider mb-0.5">Redirects to</p>
-                                            <a
-                                                href={decodeURIComponent(displayOriginal)}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-sm text-slate-600 font-medium  block hover:text-blue-600 hover:underline transition-colors"
-                                            >
-                                                {decodeURIComponent(displayOriginal)}
-                                                <ExternalLink className="w-3 h-3 inline-block ml-1 opacity-50" />
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </>
-                    }
+                    {qrCodeImage ? (
+                        <Card className="p-4 flex justify-center items-center bg-white rounded-2xl border border-slate-200 shadow-md">
+                            {/* Displays the customized rendered QR Code */}
+                            <img src={qrCodeImage} alt="Customized QR Code" className="w-52 h-52 object-contain border-2 p-1 rounded-2xl" />
+                            <a
+                                href={qrCodeImage}
+                                download="custom-qrcode.png"
+                                className="mt-4 block text-center py-2 px-4 bg-blue-600 text-white rounded-xl text-xs font-semibold"
+                            >
+                                Download Custom QR
+                            </a>
+                        </Card>
+                    ) : (
+                        <p className="text-slate-400 text-sm">No QR code generated.</p>
+                    )}
                 </CardContent>
             </Card>
 

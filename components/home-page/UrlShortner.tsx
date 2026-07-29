@@ -26,7 +26,7 @@
     handleSubmit
     }: UrlShortnerProps) {
     return (
-        <Card className="w-[70%] mx-auto bg-white/90 backdrop-blur-md border border-slate-200 shadow-xl shadow-blue-500/5 rounded-3xl overflow-hidden mt-8 text-left">
+        <Card className="w-full md:w-[70%] mx-auto bg-white/90 backdrop-blur-md border border-slate-200 shadow-xl shadow-blue-500/5 rounded-3xl overflow-hidden mt-8 text-left">
         <CardContent className="p-6 sm:p-8 space-y-6">
             <form onSubmit={handleSubmit} id="generateURL" className="space-y-5">
 

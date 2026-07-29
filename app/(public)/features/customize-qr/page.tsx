@@ -19,28 +19,28 @@ export default function CustomizeQrPage() {
 
 
   return (
-    <div className="pb-24 bg-slate-50 pt-20 text-slate-900 selection:bg-indigo-500 selection:text-white">
+    <div className="pb-24 bg-slate-50 pt-30 md:pt-30 text-slate-900 selection:bg-indigo-500 selection:text-white">
        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-gradient-to-tr from-indigo-200/50 via-purple-100/50 to-transparent blur-3xl pointer-events-none rounded-full" />
 
-       <section className="pt-16 pb-12 px-6 max-w-5xl mx-auto text-center relative z-10">
+       <section className=" pb-12 px-6 max-w-5xl mx-auto text-center relative z-10">
         <Badge variant="outline" className="mb-6 py-1.5 px-4 border-indigo-200 bg-indigo-50/80 text-indigo-700 font-medium rounded-full shadow-sm">
           <Sparkles className="w-3.5 h-3.5 mr-2 text-indigo-600" />
           Advanced QR Vector Design Studio
         </Badge>
 
-        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight leading-tight text-slate-900">
+        <h1 className="text-xl md:text-6xl font-extrabold tracking-tight leading-tight text-slate-900">
           Customize every pixel of <br />
           <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">
             your branded QR code
           </span>
         </h1>
 
-        <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+        <p className="mt-4 text-sm md:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
           Full design control: tweak colors, corner eye shapes, pixel patterns, callout frames, and center logo overlays—all backed by dynamic link tracking.
         </p>
       </section>
 
-       <section className="px-6 w-screen mx-auto relative z-10">
+       <section className="px-6">
         <GenerateQRCode />
       </section>
 

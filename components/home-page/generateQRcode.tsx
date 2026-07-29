@@ -5,23 +5,24 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Image from 'next/image';
 import { Circle, Upload, LucideIcon } from 'lucide-react';
 import {
   BarChart3,
   FileImage,
   Link2,
-  Play,
 } from "lucide-react";
-import { QrCode, Image as ImageIcon, PlaySquare, ArrowRight, Loader2, CircleStop, SquareStop } from 'lucide-react';
+import { QrCode, PlaySquare, ArrowRight, Loader2, CircleStop, SquareStop } from 'lucide-react';
 import QRCodeStyling, { DotType, CornerSquareType } from 'qr-code-styling';
 import { toast } from "sonner";
 import { useRouter } from 'next/navigation';
+import YouTube, { YouTubeProps } from 'react-youtube';
 
-const DOT_STYLES: { label: string; value: DotType }[] = [
-  { label: 'Square', value: 'square' },
-  { label: 'Dots', value: 'dots' },
-  { label: 'Rounded', value: 'rounded' },
-  { label: 'Classy', value: 'classy' },
+const DOT_STYLES: { label: string; value: DotType, icon: string }[] = [
+  { label: 'Square', value: 'square', icon: "/images/SQUAREQR.svg" },
+  { label: 'Dots', value: 'dots', icon: "/images/QUIETROUNDEDQR.svg" },
+  { label: 'Rounded', value: 'rounded', icon: "/images/ROUNDEDQR.svg" },
+  { label: 'Classy', value: 'classy', icon: "/images/CLASSYQR.svg" },
 ];
 
 const CORNER_STYLES: { label: string; value: CornerSquareType; icon: LucideIcon }[] = [
@@ -66,20 +67,60 @@ export default function GenerateQRCode() {
   const ref = useRef<HTMLDivElement>(null);
   const qrCode = useRef<QRCodeStyling | null>(null);
   const [showModal, setShowModal] = useState(false);
+
+  // Video watch timer states
+  const [watchTime, setWatchTime] = useState(0);
+  const [canClaim, setCanClaim] = useState(false);
+  const playerRef = useRef<any>(null);
+
+  const REQUIRED_WATCH_SECONDS = 30;
+
+  // Track playback time when modal opens and video plays
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+
+    if (showModal && !canClaim) {
+      interval = setInterval(() => {
+        if (playerRef.current && typeof playerRef.current.getCurrentTime === 'function') {
+          const currentTime = Math.floor(playerRef.current.getCurrentTime());
+          setWatchTime(currentTime);
+
+          if (currentTime >= REQUIRED_WATCH_SECONDS) {
+            setCanClaim(true);
+            clearInterval(interval);
+          }
+        }
+      }, 1000);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [showModal, canClaim]);
+
+  // Reset modal state when modal closes
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setWatchTime(0);
+    setCanClaim(false);
+    playerRef.current = null;
+  };
+
   const handleReset = async () => {
     setLoading(true);
     try {
       const res = await fetch("/api/reset-limit", { method: "POST" });
       if (!res.ok) throw new Error();
-
+      localStorage.removeItem("credit");
       toast.success("Daily limit reset successfully!");
-      setShowModal(false); // Close popup
+      handleCloseModal();
     } catch {
       toast.error("Failed to reset limit.");
     } finally {
       setLoading(false);
     }
   };
+
   // Initialize QR Code Instance
   useEffect(() => {
     qrCode.current = new QRCodeStyling({
@@ -120,84 +161,98 @@ export default function GenerateQRCode() {
     }
   };
 
+  useEffect(() => {
+    const savedCredit = localStorage.getItem("credit");
+    if (savedCredit !== null) {
+      setCredit(parseInt(savedCredit, 10));
+    }
+  }, []);
 
- const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  if (!url) {
-    toast.error("Please enter a valid destination URL.");
-    return;
-  }
+    if (!url) {
+      toast.error("Please enter a valid destination URL.");
+      return;
+    }
 
-  setLoading(true);
+    setLoading(true);
 
-  try {
-    const res = await fetch('/api/shorten', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        url,
-        customUrl: customUrl.trim(),
-      }),
-    });
+    try {
+      const res = await fetch('/api/shorten', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          url,
+          customUrl: customUrl.trim(),
+        }),
+      });
 
-    const data = await res.json();
-    console.log(data,"response---",res)
-    if (res.ok) {
-      toast.success("Link & QR processed successfully!");
-      setCredit(data?.usage)
-      const origin = typeof window !== 'undefined' ? window.location.origin : '';
+      const data = await res.json();
+      if (res.ok) {
+        toast.success("Link & QR processed successfully!");
+        localStorage.setItem("credit", data?.usage?.toString())
+        const origin = typeof window !== 'undefined' ? window.location.origin : '';
 
-       const shortUrl = `${origin}/${data?.shortCode}`;
+        const shortUrl = `${origin}/${data?.shortCode}`;
 
-       setUrl(shortUrl);
+        setUrl(shortUrl);
 
-       if (qrCode.current) {
-        qrCode.current.update({
-          data: shortUrl,
-        });
-
-         await new Promise((resolve) => setTimeout(resolve, 150));
-
-         const blob = await qrCode.current.getRawData('png');
-        
-        if (blob) {
-          const reader = new FileReader();
-          
-          const base64Data = await new Promise<string>((resolve) => {
-            reader.onloadend = () => resolve(reader.result as string);
-            reader.readAsDataURL(blob as Blob);
+        if (qrCode.current) {
+          qrCode.current.update({
+            data: shortUrl,
           });
 
-          sessionStorage.setItem('latest_custom_qr_image', base64Data);
+          await new Promise((resolve) => setTimeout(resolve, 150));
+
+          const blob = await qrCode.current.getRawData('png');
+
+          if (blob) {
+            const reader = new FileReader();
+
+            const base64Data = await new Promise<string>((resolve) => {
+              reader.onloadend = () => resolve(reader.result as string);
+              reader.readAsDataURL(blob as Blob);
+            });
+
+            sessionStorage.setItem('latest_custom_qr_image', base64Data);
+          }
         }
+
+        sessionStorage.removeItem('latest_short_code');
+        sessionStorage.removeItem('latest_original_url');
+        sessionStorage.removeItem('latest_qr_code');
+
+        sessionStorage.setItem('latest_short_code', data.shortCode);
+        sessionStorage.setItem('latest_original_url', url);
+        sessionStorage.setItem('latest_qr_code', data.qrCodeUrl || '');
+
+        router.push(`/result/success`);
+      } else {
+        toast.error(data.error || "Failed to process request.");
       }
-
-      // Clear & set session items
-      sessionStorage.removeItem('latest_short_code');
-      sessionStorage.removeItem('latest_original_url');
-      sessionStorage.removeItem('latest_qr_code');
-
-      sessionStorage.setItem('latest_short_code', data.shortCode);
-      sessionStorage.setItem('latest_original_url', url);
-      sessionStorage.setItem('latest_qr_code', data.qrCodeUrl || '');
-
-      // 5. Navigate after storage is populated
-      router.push(`/result/success`);
-    } else {
-      toast.error(data.error || "Failed to process request.");
+    } catch (err) {
+      toast.error("Network error. Please try again.");
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    toast.error("Network error. Please try again.");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
+
+  const videoOptions: YouTubeProps['opts'] = {
+    height: '100%',
+    width: '100%',
+    playerVars: {
+      autoplay: 1,
+      controls: 0,
+      disablekb: 1,
+      modestbranding: 1,
+    },
+  };
 
   return (
-    <Card className="max-w-7xl mx-auto w-full bg-white/90 backdrop-blur-md border border-slate-200 rounded-2xl sm:rounded-3xl overflow-hidden mt-4 sm:mt-6 text-left shadow-lg">
+    <Card className="max-w-7xl mx-auto w-full  bg-white/90 backdrop-blur-md border border-slate-200 rounded-2xl sm:rounded-3xl overflow-hidden mt-4 sm:mt-6 text-left shadow-lg">
       <CardHeader className="border-b border-slate-100 p-4 sm:p-6">
-        <CardTitle className="text-xl sm:text-2xl font-bold text-slate-800 flex items-center gap-2">
+        <CardTitle className="text-md sm:text-2xl font-bold text-slate-800 flex items-center gap-2">
           <QrCode className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
           Custom QR Code Studio
         </CardTitle>
@@ -206,11 +261,8 @@ export default function GenerateQRCode() {
       <CardContent className="px-4 sm:px-6 lg:px-8">
         <form onSubmit={handleSubmit} id="generateQR">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-
             {/* Form Controls Left Side */}
-            <div className="lg:col-span-7 space-y-6 sm:space-y-8 w-full">
-
-              {/* STEP 1 */}
+            <div className="  lg:col-span-7 space-y-6 sm:space-y-8 w-full">              {/* STEP 1 */}
               <div className="w-full space-y-2">
                 <div className="flex items-center gap-3">
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-blue-500/10 text-sm font-semibold text-blue-600">
@@ -248,9 +300,8 @@ export default function GenerateQRCode() {
                   </h3>
                 </div>
 
-                <div className="pl-0 sm:pl-10 space-y-6">
-                  {/* Preset Colors */}
-                  <div className="flex flex-wrap gap-2.5 sm:gap-4 items-center">
+                <div className="pl-0 sm:pl-10 space-y-6 flex gap-3">
+                  <div className="flex flex-wrap gap-2.5 sm:gap-2.5 items-center">
                     {PRESET_COLORS.map((preset) => {
                       const isSelected = dotsColor === preset.hex;
                       return (
@@ -272,48 +323,23 @@ export default function GenerateQRCode() {
                         </button>
                       );
                     })}
-                  </div>
+                    <div className="relative w-10 h-10 shrink-0">
+                      <div
+                        className="absolute inset-0 rounded-full border border-slate-200 pointer-events-none"
+                        style={{
+                          background: 'conic-gradient(from 0deg, red, yellow, lime, cyan, blue, magenta, red)'
+                        }}
+                      />
 
-                  {/* Custom Pickers */}
-                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6">
-                    <div className="space-y-1.5 flex-1">
-                      <Label className="text-xs font-medium text-slate-600">Custom Foreground</Label>
-                      <div className="flex items-center gap-2">
-                        <Input
-                          type="color"
-                          value={dotsColor}
-                          onChange={(e) => setDotsColor(e.target.value)}
-                          className="w-10 h-10 p-0 cursor-pointer rounded-full border border-slate-200 shrink-0 overflow-hidden [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:border-none [&::-webkit-color-swatch]:rounded-full [&::-moz-color-swatch]:border-none [&::-moz-color-swatch]:rounded-full" />
-
-                        <Input
-                          type="text"
-                          value={dotsColor}
-                          onChange={(e) => setDotsColor(e.target.value)}
-                          className="h-10 text-xs uppercase font-mono border-slate-200 rounded-lg flex-1"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-1.5 flex-1">
-                      <Label className="text-xs font-medium text-slate-600">Custom Background</Label>
-                      <div className="flex items-center gap-2">
-                        <Input
-                          type="color"
-                          value={bgColor}
-                          onChange={(e) => setBgColor(e.target.value)}
-                          className="w-10 h-10 p-0 cursor-pointer rounded-full border border-slate-200 shrink-0 overflow-hidden 
-                          [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:border-none [&::-webkit-color-swatch]:rounded-full
-                           [&::-moz-color-swatch]:border-none [&::-moz-color-swatch]:rounded-full" />
-                        
-                        <Input
-                          type="text"
-                          value={bgColor}
-                          onChange={(e) => setBgColor(e.target.value)}
-                          className="h-10 text-xs uppercase font-mono border-slate-200 rounded-lg flex-1"
-                        />
-                      </div>
+                      <Input
+                        type="color"
+                        value={dotsColor || '#000000'}
+                        onChange={(e) => setDotsColor(e.target.value)}
+                        className="w-full h-full opacity-0 cursor-pointer rounded-full"
+                      />
                     </div>
                   </div>
+
                 </div>
               </div>
 
@@ -333,7 +359,6 @@ export default function GenerateQRCode() {
 
                 <div className="pl-0 sm:pl-10">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    {/* Pattern */}
                     <div className="space-y-2">
                       <Label className="text-xs sm:text-sm font-medium text-slate-700">
                         Pattern
@@ -343,19 +368,26 @@ export default function GenerateQRCode() {
                           <button
                             key={style.value}
                             type="button"
+                            title={style.label}
+                            aria-label={style.label}
                             onClick={() => setDotsStyle(style.value)}
-                            className={`h-10 px-2 text-xs font-medium rounded-xl border transition-all flex items-center justify-center text-center ${dotsStyle === style.value
-                              ? "border-blue-600 bg-blue-50 text-blue-700 font-semibold ring-2 ring-blue-600/20"
-                              : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
+                            className={`h-12  text-xs font-medium rounded-xl border transition-all flex items-center justify-center p-1.5 cursor-pointer ${dotsStyle === style.value
+                              ? "border-blue-600 bg-blue-50/60 ring-2 ring-blue-600/20 scale-105"
+                              : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50"
                               }`}
                           >
-                            {style.label}
+                            <Image
+                              src={style.icon}
+                              alt={style.label}
+                              width={32}
+                              height={32}
+                              className="object-contain w-auto h-full"
+                            />
                           </button>
                         ))}
                       </div>
                     </div>
 
-                    {/* Corners */}
                     <div className="space-y-2">
                       <Label className="text-xs sm:text-sm font-medium text-slate-700">
                         Corners
@@ -410,7 +442,6 @@ export default function GenerateQRCode() {
                       }`}
                   >
                     <div className="flex items-center gap-3 sm:gap-4">
-                      {/* Logo Preview / Upload Icon */}
                       <div className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
                         {logoUrl ? (
                           <img
@@ -423,7 +454,6 @@ export default function GenerateQRCode() {
                         )}
                       </div>
 
-                      {/* Text */}
                       <div>
                         <p className="text-xs sm:text-sm font-semibold text-slate-800">
                           {logoUrl ? "Logo uploaded" : "Upload your logo"}
@@ -436,7 +466,6 @@ export default function GenerateQRCode() {
                       </div>
                     </div>
 
-                    {/* Upload Button */}
                     <span className="rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm transition-all group-hover:border-blue-200 group-hover:text-blue-600">
                       {logoUrl ? "Change" : "Browse"}
                     </span>
@@ -450,7 +479,6 @@ export default function GenerateQRCode() {
                     />
                   </label>
 
-                  {/* Remove Button */}
                   {logoUrl && (
                     <button
                       type="button"
@@ -477,7 +505,6 @@ export default function GenerateQRCode() {
 
                 <div className="pl-0 sm:pl-10">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
-                    {/* Left Content */}
                     <div className="flex items-center gap-3">
                       <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-purple-50">
                         <PlaySquare className="h-5 w-5 text-purple-600" />
@@ -487,11 +514,10 @@ export default function GenerateQRCode() {
                       </p>
                     </div>
 
-                    {/* Button */}
                     <button
                       type="button"
                       onClick={() => setShowModal(true)}
-                      className="w-full sm:w-auto inline-flex h-9 shrink-0 items-center justify-center rounded-lg bg-blue-600 px-4 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-blue-700"
+                      className="w-full sm:w-auto inline-flex h-9 shrink-0 items-center justify-center rounded-lg bg-blue-600 px-4 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 cursor-pointer"
                     >
                       Watch Ads
                     </button>
@@ -503,27 +529,22 @@ export default function GenerateQRCode() {
             </div>
 
             {/* Live Preview & Direct Download Right Side */}
-            <div className="lg:col-span-5 w-full flex flex-col items-center h-fit p-4 sm:p-6 bg-slate-50 border border-slate-100 rounded-2xl space-y-4 text-center lg:sticky lg:top-6">
-
+            <div className="  lg:col-span-5 w-full flex flex-col items-center h-fit p-0 sm:p-6 bg-slate-50 border border-slate-100 rounded-2xl space-y-4 text-center lg:sticky lg:top-6">
               {/* Ad/Credits Banner */}
               <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 rounded-xl border border-blue-100 bg-gradient-to-r from-white to-blue-50/40 p-3 sm:p-4 shadow-sm">
                 <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
-                  {/* Credits */}
                   <div className="text-left">
                     <p className="text-xs font-semibold text-slate-800">
                       Total Credit Limit
                     </p>
                     <p className="mt-0.5 text-lg sm:text-xl font-bold text-slate-900">
-
                       <span className="text-xl font-medium text-slate-500 ">
-                      {credit} / 3
+                        {localStorage.getItem("credit") ?? 0} / 3
                       </span>
                     </p>
                   </div>
-
                 </div>
 
-                {/* Ad Information & Watch Button */}
                 <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-2">
                   <div className="text-left sm:text-right">
                     <p className="truncate text-xs font-medium text-slate-700">
@@ -536,18 +557,15 @@ export default function GenerateQRCode() {
                   <button
                     type="button"
                     onClick={() => setShowModal(true)}
-                    className="inline-flex h-8 sm:h-9 shrink-0 items-center justify-center gap-1.5 rounded-md border border-blue-400 bg-white px-3 text-xs font-semibold text-blue-600 shadow-sm transition-all hover:bg-blue-50 hover:shadow-md"
+                    className="inline-flex h-8 sm:h-9 shrink-0 items-center justify-center gap-1.5 rounded-md border border-blue-400 bg-white px-3 text-xs font-semibold text-blue-600 shadow-sm transition-all hover:bg-blue-50 hover:shadow-md cursor-pointer"
                   >
                     Watch Ads
                   </button>
-
-
-
                 </div>
               </div>
 
               {/* QR Code Canvas Card */}
-              <div className="w-full p-4 bg-white rounded-2xl shadow-sm border border-slate-200/60 flex items-center justify-center min-h-[260px] overflow-x-auto">
+              <div className="w-full p-4 bg-white hidden lg:block rounded-2xl shadow-sm border border-slate-200/60 flex items-center justify-center min-h-[260px] overflow-x-auto">
                 <div ref={ref} className="max-w-full overflow-hidden flex justify-center" />
               </div>
 
@@ -577,7 +595,6 @@ export default function GenerateQRCode() {
               {/* Features List */}
               <div className="w-full pt-2">
                 <div className="grid grid-cols-3 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
-                  {/* Feature 1 */}
                   <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-1.5 sm:gap-2 border-r border-slate-200 p-2 sm:p-3">
                     <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-fuchsia-50">
                       <FileImage className="h-4 w-4 text-fuchsia-500" />
@@ -592,7 +609,6 @@ export default function GenerateQRCode() {
                     </div>
                   </div>
 
-                  {/* Feature 2 */}
                   <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-1.5 sm:gap-2 border-r border-slate-200 p-2 sm:p-3">
                     <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-cyan-50">
                       <Link2 className="h-4 w-4 text-cyan-500" />
@@ -607,7 +623,6 @@ export default function GenerateQRCode() {
                     </div>
                   </div>
 
-                  {/* Feature 3 */}
                   <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-1.5 sm:gap-2 p-2 sm:p-3">
                     <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-blue-50">
                       <BarChart3 className="h-4 w-4 text-blue-500" />
@@ -629,36 +644,49 @@ export default function GenerateQRCode() {
           </div>
         </form>
       </CardContent>
+
+      {/* AD WATCH MODAL */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
           <div className="w-full max-w-md rounded-xl bg-white p-4 shadow-xl">
-            <h3 className="mb-3 text-sm font-semibold text-gray-800">
+            <h3 className="mb-1 text-sm font-semibold text-gray-800">
               Watch video to reset daily limit
             </h3>
 
+            <p className="mb-3 text-xs text-slate-500">
+              {canClaim
+                ? "🎉 Requirement met! You can now claim your credit."
+                : `⏳ Watch at least 30s to unlock claim button (${Math.min(watchTime, REQUIRED_WATCH_SECONDS)}s / 30s)`}
+            </p>
+
             {/* Video Player */}
             <div className="aspect-video w-full rounded-lg overflow-hidden bg-black">
-              <iframe
+              <YouTube
+                videoId="5pZrxadytgM"
+                opts={videoOptions}
+                onReady={(e) => {
+                  playerRef.current = e.target;
+                }}
+                onEnd={() => setCanClaim(true)}
                 className="w-full h-full"
-                src="https://www.youtube.com/embed/5pZrxadytgM?autoplay=1"
-                title="Ad Video"
-                allow="autoplay"
-                allowFullScreen
               />
             </div>
 
             {/* Action Buttons */}
-            <div className="mt-4 flex justify-end gap-2">
+            <div className="mt-4 flex justify-end gap-2 items-center">
               <button
-                onClick={() => setShowModal(false)}
-                className="px-3 py-1.5 text-xs font-medium text-blue-600 hover:text-gray-800"
+                onClick={handleCloseModal}
+                className="px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-gray-800 cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={handleReset}
-                disabled={loading}
-                className="rounded-lg bg-green-600 px-4 py-1.5 text-xs font-semibold  hover:bg-green-700 disabled:opacity-50"
+                disabled={!canClaim || loading}
+                className={`rounded-lg px-4 py-1.5 text-xs font-semibold text-white transition-all ${canClaim && !loading
+                  ? "bg-green-600 hover:bg-green-700 cursor-pointer shadow-md shadow-green-600/20"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed opacity-70"
+                  }`}
               >
                 {loading ? "Resetting..." : "Claim Credit"}
               </button>

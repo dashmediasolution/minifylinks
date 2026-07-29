@@ -60,7 +60,7 @@ export function Navbar() {
   return (
     <>
       {/* FLOATING NAVBAR CONTAINER */}
-      <div className="fixed top-0 left-0 right-0  z-50 flex justify-center w-full py-4 px-4 pointer-events-none">
+      <div className="fixed  top-0 left-0 right-0  z-50 flex justify-center w-full py-4 px-4 pointer-events-none">
         <div className="flex items-center justify-between px-6 py-3 bg-white/90 backdrop-blur-md rounded-full shadow-lg border border-gray-100 w-full max-w-4xl relative z-10 pointer-events-auto">
 
           {/* LOGO (Left) */}

@@ -12,6 +12,7 @@ const bodySchema = z.object({
 
 export async function POST(req: NextRequest) {
   try {
+    let usage;
     const body = await req.json();
     const validation = bodySchema.safeParse(body);
     let shortCode =validation?.data?.customUrl
@@ -28,8 +29,8 @@ export async function POST(req: NextRequest) {
     // --- NEW CHANGE START ---
     // Only enforce limits if we are NOT in development mode
     if (process.env.NODE_ENV !== "development") {
-      const usage = await checkRateLimit(ip);
-
+       usage = await checkRateLimit(ip);
+      console.log(usage,"sde")
       if (usage > 3) {
         return NextResponse.json(
           { error: "Daily limit reached (3 URLs/day). Try again tomorrow." },
@@ -64,7 +65,7 @@ export async function POST(req: NextRequest) {
     // 4. Save to Redis
     await redis.set(`short:${shortCode}`, validation.data.url);
 
-    return NextResponse.json({ shortCode }, { status: 201 });
+    return NextResponse.json({ shortCode ,usage}, { status: 201 });
   } catch (error) {
     console.error("Shorten API Error:", error);
     return NextResponse.json(

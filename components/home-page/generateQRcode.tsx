@@ -31,7 +31,7 @@ const CORNER_STYLES: { label: string; value: CornerSquareType; icon: LucideIcon 
 ];
 
 const PRESET_COLORS = [
-  { label: 'Black', hex: '#0f172a' },
+  { label: 'Black', hex: '#000000' },
   { label: 'Blue', hex: '#2563eb' },
   { label: 'Indigo', hex: '#4f46e5' },
   { label: 'Emerald', hex: '#059669' },
@@ -53,14 +53,14 @@ export interface QRCustomizeOptions {
 }
 
 export default function GenerateQRCode() {
-  const [dotsColor, setDotsColor] = useState('#2563eb');
+  const [dotsColor, setDotsColor] = useState('#000000');
   const [bgColor, setBgColor] = useState('#ffffff');
   const [dotsStyle, setDotsStyle] = useState<DotType>('rounded');
   const [cornerStyle, setCornerStyle] = useState<CornerSquareType>('extra-rounded');
   const [logoUrl, setLogoUrl] = useState<string>('');
   const [url, setUrl] = useState('');
   const [customUrl, setCustomUrl] = useState('');
-  const [resetLoading, setResetLoading] = useState(false);
+  const [credit, setCredit] = useState(0);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const ref = useRef<HTMLDivElement>(null);
@@ -121,80 +121,78 @@ export default function GenerateQRCode() {
   };
 
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    if (!url) {
-      toast.error("Please enter a valid destination URL.");
-      return;
-    }
+  if (!url) {
+    toast.error("Please enter a valid destination URL.");
+    return;
+  }
 
-    setLoading(true);
+  setLoading(true);
 
-    try {
-      const res = await fetch('/api/shorten', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          url,
-          customUrl: customUrl.trim(),
-        }),
-      });
+  try {
+    const res = await fetch('/api/shorten', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        url,
+        customUrl: customUrl.trim(),
+      }),
+    });
 
-      const data = await res.json();
+    const data = await res.json();
+    console.log(data,"response---",res)
+    if (res.ok) {
+      toast.success("Link & QR processed successfully!");
+      setCredit(data?.usage)
+      const origin = typeof window !== 'undefined' ? window.location.origin : '';
 
-      if (res.ok) {
-        toast.success("Link & QR processed successfully!");
-        const origin = typeof window !== 'undefined' ? window.location.origin : '';
+       const shortUrl = `${origin}/${data?.shortCode}`;
 
-        // 1. Create the new short URL string
-        const shortUrl = `${origin}/${data?.shortCode}`;
+       setUrl(shortUrl);
 
-        // 2. Update React State for the UI input field
-        setUrl(shortUrl);
+       if (qrCode.current) {
+        qrCode.current.update({
+          data: shortUrl,
+        });
 
-        // 3. Synchronously update the QR instance with the NEW shortUrl
-        if (qrCode.current) {
-          qrCode.current.update({
-            data: shortUrl,
+         await new Promise((resolve) => setTimeout(resolve, 150));
+
+         const blob = await qrCode.current.getRawData('png');
+        
+        if (blob) {
+          const reader = new FileReader();
+          
+          const base64Data = await new Promise<string>((resolve) => {
+            reader.onloadend = () => resolve(reader.result as string);
+            reader.readAsDataURL(blob as Blob);
           });
 
-          // 4. Extract the raw image blob generated from the shortUrl
-          const blob = await qrCode.current.getRawData('png');
-          if (blob) {
-            const reader = new FileReader();
-            reader.readAsDataURL(blob as Blob);
-
-            // Wait for reading to complete before storing & navigating
-            await new Promise<void>((resolve) => {
-              reader.onloadend = () => {
-                sessionStorage.setItem('latest_custom_qr_image', reader.result as string);
-                resolve();
-              };
-            });
-          }
+          sessionStorage.setItem('latest_custom_qr_image', base64Data);
         }
-
-        // Clear & set session items
-        sessionStorage.removeItem('latest_short_code');
-        sessionStorage.removeItem('latest_original_url');
-        sessionStorage.removeItem('latest_qr_code');
-
-        sessionStorage.setItem('latest_short_code', data.shortCode);
-        sessionStorage.setItem('latest_original_url', url); // original input URL
-        sessionStorage.setItem('latest_qr_code', data.qrCodeUrl || '');
-
-        // 5. Navigate after storage is populated
-        router.push(`/result/success?qr=true`);
-      } else {
-        toast.error(data.error || "Failed to process request.");
       }
-    } catch (err) {
-      toast.error("Network error. Please try again.");
-    } finally {
-      setLoading(false);
+
+      // Clear & set session items
+      sessionStorage.removeItem('latest_short_code');
+      sessionStorage.removeItem('latest_original_url');
+      sessionStorage.removeItem('latest_qr_code');
+
+      sessionStorage.setItem('latest_short_code', data.shortCode);
+      sessionStorage.setItem('latest_original_url', url);
+      sessionStorage.setItem('latest_qr_code', data.qrCodeUrl || '');
+
+      // 5. Navigate after storage is populated
+      router.push(`/result/success`);
+    } else {
+      toast.error(data.error || "Failed to process request.");
     }
-  };
+  } catch (err) {
+    toast.error("Network error. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <Card className="max-w-7xl mx-auto w-full bg-white/90 backdrop-blur-md border border-slate-200 rounded-2xl sm:rounded-3xl overflow-hidden mt-4 sm:mt-6 text-left shadow-lg">
@@ -205,7 +203,7 @@ export default function GenerateQRCode() {
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="p-4 sm:p-6 lg:p-8">
+      <CardContent className="px-4 sm:px-6 lg:px-8">
         <form onSubmit={handleSubmit} id="generateQR">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
 
@@ -285,8 +283,8 @@ export default function GenerateQRCode() {
                           type="color"
                           value={dotsColor}
                           onChange={(e) => setDotsColor(e.target.value)}
-                          className="w-12 h-10 p-1 cursor-pointer rounded-lg border-slate-200 shrink-0"
-                        />
+                          className="w-10 h-10 p-0 cursor-pointer rounded-full border border-slate-200 shrink-0 overflow-hidden [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:border-none [&::-webkit-color-swatch]:rounded-full [&::-moz-color-swatch]:border-none [&::-moz-color-swatch]:rounded-full" />
+
                         <Input
                           type="text"
                           value={dotsColor}
@@ -303,8 +301,10 @@ export default function GenerateQRCode() {
                           type="color"
                           value={bgColor}
                           onChange={(e) => setBgColor(e.target.value)}
-                          className="w-12 h-10 p-1 cursor-pointer rounded-lg border-slate-200 shrink-0"
-                        />
+                          className="w-10 h-10 p-0 cursor-pointer rounded-full border border-slate-200 shrink-0 overflow-hidden 
+                          [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:border-none [&::-webkit-color-swatch]:rounded-full
+                           [&::-moz-color-swatch]:border-none [&::-moz-color-swatch]:rounded-full" />
+                        
                         <Input
                           type="text"
                           value={bgColor}
@@ -493,9 +493,9 @@ export default function GenerateQRCode() {
                       onClick={() => setShowModal(true)}
                       className="w-full sm:w-auto inline-flex h-9 shrink-0 items-center justify-center rounded-lg bg-blue-600 px-4 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-blue-700"
                     >
-                      Watch Adsx
+                      Watch Ads
                     </button>
-                  
+
                   </div>
                 </div>
               </div>
@@ -516,7 +516,7 @@ export default function GenerateQRCode() {
                     <p className="mt-0.5 text-lg sm:text-xl font-bold text-slate-900">
 
                       <span className="text-xl font-medium text-slate-500 ">
-                        3
+                      {credit} / 3
                       </span>
                     </p>
                   </div>
@@ -534,15 +534,15 @@ export default function GenerateQRCode() {
                     </p>
                   </div>
                   <button
-                      type="button"
-                      onClick={() => setShowModal(true)}
+                    type="button"
+                    onClick={() => setShowModal(true)}
                     className="inline-flex h-8 sm:h-9 shrink-0 items-center justify-center gap-1.5 rounded-md border border-blue-400 bg-white px-3 text-xs font-semibold text-blue-600 shadow-sm transition-all hover:bg-blue-50 hover:shadow-md"
-                    >
-                      Watch Ads
-                    </button>
-                  
+                  >
+                    Watch Ads
+                  </button>
 
-                 
+
+
                 </div>
               </div>
 

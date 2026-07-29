@@ -111,7 +111,10 @@ export default function GenerateQRCode() {
     try {
       const res = await fetch("/api/reset-limit", { method: "POST" });
       if (!res.ok) throw new Error();
-      localStorage.removeItem("credit");
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem("credit");
+      }
+      setCredit(0);  
       toast.success("Daily limit reset successfully!");
       handleCloseModal();
     } catch {
@@ -120,7 +123,14 @@ export default function GenerateQRCode() {
       setLoading(false);
     }
   };
-
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedCredit = localStorage.getItem("credit");
+      if (savedCredit !== null) {
+        setCredit(parseInt(savedCredit, 10));
+      }
+    }
+  }, []);
   // Initialize QR Code Instance
   useEffect(() => {
     qrCode.current = new QRCodeStyling({
@@ -162,9 +172,11 @@ export default function GenerateQRCode() {
   };
 
   useEffect(() => {
-    const savedCredit = localStorage.getItem("credit");
-    if (savedCredit !== null) {
-      setCredit(parseInt(savedCredit, 10));
+    if (typeof window !== 'undefined') {
+      const savedCredit = localStorage.getItem("credit");
+      if (savedCredit !== null) {
+        setCredit(parseInt(savedCredit, 10));
+      }
     }
   }, []);
 
@@ -191,8 +203,10 @@ export default function GenerateQRCode() {
       const data = await res.json();
       if (res.ok) {
         toast.success("Link & QR processed successfully!");
-        localStorage.setItem("credit", data?.usage?.toString())
-        const origin = typeof window !== 'undefined' ? window.location.origin : '';
+        if (typeof window !== 'undefined' && data?.usage !== undefined) {
+          localStorage.setItem("credit", data.usage.toString());
+          setCredit(data.usage);
+        } const origin = typeof window !== 'undefined' ? window.location.origin : '';
 
         const shortUrl = `${origin}/${data?.shortCode}`;
 
@@ -539,7 +553,7 @@ export default function GenerateQRCode() {
                     </p>
                     <p className="mt-0.5 text-lg sm:text-xl font-bold text-slate-900">
                       <span className="text-xl font-medium text-slate-500 ">
-                        {localStorage.getItem("credit") ?? 0} / 3
+                        {credit} / 3
                       </span>
                     </p>
                   </div>

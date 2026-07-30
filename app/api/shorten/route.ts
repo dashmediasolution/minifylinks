@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
        usage = await checkRateLimit(ip);
        if (usage > 3) {
         return NextResponse.json(
-          { error: "Daily limit reached (3 URLs/day). Try again tomorrow." },
+          { error: `Daily limit (${usage}) reached (3 URLs/day). Try again tomorrow.` },
           { status: 429 },
         );
       }
@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
         creatorIP: ip,
       },
     });
-
+    console.log(usage,"usage")
     // 4. Save to Redis
     await redis.set(`short:${shortCode}`, validation.data.url);
 

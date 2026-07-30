@@ -12,13 +12,13 @@ import GenerateQRCode from './generateQRcode';
 export function HeroSection() {
   const [url, setUrl] = useState('');
   const [customUrl, setCustomUrl] = useState('');
-   const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'shortener' | 'qr'>('shortener');
   const [credit, setCredit] = useState(0);
 
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent ) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     sessionStorage.clear()
 
@@ -37,22 +37,22 @@ export function HeroSection() {
         body: JSON.stringify({
           url,
           customUrl: customUrl.trim(),
-         }),
+        }),
       });
 
 
       const data = await res.json();
-
+      console.log(data)
       if (res.ok) {
         toast.success("Link processed successfully!");
-if (typeof window !== 'undefined' && data?.usage !== undefined) {
+        if (typeof window !== 'undefined' && data?.usage !== undefined) {
           localStorage.setItem("credit", data.usage.toString());
           setCredit(data.usage);
         }
         sessionStorage.setItem('latest_short_code', data.shortCode);
         sessionStorage.setItem('latest_original_url', url);
 
-        
+
 
         router.push(`/result/success`);
       } else {
@@ -95,9 +95,9 @@ if (typeof window !== 'undefined' && data?.usage !== undefined) {
                 onClick={() => setActiveTab('shortener')}
                 className={`relative z-10 text-xs md:text-sm flex items-center gap-2 px-5 py-2.5 rounded-xl 
               font-semibold transition-all duration-300 select-none ${activeTab === 'shortener' ? 'text-blue-600 font-bold' :
-                 'text-slate-500 hover:text-slate-800'
+                    'text-slate-500 hover:text-slate-800'
                   }`}
-               >
+              >
                 <Link2 className={`w-4 h-4 transition-transform duration-300 ${activeTab === 'shortener' ? 'scale-110 text-blue-600' : 'text-slate-400'}`} />
                 <span>Shorten Link</span>
               </button>
@@ -114,8 +114,8 @@ if (typeof window !== 'undefined' && data?.usage !== undefined) {
 
               <div
                 className={`absolute top-1.5 bottom-1.5 rounded-xl bg-white shadow-md shadow-slate-200/80 transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${activeTab === 'shortener'
-                    ? 'left-1.5 w-[calc(50%-0.375rem)]'
-                    : 'left-[calc(50%+0.1875rem)] w-[calc(50%-0.375rem)]'
+                  ? 'left-1.5 w-[calc(50%-0.375rem)]'
+                  : 'left-[calc(50%+0.1875rem)] w-[calc(50%-0.375rem)]'
                   }`}
               />
             </div>
@@ -125,27 +125,27 @@ if (typeof window !== 'undefined' && data?.usage !== undefined) {
         {/* Tab Views */}
         <div className="mt-6 flex justify-center items-center ">
           {activeTab === 'shortener' ? (
-            
-              <div className='w-full md:w-[85%]'>
 
-                <UrlShortner
-                  url={url}
-                  setUrl={setUrl}
-                  customUrl={customUrl}
-                  setCustomUrl={setCustomUrl}
-                  loading={loading}
-                  handleSubmit={(e) => handleSubmit(e)}
-                    credit={credit}
-                  setCredit={setCredit}
-                />
-              </div>
+            <div className='w-full md:w-[85%]'>
+
+              <UrlShortner
+                url={url}
+                setUrl={setUrl}
+                customUrl={customUrl}
+                setCustomUrl={setCustomUrl}
+                loading={loading}
+                handleSubmit={(e) => handleSubmit(e)}
+                credit={credit}
+                setCredit={setCredit}
+              />
+            </div>
           ) : (
-            <GenerateQRCode/>
+            <GenerateQRCode />
           )}
         </div>
       </section>
 
-     
+
     </>
   );
 }

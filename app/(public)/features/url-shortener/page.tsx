@@ -29,7 +29,7 @@ export default function ShortUrlPage() {
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+     e.preventDefault();
     sessionStorage.clear()
 
 
@@ -52,9 +52,8 @@ export default function ShortUrlPage() {
 
 
       const data = await res.json();
-
       if (res.ok) {
-        toast.success("Link processed successfully!");
+         toast.success("Link processed successfully!");
         if (typeof window !== 'undefined' && data?.usage !== undefined) {
           localStorage.setItem("credit", data.usage.toString());
           setCredit(data.usage);

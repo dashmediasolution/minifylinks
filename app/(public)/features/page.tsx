@@ -33,8 +33,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
+ 
 export default function ShortenerProductPage() {
   // --- URL Shortener State ---
   const [longUrl, setLongUrl] = useState("");
@@ -48,12 +47,10 @@ export default function ShortenerProductPage() {
   // --- QR Code Customizer State ---
   const [qrTarget, setQrTarget] = useState("https://yourbrand.com/menu");
   const [fgColor, setFgColor] = useState("#4f46e5"); // Indigo
-  const [bgColor, setBgColor] = useState("#ffffff");
-  const [qrPattern, setQrPattern] = useState<"squares" | "dots" | "rounded">("rounded");
+   const [qrPattern, setQrPattern] = useState<"squares" | "dots" | "rounded">("rounded");
   const [frameText, setFrameText] = useState("SCAN ME");
   const [hasLogo, setHasLogo] = useState(true);
-  const [qrGenerated, setQrGenerated] = useState(true);
-
+ 
   // Handlers
   const handleShorten = (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,7 +69,7 @@ export default function ShortenerProductPage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-indigo-500 selection:text-white">
       {/* Light Gradient Glow Background */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] bg-gradient-to-tr from-indigo-200/40 via-violet-100/60 to-blue-100/30 blur-3xl pointer-events-none rounded-full" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-300 h-150 bg-linear-to-tr from-indigo-200/40 via-violet-100/60 to-blue-100/30 blur-3xl pointer-events-none rounded-full" />
 
       {/* Header Navigation */}
       <header className="border-b border-slate-200/80 backdrop-blur-md sticky top-0 z-50 bg-white/80">
@@ -81,7 +78,7 @@ export default function ShortenerProductPage() {
             <div className="p-2 rounded-xl bg-indigo-600 text-white shadow-md shadow-indigo-600/20">
               <Link2 className="w-5 h-5" />
             </div>
-            <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">SnipLink Studio</span>
+            <span className="bg-linear-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">SnipLink Studio</span>
           </div>
 
           <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">

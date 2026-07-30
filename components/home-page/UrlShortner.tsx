@@ -85,20 +85,13 @@ export default function UrlShortner({
 
 
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const savedCredit = localStorage.getItem("credit");
-            console.log("Raw localStorage value:", savedCredit);
-
-            if (savedCredit !== null) {
-                const parsed = parseInt(savedCredit, 10);
-                if (typeof setCredit === 'function') {
-                    setCredit(isNaN(parsed) ? 0 : parsed);
-                } else {
-                    console.error("setCredit is NOT a function! Check parent component.");
-                }
-            }
-        }
-    }, [setCredit]);
+    if (typeof window !== 'undefined') {
+      const savedCredit = localStorage.getItem("credit");
+      if (savedCredit !== null) {
+        setCredit(parseInt(savedCredit, 10));
+      }
+    }
+  }, []);
     return (
         <div className="w-full flex md:flex-row gap-8 flex-col">
 

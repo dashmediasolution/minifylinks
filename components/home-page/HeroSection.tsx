@@ -56,7 +56,10 @@ export function HeroSection() {
 
       if (res.ok) {
         toast.success("Link processed successfully!");
-
+if (typeof window !== 'undefined' && data?.usage !== undefined) {
+          localStorage.setItem("credit", data.usage.toString());
+          setCredit(data.usage);
+        }
         sessionStorage.setItem('latest_short_code', data.shortCode);
         sessionStorage.setItem('latest_original_url', url);
 

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from "sonner";
 import { Sparkles, Link2, QrCode } from 'lucide-react';
 import UrlShortner from './UrlShortner';
-import GenerateQRCode, { QRCustomizeOptions } from './generateQRcode';
+import GenerateQRCode from './generateQRcode';
 
 function StatItem({ number, label }: { number: string; label: string }) {
   return (
@@ -25,6 +25,7 @@ export function HeroSection() {
   const [customUrl, setCustomUrl] = useState('');
    const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'shortener' | 'qr'>('shortener');
+  const [credit, setCredit] = useState(0);
 
   const router = useRouter();
 
@@ -83,14 +84,14 @@ export function HeroSection() {
             <span>Fast, Reliable & Free URL Shortener</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">
+          <h1 className="text-xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">
             Shorten links, create QR codes, <br className="hidden sm:inline" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-500 to-indigo-700">
               and expand your reach.
             </span>
           </h1>
 
-          <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto font-normal">
+          <p className="text-xs sm:text-md text-slate-600 max-w-2xl mx-auto font-normal">
             Minifylinks gives you total control over your short links with custom alias branding and instant QR code generation.
           </p>
 
@@ -100,9 +101,11 @@ export function HeroSection() {
               <button
                 type="button"
                 onClick={() => setActiveTab('shortener')}
-                className={`relative z-10 flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 select-none ${activeTab === 'shortener' ? 'text-blue-600 font-bold' : 'text-slate-500 hover:text-slate-800'
+                className={`relative z-10 text-xs md:text-sm flex items-center gap-2 px-5 py-2.5 rounded-xl 
+              font-semibold transition-all duration-300 select-none ${activeTab === 'shortener' ? 'text-blue-600 font-bold' :
+                 'text-slate-500 hover:text-slate-800'
                   }`}
-              >
+               >
                 <Link2 className={`w-4 h-4 transition-transform duration-300 ${activeTab === 'shortener' ? 'scale-110 text-blue-600' : 'text-slate-400'}`} />
                 <span>Shorten Link</span>
               </button>
@@ -110,7 +113,7 @@ export function HeroSection() {
               <button
                 type="button"
                 onClick={() => setActiveTab('qr')}
-                className={`relative z-10 flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 select-none ${activeTab === 'qr' ? 'text-blue-600 font-bold' : 'text-slate-500 hover:text-slate-800'
+                className={`relative z-10 flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs md:text-sm font-semibold transition-all duration-300 select-none ${activeTab === 'qr' ? 'text-blue-600 font-bold' : 'text-slate-500 hover:text-slate-800'
                   }`}
               >
                 <QrCode className={`w-4 h-4 transition-transform duration-300 ${activeTab === 'qr' ? 'scale-110 text-blue-600' : 'text-slate-400'}`} />
@@ -128,16 +131,22 @@ export function HeroSection() {
         </div>
 
         {/* Tab Views */}
-        <div className="mt-6 ">
+        <div className="mt-6 flex justify-center items-center ">
           {activeTab === 'shortener' ? (
-            <UrlShortner
-              url={url}
-              setUrl={setUrl}
-              customUrl={customUrl}
-              setCustomUrl={setCustomUrl}
-              loading={loading}
-              handleSubmit={(e) => handleSubmit(e)}
-            />
+            
+              <div className='w-full md:w-[85%]'>
+
+                <UrlShortner
+                  url={url}
+                  setUrl={setUrl}
+                  customUrl={customUrl}
+                  setCustomUrl={setCustomUrl}
+                  loading={loading}
+                  handleSubmit={(e) => handleSubmit(e)}
+                    credit={credit}
+                  setCredit={setCredit}
+                />
+              </div>
           ) : (
             <GenerateQRCode/>
           )}

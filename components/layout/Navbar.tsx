@@ -1,37 +1,24 @@
 'use client'
 
 import Link from "next/link";
-import { Menu, X, Link2, QrCode, Sliders, Sun, Moon } from "lucide-react";
-import { useState } from "react";
+import { Menu, X, Link2, QrCode, Sliders, ChevronDown } from "lucide-react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "motion/react";
-import { useEffect } from "react";
-import UrlShortner from "../home-page/UrlShortner";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-} from "@/components/ui/navigation-menu"
-import { useTheme } from 'next-themes'
+
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isFeaturesOpen, setIsFeaturesOpen] = useState(false);
   const pathname = usePathname();
-  const [mounted, setMounted] = useState(false)
-  const { theme, setTheme } = useTheme()  // Track pathname changes to close mobile menu
-  const [prevPathname, setPrevPathname] = useState(pathname);
-  if (pathname !== prevPathname) {
-    setIsOpen(false);
-    setPrevPathname(pathname);
-  }
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+    setIsOpen(false);
+    setIsFeaturesOpen(false);
+  }, [pathname]);
+
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const featureItems = [
@@ -54,140 +41,132 @@ export function Navbar() {
       icon: QrCode,
     },
   ];
-  if (!mounted) {
-    return <button className="p-2 border rounded-md opacity-0">Toggle</button>
-  }
+
+  if (!mounted) return <div className="h-16 w-full" />;
+
   return (
     <>
-      {/* FLOATING NAVBAR CONTAINER */}
-      <div className="fixed  top-0 left-0 right-0  z-50 flex justify-center w-full py-4 px-4 pointer-events-none">
-        <div className="flex items-center justify-between px-6 py-3 bg-white/90 backdrop-blur-md rounded-full shadow-lg border border-gray-100 w-full max-w-4xl relative z-10 pointer-events-auto">
+      <header className="fixed top-0 left-0 w-screen right-0 z-50 flex justify-center  py-3 px-4 pointer-events-none">
+        <div className="flex items-center justify-between px-6 py-2.5 bg-white/95 backdrop-blur-md rounded-full shadow-md border border-slate-100 w-full max-w-4xl relative z-10 pointer-events-auto">
 
-          {/* LOGO (Left) */}
-          <Link href="/">
-            <div className="flex items-center">
-              <motion.div
-                initial={{ scale: 0.8 }}
-                animate={{ scale: 1 }}
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Image
-                  src="/logos/minifylinks-logo.svg"
-                  alt="MinifyLinks Logo"
-                  width={40}
-                  height={40}
-                  priority
-                />
-              </motion.div>
-            </div>
+          {/* LOGO */}
+          <Link href="/" className="flex items-center shrink-0">
+            <Image
+              src="/logos/minifylinks-logo.svg"
+              alt="MinifyLinks Logo"
+              width={36}
+              height={36}
+              priority
+            />
           </Link>
 
-          {/* DESKTOP NAV (Center/Right) */}
+          {/* DESKTOP NAV */}
           <nav className="hidden md:flex items-center space-x-2">
-            {/* SHADCN DROPDOWN FOR FEATURES */}
-            <NavigationMenu className="relative">
-              <NavigationMenuList>
-                <NavigationMenuItem className="relative">
-                  <NavigationMenuTrigger className="text-sm text-gray-900 hover:text-blue-600 font-medium bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent">
-                    Features
-                  </NavigationMenuTrigger>
 
-                  {/* DROPDOWN MENU CENTERED */}
-                  <NavigationMenuContent className="left-1/2 -translate-x-1/2 relative right-20 !w-[600px]">
-                    <ul className="grid grid-cols-3 w-[600px]   gap-3 p-4 bg-white rounded-2xl    border-gray-100">
+            {/* FEATURES DROPDOWN CONTAINER */}
+            <div 
+              className="relative group"
+              onMouseEnter={() => setIsFeaturesOpen(true)}
+              onMouseLeave={() => setIsFeaturesOpen(false)}
+            >
+              <button 
+                type="button"
+                className="flex items-center gap-1 px-3 py-2 text-sm text-slate-700 group-hover:text-blue-600 font-medium transition-colors cursor-pointer"
+              >
+                Features
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isFeaturesOpen ? 'rotate-180 text-blue-600' : 'text-slate-400'}`} />
+              </button>
+
+              {/* DROPDOWN MENU PANEL (EXPLICIT 540px WIDTH) */}
+              <AnimatePresence>
+                {isFeaturesOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 6 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute left-30 -translate-x-1/2 top-full pt-2 w-[540px] z-50"
+                  >
+                    <div className="p-3 bg-white rounded-2xl shadow-xl border border-slate-200/80 grid grid-cols-3 gap-2">
                       {featureItems.map((item) => {
                         const Icon = item.icon;
                         return (
-                          <li key={item.title}>
-                            <NavigationMenuLink asChild>
-                              <Link
-                                href={item.href}
-                                className="flex flex-col h-full p-3 rounded-xl hover:bg-blue-50/70 transition-colors group text-left"
-                              >
-                                <div className="p-2 w-fit rounded-lg bg-blue-100/60 text-blue-600   group-hover:text-white transition-colors mb-2">
-                                  <Icon className="w-4 h-4" />
-                                </div>
-                                <div className="text-xs font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                                  {item.title}
-                                </div>
-                                <p className="text-[11px] text-gray-500 mt-1 leading-snug">
-                                  {item.description}
-                                </p>
-                              </Link>
-                            </NavigationMenuLink>
-                          </li>
+                          <Link
+                            key={item.title}
+                            href={item.href}
+                            className="flex flex-col p-3 rounded-xl hover:bg-blue-50/80 transition-colors group text-left"
+                          >
+                            <div className="p-2 w-fit rounded-lg bg-blue-100/60 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors mb-2">
+                              <Icon className="w-4 h-4" />
+                            </div>
+                            <div className="text-xs font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                              {item.title}
+                            </div>
+                            <p className="text-[11px] text-slate-500 mt-1 leading-snug">
+                              {item.description}
+                            </p>
+                          </Link>
                         );
                       })}
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
-            {/* Blogs Link */}
-            <motion.div whileHover={{ scale: 1.05 }}>
-              <Link href="/blog" className="px-3 py-2 text-sm text-gray-900 hover:text-blue-600 transition-colors font-medium">
-                Blogs
-              </Link>
-            </motion.div>
+            <Link href="/blog" className="px-3 py-2 text-sm text-slate-700 hover:text-blue-600 transition-colors font-medium">
+              Blogs
+            </Link>
 
-            {/* FAQs Link */}
-            <motion.div whileHover={{ scale: 1.05 }}>
-              <Link href="/faqs" className="px-3 py-2 text-sm text-gray-900 hover:text-blue-600 transition-colors font-medium">
-                FAQs
-              </Link>
-            </motion.div>
+            <Link href="/faqs" className="px-3 py-2 text-sm text-slate-700 hover:text-blue-600 transition-colors font-medium">
+              FAQs
+            </Link>
           </nav>
 
-          {/* DESKTOP CTA BUTTON */}
-          {/* <Button
-            variant="ghost"
-            size="icon"
-            className="relative rounded-full w-9 h-9 transition-colors duration-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600"
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            aria-label="Toggle theme"
-           >
-             <Sun className="h-[1.2rem] w-[1.2rem] text-blue-500 transition-all duration-300 ease-in-out scale-100 rotate-0 dark:scale-0 dark:-rotate-90" />
+          {/* DESKTOP CTA */}
+          <div className="hidden md:flex items-center">
+            <Link
+              href="/features/url-shortener"
+              className="px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-full transition-all shadow-xs"
+            >
+              Get Started
+            </Link>
+          </div>
 
-             <Moon className="absolute h-[1.2rem] w-[1.2rem] text-zinc-900 dark:text-zinc-100 transition-all duration-300 ease-in-out scale-0 rotate-90 dark:scale-100 dark:rotate-0" />
-
-            <span className="sr-only">Toggle theme</span>
-          </Button> */}
-          <div></div>
           {/* MOBILE TOGGLE */}
-          <motion.button
-            className="md:hidden flex items-center text-gray-900"
+          <button
+            type="button"
+            className="md:hidden p-1.5 text-slate-800 hover:text-blue-600"
             onClick={toggleMenu}
-            whileTap={{ scale: 0.9 }}
+            aria-label="Toggle Menu"
           >
             <Menu className="h-6 w-6" />
-          </motion.button>
+          </button>
         </div>
-      </div>
+      </header>
 
-      {/* MOBILE MENU OVERLAY */}
+      {/* MOBILE OVERLAY */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 bg-white z-50 pt-24 px-6 md:hidden overflow-y-auto"
+            className="fixed inset-0 bg-white z-50 pt-20 px-6 md:hidden overflow-y-auto"
             initial={{ opacity: 0, x: "100%" }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
           >
-            <motion.button
-              className="absolute top-6 right-6 p-2"
+            <button
+              type="button"
+              className="absolute top-5 right-5 p-2 text-slate-700"
               onClick={toggleMenu}
-              whileTap={{ scale: 0.9 }}
             >
-              <X className="h-6 w-6 text-gray-900" />
-            </motion.button>
+              <X className="h-6 w-6" />
+            </button>
 
             <div className="flex flex-col space-y-6 pb-12">
               <div className="space-y-3">
-                <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Features</span>
-                <div className="space-y-2 pl-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Features</span>
+                <div className="space-y-2 pl-1">
                   {featureItems.map((item) => {
                     const Icon = item.icon;
                     return (
@@ -195,35 +174,29 @@ export function Navbar() {
                         key={item.title}
                         href={item.href}
                         onClick={toggleMenu}
-                        className="flex items-center gap-3 p-2 rounded-xl text-gray-900 hover:text-blue-600 font-semibold"
+                        className="flex items-center gap-3 p-2.5 rounded-xl text-slate-800 hover:bg-slate-50 font-semibold"
                       >
-                        <Icon className="w-5 h-5 text-blue-600" />
-                        <span>{item.title}</span>
+                        <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
+                          <Icon className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <p className="text-sm">{item.title}</p>
+                          <p className="text-xs font-normal text-slate-400">{item.description}</p>
+                        </div>
                       </Link>
                     );
                   })}
                 </div>
               </div>
 
-              <div className="h-px bg-gray-100" />
+              <div className="h-px bg-slate-100" />
 
-              <Link href="/blog" className="text-lg text-gray-900 font-medium" onClick={toggleMenu}>
+              <Link href="/blog" className="text-base text-slate-800 font-semibold" onClick={toggleMenu}>
                 Blogs
               </Link>
-
-              <Link href="/faqs" className="text-lg text-gray-900 font-medium" onClick={toggleMenu}>
+              <Link href="/faqs" className="text-base text-slate-800 font-semibold" onClick={toggleMenu}>
                 FAQs
               </Link>
-
-              <div className="pt-4">
-                <Link
-                  href="/url-shortener"
-                  className="inline-flex items-center justify-center w-full px-5 py-3.5 text-base font-bold text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-colors shadow-md"
-                  onClick={toggleMenu}
-                >
-                  Get Started
-                </Link>
-              </div>
             </div>
           </motion.div>
         )}

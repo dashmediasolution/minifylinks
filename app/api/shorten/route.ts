@@ -30,8 +30,7 @@ export async function POST(req: NextRequest) {
     // Only enforce limits if we are NOT in development mode
     if (process.env.NODE_ENV !== "development") {
        usage = await checkRateLimit(ip);
-      console.log(usage,"sde")
-      if (usage > 3) {
+       if (usage > 3) {
         return NextResponse.json(
           { error: "Daily limit reached (3 URLs/day). Try again tomorrow." },
           { status: 429 },

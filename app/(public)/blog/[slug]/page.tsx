@@ -115,7 +115,7 @@ export default async function BlogPostPage({ params }: Props) {
   const finalSchemaLd = post.schemaData && post.schemaData.trim() !== '' ? post.schemaData : JSON.stringify(defaultJsonLd);
 
   return (
-    <main className="bg-white">
+    <main className="bg-white pt-10">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: finalSchemaLd }}

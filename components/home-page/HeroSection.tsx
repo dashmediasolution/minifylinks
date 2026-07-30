@@ -7,18 +7,7 @@ import { Sparkles, Link2, QrCode } from 'lucide-react';
 import UrlShortner from './UrlShortner';
 import GenerateQRCode from './generateQRcode';
 
-function StatItem({ number, label }: { number: string; label: string }) {
-  return (
-    <div className="flex flex-col items-center space-y-1">
-      <span className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight drop-shadow-sm">
-        {number}
-      </span>
-      <span className="text-xs sm:text-sm font-bold text-blue-100 uppercase tracking-widest">
-        {label}
-      </span>
-    </div>
-  );
-}
+
 
 export function HeroSection() {
   const [url, setUrl] = useState('');
@@ -156,12 +145,7 @@ if (typeof window !== 'undefined' && data?.usage !== undefined) {
         </div>
       </section>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 py-12 px-6 sm:px-10 bg-gradient-to-r from-blue-600 to-indigo-700 max-w-full mx-0 relative z-10 shadow-inner">
-        <StatItem number="350K+" label="Short Links Created" />
-        <StatItem number="5M+" label="Clicks this Month" />
-        <StatItem number="99.9%" label="Uptime Guarantee" />
-        <StatItem number="100%" label="Free to Use" />
-      </div>
+     
     </>
   );
 }

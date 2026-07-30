@@ -46,16 +46,20 @@ export function HeroSection() {
       if (res.ok) {
         toast.success("Link processed successfully!");
         if (typeof window !== 'undefined' && data?.usage !== undefined) {
-          localStorage.setItem("credit", data.usage.toString());
+          localStorage.setItem("credit", data?.usage?.toString());
           setCredit(data.usage);
         }
-        sessionStorage.setItem('latest_short_code', data.shortCode);
+        sessionStorage.setItem('latest_short_code', data?.shortCode);
         sessionStorage.setItem('latest_original_url', url);
 
 
 
         router.push(`/result/success`);
       } else {
+        if (typeof window !== 'undefined' && data?.usage !== undefined) {
+          localStorage.setItem("credit", "3");
+          setCredit(3);
+        }
         toast.error(data.error || "Failed to process request.");
       }
     } catch (err) {

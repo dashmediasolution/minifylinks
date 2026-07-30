@@ -15,10 +15,12 @@ import { FaqSection } from "@/components/home-page/FaqSection";
 import { Card, } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {QRPlatformSection} from "@/components/QRComponent";
+ 
 export default function CustomizeQrPage() {
 
+  
 
-  return (
+  return (  
     <div className="pb-24 bg-slate-50 pt-30 md:pt-30 text-slate-900 selection:bg-indigo-500 selection:text-white">
      
 

@@ -9,6 +9,7 @@ import { ArrowRight, Link2, ShieldCheck, BarChart3, Loader2 } from 'lucide-react
 import { FileImage } from "lucide-react";
 import { videoOptions } from "./generateQRcode";
 import { toast } from 'sonner';
+import { useGlobalVariable } from '@/context/usageContext';
 interface UrlShortnerProps {
     url: string;
     setUrl: (value: string) => void;
@@ -34,7 +35,7 @@ export default function UrlShortner({
     const [canClaim, setCanClaim] = useState(false);
     const playerRef = useRef<any>(null);
     const REQUIRED_WATCH_SECONDS = 30;
-
+    const {myVariable ,setMyVariable} = useGlobalVariable()
     // Track playback time when modal opens and video plays
     useEffect(() => {
         let interval: NodeJS.Timeout;
@@ -74,6 +75,7 @@ export default function UrlShortner({
                 localStorage.removeItem("credit");
             }
             setCredit(0);
+            setMyVariable(myVariable)
             toast.success("Daily limit reset successfully!");
             handleCloseModal();
         } catch {
@@ -84,14 +86,14 @@ export default function UrlShortner({
     };
 
 
-    useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedCredit = localStorage.getItem("credit");
-      if (savedCredit !== null) {
-        setCredit(parseInt(savedCredit, 10));
-      }
-    }
-  }, []);
+//     useEffect(() => {
+//     if (typeof window !== 'undefined') {
+//       const savedCredit = localStorage.getItem("credit");
+//       if (savedCredit !== null) {
+//         setCredit(parseInt(savedCredit, 10));
+//       }
+//     }
+//   }, []);
     return (
         <div className="w-full flex md:flex-row gap-8 flex-col">
 
@@ -174,7 +176,7 @@ export default function UrlShortner({
                             </p>
                             <p className="mt-0.5 text-lg sm:text-xl font-bold text-slate-900">
                                 <span className="text-xl font-medium text-slate-500 ">
-                                    {credit} / 3
+                                    {myVariable} / 3
                                 </span>
                             </p>
                         </div>

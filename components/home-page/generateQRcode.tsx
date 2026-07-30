@@ -23,6 +23,7 @@ import QRCodeStyling, { DotType, CornerSquareType } from 'qr-code-styling';
 import { toast } from "sonner";
 import { useRouter } from 'next/navigation';
 import YouTube, { YouTubeProps } from 'react-youtube';
+import { useGlobalVariable } from '@/context/usageContext';
 
 const DOT_STYLES: { label: string; value: DotType, icon: string }[] = [
   { label: 'Square', value: 'square', icon: "/images/SQUAREQR.svg" },
@@ -70,7 +71,7 @@ export default function GenerateQRCode() {
   const [customUrl, setCustomUrl] = useState('');
   const [credit, setCredit] = useState(0);
   const [loading, setLoading] = useState(false);
-  
+  const {myVariable ,setMyVariable} = useGlobalVariable()
   const pathname = usePathname();
   const router = useRouter();
   const ref = useRef<HTMLDivElement>(null);
@@ -125,6 +126,7 @@ export default function GenerateQRCode() {
         localStorage.removeItem("credit");
       }
       setCredit(0);
+      setMyVariable(myVariable)
       toast.success("Daily limit reset successfully!");
       handleCloseModal();
     } catch {
@@ -134,14 +136,14 @@ export default function GenerateQRCode() {
     }
   };
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedCredit = localStorage.getItem("credit");
-      if (savedCredit !== null) {
-        setCredit(parseInt(savedCredit, 10));
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (typeof window !== 'undefined') {
+  //     const savedCredit = localStorage.getItem("credit");
+  //     if (savedCredit !== null) {
+  //       setCredit(parseInt(savedCredit, 10));
+  //     }
+  //   }
+  // }, []);
 
   useEffect(() => {
     qrCode.current = new QRCodeStyling({
@@ -595,7 +597,7 @@ export default function GenerateQRCode() {
                     </p>
                     <p className="mt-0.5 text-lg sm:text-xl font-bold text-slate-900">
                       <span className="text-xl font-medium text-slate-500">
-                        {credit} / 3
+                        {myVariable} / 3
                       </span>
                     </p>
                   </div>

@@ -16,7 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import UrlShortner from "@/components/home-page/UrlShortner";
 import { toast } from "sonner";
 import { QRPlatformSection } from "@/components/QRComponent";
-import { useEffect } from "react";
+import { useGlobalVariable } from "@/context/usageContext";
 
 import { useRouter } from "next/navigation";
 export default function ShortUrlPage() {
@@ -25,7 +25,7 @@ export default function ShortUrlPage() {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'shortener' | 'qr'>('shortener');
   const [credit, setCredit] = useState(0);
-
+const { myVariable, setMyVariable, fetchData } = useGlobalVariable();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -86,7 +86,7 @@ export default function ShortUrlPage() {
         <h1 className="text-xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">
           Transform long URLs into <br className="hidden sm:inline" />
           <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-500 to-indigo-700">
-            high-converting brand assets
+            high-converting brand assets {myVariable}
           </span>
         </h1>
         <p className="mt-4 text-xs md:text-lg text-slate-600 max-w-2xl mx-auto">

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { Navbar } from "@/components/layout/Navbar"; // Assuming you have this
 import { Footer } from "@/components/layout/Footer"; // Assuming you have this
 import { GoogleTagManager } from '@next/third-parties/google';
-
+import { GlobalVariableProvider } from "@/context/usageContext";
 export const metadata: Metadata = {
   verification: {
     google: "X37qC0cyl0pVnqHXob64N9G16lfmqDM9s_tkOWwgch4",
@@ -40,12 +40,14 @@ export default function PublicLayout({
       {/* 2. Main Layout Container */}
       {/* max-w-[1920px] ensures the site doesn't stretch infinitely on 4k screens */}
       <div className="flex-1 w-full max-w-[1920px] mx-auto flex justify-center">
+        <GlobalVariableProvider>
 
-        {/* --- MAIN CONTENT CENTER --- */}
-        {/* flex-1 allows it to take remaining space.*/}
-        <main className="flex-1 w-full min-h-screen  ">
-          {children}
-        </main>
+          {/* --- MAIN CONTENT CENTER --- */}
+          {/* flex-1 allows it to take remaining space.*/}
+          <main className="flex-1 w-full min-h-screen  ">
+            {children}
+          </main>
+        </GlobalVariableProvider>
       </div>
 
       {/* 3. Footer spans full width */}

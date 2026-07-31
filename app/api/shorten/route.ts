@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { nanoid } from "nanoid";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma"; // The '@' alias points to your root now
-import { redis, checkRateLimit } from "@/lib/redis";
+import { redis, checkRateLimit, formatTTLHours } from "@/lib/redis";
 
 const bodySchema = z.object({
   url: z.string().min(1, "URL is required").url("Invalid URL format"),
@@ -12,10 +12,10 @@ const bodySchema = z.object({
 
 export async function POST(req: NextRequest) {
   try {
-    let usage;
+    let usage=0;
     const body = await req.json();
     const validation = bodySchema.safeParse(body);
-    let shortCode =validation?.data?.customUrl
+    let shortCode = validation?.data?.customUrl
     if (!validation.success) {
       return NextResponse.json(
         { error: "Invalid URL provided" },
@@ -28,27 +28,28 @@ export async function POST(req: NextRequest) {
 
     // --- NEW CHANGE START ---
     // Only enforce limits if we are NOT in development mode
-    if (process.env.NODE_ENV !== "development") {
-       usage = await checkRateLimit(ip);
-       if (usage > 3) {
+    if (process.env.NODE_ENV == "development") {
+      const { count, ttl } = await checkRateLimit(ip)
+      usage=count
+      const timeRemaining = formatTTLHours(ttl)
+      if (count > 3) {
         return NextResponse.json(
-          { error: `Daily limit (${usage}) reached (3 URLs/day). Try again tomorrow.` },
+          { error: `Daily limit  reached. Please try again after ${timeRemaining} hours.` },
           { status: 429 },
         );
       }
     }
     // --- NEW CHANGE END ---
-    const data = await prisma.shortLink.findUnique({where:{shortCode}})
-    if(data)
-    {
-       return NextResponse.json(
-          { error: "This custom name is already taken" },
-          { status: 400 },
-        );
+    const data = await prisma.shortLink.findUnique({ where: { shortCode } })
+    if (data) {
+      return NextResponse.json(
+        { error: "This custom name is already taken" },
+        { status: 400 },
+      );
     }
     // 2. Generate Code
-     if (!shortCode) {
-   
+    if (!shortCode) {
+
       shortCode = nanoid(6);
     }
 
@@ -60,11 +61,11 @@ export async function POST(req: NextRequest) {
         creatorIP: ip,
       },
     });
-    console.log(usage,"usage")
+    console.log(usage, "usage")
     // 4. Save to Redis
     await redis.set(`short:${shortCode}`, validation.data.url);
 
-    return NextResponse.json({ shortCode ,usage}, { status: 201 });
+    return NextResponse.json({ shortCode, usage }, { status: 201 });
   } catch (error) {
     console.error("Shorten API Error:", error);
     return NextResponse.json(

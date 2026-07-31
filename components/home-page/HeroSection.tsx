@@ -14,8 +14,7 @@ export function HeroSection() {
   const [customUrl, setCustomUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'shortener' | 'qr'>('shortener');
-  const [credit, setCredit] = useState(0);
-
+ 
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -45,10 +44,7 @@ export function HeroSection() {
       console.log(data)
       if (res.ok) {
         toast.success("Link processed successfully!");
-        if (typeof window !== 'undefined' && data?.usage !== undefined) {
-          localStorage.setItem("credit", data?.usage?.toString());
-          setCredit(data.usage);
-        }
+        
         sessionStorage.setItem('latest_short_code', data?.shortCode);
         sessionStorage.setItem('latest_original_url', url);
 
@@ -56,10 +52,7 @@ export function HeroSection() {
 
         router.push(`/result/success`);
       } else {
-        if (typeof window !== 'undefined' && data?.usage !== undefined) {
-          localStorage.setItem("credit", "3");
-          setCredit(3);
-        }
+         
         toast.error(data.error || "Failed to process request.");
       }
     } catch (err) {
@@ -139,8 +132,7 @@ export function HeroSection() {
                 setCustomUrl={setCustomUrl}
                 loading={loading}
                 handleSubmit={(e) => handleSubmit(e)}
-                credit={credit}
-                setCredit={setCredit}
+             
               />
             </div>
           ) : (

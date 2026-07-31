@@ -17,8 +17,8 @@ interface UrlShortnerProps {
     setCustomUrl: (value: string) => void;
     loading: boolean;
     handleSubmit: (e: React.FormEvent) => void;
-    credit: number,
-    setCredit: (value: number) => void;
+
+
 }
 
 export default function UrlShortner({
@@ -28,14 +28,15 @@ export default function UrlShortner({
     setCustomUrl,
     loading,
     handleSubmit,
-    credit, setCredit = () => { },
+
+
 }: UrlShortnerProps) {
     const [showModal, setShowModal] = useState(false);
     const [watchTime, setWatchTime] = useState(0);
     const [canClaim, setCanClaim] = useState(false);
     const playerRef = useRef<any>(null);
     const REQUIRED_WATCH_SECONDS = 30;
-    const {myVariable ,setMyVariable} = useGlobalVariable()
+    const { myVariable, setMyVariable ,isLoading} = useGlobalVariable()
     // Track playback time when modal opens and video plays
     useEffect(() => {
         let interval: NodeJS.Timeout;
@@ -71,10 +72,8 @@ export default function UrlShortner({
         try {
             const res = await fetch("/api/reset-limit", { method: "POST" });
             if (!res.ok) throw new Error();
-            if (typeof window !== 'undefined') {
-                localStorage.removeItem("credit");
-            }
-            setCredit(0);
+
+
             setMyVariable(myVariable)
             toast.success("Daily limit reset successfully!");
             handleCloseModal();
@@ -86,14 +85,7 @@ export default function UrlShortner({
     };
 
 
-//     useEffect(() => {
-//     if (typeof window !== 'undefined') {
-//       const savedCredit = localStorage.getItem("credit");
-//       if (savedCredit !== null) {
-//         setCredit(parseInt(savedCredit, 10));
-//       }
-//     }
-//   }, []);
+
     return (
         <div className="w-full flex md:flex-row gap-8 flex-col">
 
@@ -175,8 +167,13 @@ export default function UrlShortner({
                                 Total Credit Usage
                             </p>
                             <p className="mt-0.5 text-lg sm:text-xl font-bold text-slate-900">
-                                <span className="text-xl font-medium text-slate-500 ">
-                                    {myVariable} / 3
+                                <span className="inline-flex items-center gap-1 text-xl font-medium text-slate-500">
+                                    {isLoading ? (
+                                        <Loader2 className="h-5 w-5 animate-spin text-slate-400" />
+                                    ) : (
+                                        <span>{myVariable}</span>
+                                    )}
+                                    <span>/ 3</span>
                                 </span>
                             </p>
                         </div>

@@ -6,8 +6,8 @@ export async function GET(request: NextRequest) {
         request.headers.get('x-real-ip') ||
         '127.0.0.1'
     let usage;
-    const credit = await checkRateLimit(ip);
-    if (credit > 3) {
+    const {count} = await checkRateLimit(ip);
+    if (count > 3) {
          usage = 3
     } 
     return NextResponse.json({

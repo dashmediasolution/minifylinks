@@ -13,7 +13,7 @@ interface GlobalVariableContextType {
   myVariable: number;
   setMyVariable: React.Dispatch<React.SetStateAction<number>>;
   fetchData: () => Promise<void>;
-  loading: boolean;
+  isLoading: boolean;
 }
 
 // 2. Pass the interface to createContext (with null as initial value)
@@ -27,7 +27,7 @@ interface GlobalVariableProviderProps {
 // 3. Provider Component
 export const GlobalVariableProvider: React.FC<GlobalVariableProviderProps> = ({ children }) => {
   const [myVariable, setMyVariable] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isLoading, setLoading] = useState<boolean>(true);
 
   const fetchData = useCallback(async (): Promise<void> => {
     try {
@@ -54,7 +54,7 @@ export const GlobalVariableProvider: React.FC<GlobalVariableProviderProps> = ({ 
         myVariable,
         setMyVariable,
         fetchData,
-        loading,
+        isLoading,
       }}
     >
       {children}

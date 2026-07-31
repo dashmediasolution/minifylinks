@@ -17,7 +17,7 @@ import {
   Loader2,
   CircleStop,
   SquareStop,
-} from "lucide-react"; 
+} from "lucide-react";
 import Image from 'next/image';
 import QRCodeStyling, { DotType, CornerSquareType } from 'qr-code-styling';
 import { toast } from "sonner";
@@ -69,9 +69,8 @@ export default function GenerateQRCode() {
   const [logoUrl, setLogoUrl] = useState<string>('');
   const [url, setUrl] = useState('');
   const [customUrl, setCustomUrl] = useState('');
-  const [credit, setCredit] = useState(0);
   const [loading, setLoading] = useState(false);
-  const {myVariable ,setMyVariable} = useGlobalVariable()
+  const { myVariable, setMyVariable, isLoading } = useGlobalVariable()
   const pathname = usePathname();
   const router = useRouter();
   const ref = useRef<HTMLDivElement>(null);
@@ -122,10 +121,7 @@ export default function GenerateQRCode() {
     try {
       const res = await fetch("/api/reset-limit", { method: "POST" });
       if (!res.ok) throw new Error();
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem("credit");
-      }
-      setCredit(0);
+
       setMyVariable(myVariable)
       toast.success("Daily limit reset successfully!");
       handleCloseModal();
@@ -136,14 +132,7 @@ export default function GenerateQRCode() {
     }
   };
 
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined') {
-  //     const savedCredit = localStorage.getItem("credit");
-  //     if (savedCredit !== null) {
-  //       setCredit(parseInt(savedCredit, 10));
-  //     }
-  //   }
-  // }, []);
+
 
   useEffect(() => {
     qrCode.current = new QRCodeStyling({
@@ -213,10 +202,7 @@ export default function GenerateQRCode() {
       const data = await res.json();
       if (res.ok) {
         toast.success("Link & QR processed successfully!");
-        if (typeof window !== 'undefined' && data?.usage !== undefined) {
-          localStorage.setItem("credit", data.usage.toString());
-          setCredit(data.usage);
-        }
+
         const origin = typeof window !== 'undefined' ? window.location.origin : '';
 
         const shortUrl = `${origin}/${data?.shortCode}`;
@@ -264,9 +250,8 @@ export default function GenerateQRCode() {
   };
 
   return (
-    <Card className={`mx-auto w-full bg-white/90 backdrop-blur-md border border-slate-200 rounded-2xl sm:rounded-3xl overflow-hidden mt-4 sm:mt-6 text-left shadow-lg ${
-      isQRGeneratorPage ? 'max-w-2xl' : 'max-w-7xl'
-    }`}>
+    <Card className={`mx-auto w-full bg-white/90 backdrop-blur-md border border-slate-200 rounded-2xl sm:rounded-3xl overflow-hidden mt-4 sm:mt-6 text-left shadow-lg ${isQRGeneratorPage ? 'max-w-2xl' : 'max-w-7xl'
+      }`}>
       <CardHeader className="border-b border-slate-100 px-4 sm:p-6">
         <CardTitle className="text-md sm:text-2xl font-bold text-slate-800 flex items-center gap-2">
           <QrCode className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
@@ -277,7 +262,7 @@ export default function GenerateQRCode() {
       <CardContent className="px-4 sm:px-6 lg:px-8 py-6">
         <form onSubmit={handleSubmit} id="generateQR">
           <div className={isQRGeneratorPage ? 'flex flex-col gap-6' : 'grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start'}>
-            
+
             {/* Input Controls */}
             <div className={isQRGeneratorPage ? 'w-full space-y-4' : 'order-2 lg:order-1 lg:col-span-7 space-y-6 w-full'}>
               {/* STEP 1 */}
@@ -587,7 +572,7 @@ export default function GenerateQRCode() {
 
             {/* Live Preview & Direct Download Panel */}
             <div className={isQRGeneratorPage ? 'w-full flex flex-col items-center p-4 sm:p-6 bg-slate-50 border border-slate-100 rounded-2xl space-y-4 text-center' : 'order-1 lg:order-2 lg:col-span-5 w-full flex flex-col items-center h-fit p-0 sm:p-6 bg-slate-50 border border-slate-100 rounded-2xl space-y-4 text-center lg:sticky lg:top-6'}>
-              
+
               {/* Total Credit Usage & Watch Ads Banner */}
               <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 rounded-xl border border-blue-100 bg-gradient-to-r from-white to-blue-50/40 p-3 sm:p-4 shadow-sm">
                 <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
@@ -596,8 +581,13 @@ export default function GenerateQRCode() {
                       Total Credit Usage
                     </p>
                     <p className="mt-0.5 text-lg sm:text-xl font-bold text-slate-900">
-                      <span className="text-xl font-medium text-slate-500">
-                        {myVariable} / 3
+                      <span className="inline-flex items-center gap-1 text-xl font-medium text-slate-500">
+                        {isLoading ? (
+                          <Loader2 className="h-5 w-5 animate-spin text-slate-400" />
+                        ) : (
+                          <span>{myVariable}</span>
+                        )}
+                        <span>/ 3</span>
                       </span>
                     </p>
                   </div>
@@ -624,8 +614,8 @@ export default function GenerateQRCode() {
 
               {/* QR Code Canvas Preview */}
               <div className="w-full p-3 sm:p-4 bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200/60 flex items-center justify-center min-h-[100px] sm:min-h-[140px] md:h-[260px]">
-                <div ref={ref} className="w-full flex items-center justify-center " />   
-                           </div>
+                <div ref={ref} className="w-full flex items-center justify-center " />
+              </div>
               <p className="text-xs text-slate-500 max-w-xs">
                 This preview will be saved when you click Download Custom QR.
               </p>

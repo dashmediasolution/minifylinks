@@ -16,17 +16,13 @@ import { Badge } from "@/components/ui/badge";
 import UrlShortner from "@/components/home-page/UrlShortner";
 import { toast } from "sonner";
 import { QRPlatformSection } from "@/components/QRComponent";
-import { useGlobalVariable } from "@/context/usageContext";
-
+ 
 import { useRouter } from "next/navigation";
 export default function ShortUrlPage() {
   const [url, setUrl] = useState('');
   const [customUrl, setCustomUrl] = useState('');
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<'shortener' | 'qr'>('shortener');
-  const [credit, setCredit] = useState(0);
-const { myVariable, setMyVariable, fetchData } = useGlobalVariable();
-  const router = useRouter();
+   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
      e.preventDefault();
@@ -54,10 +50,8 @@ const { myVariable, setMyVariable, fetchData } = useGlobalVariable();
       const data = await res.json();
       if (res.ok) {
          toast.success("Link processed successfully!");
-        if (typeof window !== 'undefined' && data?.usage !== undefined) {
-          localStorage.setItem("credit", data.usage.toString());
-          setCredit(data.usage);
-        }
+      
+         
         sessionStorage.setItem('latest_short_code', data.shortCode);
         sessionStorage.setItem('latest_original_url', url);
 
@@ -86,7 +80,7 @@ const { myVariable, setMyVariable, fetchData } = useGlobalVariable();
         <h1 className="text-xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">
           Transform long URLs into <br className="hidden sm:inline" />
           <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-500 to-indigo-700">
-            high-converting brand assets {myVariable}
+            high-converting brand assets  
           </span>
         </h1>
         <p className="mt-4 text-xs md:text-lg text-slate-600 max-w-2xl mx-auto">
@@ -117,8 +111,7 @@ const { myVariable, setMyVariable, fetchData } = useGlobalVariable();
               setCustomUrl={setCustomUrl}
               loading={loading}
               handleSubmit={(e) => handleSubmit(e)}
-              credit={credit}
-              setCredit={setCredit}
+           
             />
 
 

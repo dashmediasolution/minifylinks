@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
 
     // --- NEW CHANGE START ---
     // Only enforce limits if we are NOT in development mode
-    if (process.env.NODE_ENV == "development") {
+    if (process.env.NODE_ENV !== "development") {
       const { count, ttl } = await checkRateLimit(ip)
       usage=count
       const timeRemaining = formatTTLHours(ttl)

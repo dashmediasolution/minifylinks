@@ -122,7 +122,7 @@ export default function GenerateQRCode() {
       const res = await fetch("/api/reset-limit", { method: "POST" });
       if (!res.ok) throw new Error();
 
-      setMyVariable(myVariable)
+      setMyVariable(0)
       toast.success("Daily limit reset successfully!");
       handleCloseModal();
     } catch {
@@ -206,7 +206,7 @@ export default function GenerateQRCode() {
         const origin = typeof window !== 'undefined' ? window.location.origin : '';
 
         const shortUrl = `${origin}/${data?.shortCode}`;
-
+        setMyVariable(data?.usage)
         setUrl(shortUrl);
 
         if (qrCode.current) {

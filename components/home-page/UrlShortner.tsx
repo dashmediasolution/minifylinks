@@ -74,7 +74,7 @@ export default function UrlShortner({
             if (!res.ok) throw new Error();
 
 
-            setMyVariable(myVariable)
+            setMyVariable(0)
             toast.success("Daily limit reset successfully!");
             handleCloseModal();
         } catch {

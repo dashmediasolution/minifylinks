@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { Sparkles, Link2, QrCode } from 'lucide-react';
 import UrlShortner from './UrlShortner';
 import GenerateQRCode from './generateQRcode';
-
+import { useGlobalVariable } from '@/context/usageContext';
 
 
 export function HeroSection() {
@@ -14,7 +14,7 @@ export function HeroSection() {
   const [customUrl, setCustomUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'shortener' | 'qr'>('shortener');
- 
+  const {setMyVariable} = useGlobalVariable()
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -41,8 +41,8 @@ export function HeroSection() {
 
 
       const data = await res.json();
-      console.log(data)
       if (res.ok) {
+        setMyVariable(data?.usage)
         toast.success("Link processed successfully!");
         
         sessionStorage.setItem('latest_short_code', data?.shortCode);

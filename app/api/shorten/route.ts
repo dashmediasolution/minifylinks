@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { nanoid } from "nanoid";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma"; // The '@' alias points to your root now
-import { redis, getRateLimit, incrementRateLimit } from "@/lib/redis";
+import { redis, getClientIp, getRateLimit, incrementRateLimit } from "@/lib/redis";
 
 const bodySchema = z.object({
   url: z.string().min(1, "URL is required").url("Invalid URL format"),
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const ip = req.headers.get("x-forwarded-for") || "127.0.0.1";
+    const ip = getClientIp(req)
     const data = await prisma.shortLink.findUnique({ where: { shortCode } })
     if (data) {
       return NextResponse.json(

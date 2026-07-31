@@ -36,7 +36,7 @@ export default function UrlShortner({
     const [canClaim, setCanClaim] = useState(false);
     const playerRef = useRef<any>(null);
     const REQUIRED_WATCH_SECONDS = 30;
-    const { myVariable, setMyVariable ,isLoading} = useGlobalVariable()
+    const { myVariable, setMyVariable ,isLoading, fetchData} = useGlobalVariable()
     // Track playback time when modal opens and video plays
     useEffect(() => {
         let interval: NodeJS.Timeout;
@@ -74,7 +74,7 @@ export default function UrlShortner({
             if (!res.ok) throw new Error();
 
 
-            setMyVariable(0)
+            await fetchData();
             toast.success("Daily limit reset successfully!");
             handleCloseModal();
         } catch {

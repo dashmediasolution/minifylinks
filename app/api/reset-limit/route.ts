@@ -1,6 +1,6 @@
 // app/api/reset-limit/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { resetRateLimit } from "@/lib/redis";
+import { getClientIp, normalizeIp, resetRateLimit } from "@/lib/redis";
 import { z } from "zod";
 
 const resetSchema = z.object({
@@ -17,10 +17,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Determine target IP: use provided IP, fallback to request IP
-    const targetIp =
-      validation.data?.ip ||
-      req.headers.get("x-forwarded-for") ||
-      "127.0.0.1";
+    const targetIp = normalizeIp(validation.data?.ip ?? getClientIp(req));
 
     await resetRateLimit(targetIp);
 

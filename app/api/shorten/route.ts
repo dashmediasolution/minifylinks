@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { nanoid } from "nanoid";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma"; // The '@' alias points to your root now
-import { redis, checkRateLimit, formatTTLHours } from "@/lib/redis";
+import { redis, getRateLimit, incrementRateLimit } from "@/lib/redis";
 
 const bodySchema = z.object({
   url: z.string().min(1, "URL is required").url("Invalid URL format"),
@@ -12,7 +12,6 @@ const bodySchema = z.object({
 
 export async function POST(req: NextRequest) {
   try {
-    let usage=0;
     const body = await req.json();
     const validation = bodySchema.safeParse(body);
     let shortCode = validation?.data?.customUrl
@@ -23,23 +22,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 1. Rate Limiting
     const ip = req.headers.get("x-forwarded-for") || "127.0.0.1";
-
-    // --- NEW CHANGE START ---
-    // Only enforce limits if we are NOT in development mode
-    if (process.env.NODE_ENV !== "development") {
-      const { count, ttl } = await checkRateLimit(ip)
-      usage=count
-      const timeRemaining = formatTTLHours(ttl)
-      if (count > 3) {
-        return NextResponse.json(
-          { error: `Daily limit  reached. Please try again after ${timeRemaining} hours.` },
-          { status: 429 },
-        );
-      }
-    }
-    // --- NEW CHANGE END ---
     const data = await prisma.shortLink.findUnique({ where: { shortCode } })
     if (data) {
       return NextResponse.json(
@@ -47,13 +30,19 @@ export async function POST(req: NextRequest) {
         { status: 400 },
       );
     }
-    // 2. Generate Code
-    if (!shortCode) {
 
+    const { count } = await getRateLimit(ip)
+    if (count >= 3) {
+      return NextResponse.json(
+        { error: "You have used all 3 free credits. Watch an ad to reset your usage." },
+        { status: 429 },
+      );
+    }
+
+    if (!shortCode) {
       shortCode = nanoid(6);
     }
 
-    // 3. Save to MongoDB
     await prisma.shortLink.create({
       data: {
         originalUrl: validation.data.url,
@@ -61,9 +50,11 @@ export async function POST(req: NextRequest) {
         creatorIP: ip,
       },
     });
-    console.log(usage, "usage")
-    // 4. Save to Redis
+
     await redis.set(`short:${shortCode}`, validation.data.url);
+
+    const { count: updatedCount } = await incrementRateLimit(ip)
+    const usage = Math.min(updatedCount, 3)
 
     return NextResponse.json({ shortCode, usage }, { status: 201 });
   } catch (error) {

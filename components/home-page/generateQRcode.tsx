@@ -599,7 +599,7 @@ export default function GenerateQRCode() {
                       Need more credits?
                     </p>
                     <p className="text-[11px] leading-tight text-slate-500">
-                      Watch an ad when you have 0 credits
+                      Watch an ad when you’ve used all 3 free credits
                     </p>
                   </div>
                   <button

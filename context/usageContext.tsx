@@ -36,6 +36,7 @@ export const GlobalVariableProvider: React.FC<GlobalVariableProviderProps> = ({ 
         method: 'GET',
       });
       const data = await res.json();
+      console.log(data,"data")
       setMyVariable(data?.usage ?? 0);
     } catch (error) {
       console.error('Failed to fetch usage data:', error);

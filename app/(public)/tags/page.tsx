@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { unstable_cache } from 'next/cache';
 
 export const metadata: Metadata = {
-  title: "Blog Tags | Minifylinks",
+  title: "Blog Tags",
   description: "Browse all blog tags",
 };
 

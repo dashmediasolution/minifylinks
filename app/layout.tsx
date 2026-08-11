@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://minifylinks.com"),
   title: {
     default: "Free URL Shortener",
-    template: "%s | MinifyLinks",
+    template: "%s",
   },
   description: "Simplify your links, amplify your reach. A powerful, free tool to shrink long links.",
   keywords: ["url shortener", "link shortener", "free url shortener"],

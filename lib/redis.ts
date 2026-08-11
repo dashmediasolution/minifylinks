@@ -36,7 +36,8 @@ export function getClientIp(request: { headers: Headers | { get(name: string): s
   return '127.0.0.1'
 }
 
-export async function getRateLimit(ip: string) {
+export async function getRateLimit(ip: string) 
+{
   const key = `rate:${ip}`
   const count = await redis.get<number>(key)
   const ttl = await redis.ttl(key)
@@ -46,7 +47,6 @@ export async function getRateLimit(ip: string) {
     ttl: ttl > 0 ? ttl : 86400,
   }
 }
-
 export async function incrementRateLimit(ip: string) {
   const key = `rate:${ip}`
   const count = await redis.incr(key)
@@ -55,7 +55,7 @@ export async function incrementRateLimit(ip: string) {
     await redis.expire(key, 86400)
   }
 
-  const ttl = await redis.ttl(key)
+const ttl = await redis.ttl(key);
 
   return {
     count,

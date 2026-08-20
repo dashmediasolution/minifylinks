@@ -531,7 +531,7 @@ export default function GenerateQRCode() {
                             <PlaySquare className="h-5 w-5 text-purple-600" />
                           </div>
                           <p className="text-xs leading-relaxed text-slate-700">
-                            Watch ads to refresh credits and keep creating without interruptions.
+                            Watch an ad to keep creating 100% free QR Codes.
                           </p>
                         </div>
 

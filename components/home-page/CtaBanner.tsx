@@ -33,12 +33,13 @@ export function AbstractCtaBanner() {
           </span>
           
           <h2 className="text-2xl sm:text-4xl md:text-6xl font-semibold tracking-tight leading-[1.1] text-gray-900">
-            Start sharing <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-700">smarter links.</span>
+            Shorten URL with QR <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-700">Free & Instantly.</span>
           </h2>
           
           <p className="text-md sm:text-lg md:text-xl text-gray-600 leading-relaxed max-w-lg mx-auto font-medium">
-            Experience secure and fast redirection,
-            <br className="hidden sm:block"/> Join thousands of users today.
+          MinifyLinks is a free way to shorten links or generate QR 
+          Codes with logos and sharing features.
+
           </p>
 
    

@@ -4,37 +4,37 @@ export default function SingleBlogLoading() {
   return (
     <main className="bg-white min-h-screen">
       <article className="py-12 sm:py-16">
-        
+
         {/* Post Header */}
         <header className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10">
           <div className="flex flex-wrap gap-3 justify-center mb-4">
-             <Skeleton className="h-6 w-20 rounded-lg" />
-             <Skeleton className="h-6 w-24 rounded-lg" />
+            <Skeleton className="h-6 w-20 rounded-lg" />
+            <Skeleton className="h-6 w-24 rounded-lg" />
           </div>
           <Skeleton className="h-10 sm:h-12 lg:h-14 w-full mx-auto mb-3" />
           <Skeleton className="h-10 sm:h-12 lg:h-14 w-3/4 mx-auto" />
-          
+
           <div className="mt-6 flex flex-wrap justify-center items-center gap-x-4 gap-y-2">
             <div className="flex items-center gap-2">
-               <Skeleton className="h-6 w-6 rounded-full" />
-               <Skeleton className="h-4 w-32" />
+              <Skeleton className="h-6 w-6 rounded-full" />
+              <Skeleton className="h-4 w-32" />
             </div>
             <span className="hidden sm:block text-slate-200">•</span>
             <div className="flex items-center gap-2">
-               <Skeleton className="h-4 w-4 rounded-full" />
-               <Skeleton className="h-4 w-28" />
+              <Skeleton className="h-4 w-4 rounded-full" />
+              <Skeleton className="h-4 w-28" />
             </div>
           </div>
         </header>
 
         {/* Hero Image */}
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 sm:mb-12">
-           <Skeleton className="w-full aspect-[16/9] rounded-2xl lg:rounded-3xl shadow-lg" />
+          <Skeleton className="w-full aspect-[16/9] rounded-2xl lg:rounded-3xl shadow-lg" />
         </div>
 
         {/* Post Body & Sidebars */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8 xl:gap-12">
-          
+
           {/* Left Sidebar: Share Widget (Sticky) */}
           <aside className="hidden lg:block w-20 shrink-0">
             <div className="sticky top-28 flex flex-col gap-3 items-center">
@@ -47,18 +47,18 @@ export default function SingleBlogLoading() {
 
           {/* Main Content */}
           <div className="flex-1 min-w-0 space-y-6">
-             <Skeleton className="h-4 w-full" />
-             <Skeleton className="h-4 w-full" />
-             <Skeleton className="h-4 w-11/12" />
-             <Skeleton className="h-4 w-full" />
-             <Skeleton className="h-4 w-4/5" />
-             
-             <div className="pt-8 pb-4">
-                <Skeleton className="h-8 w-1/2 mb-6" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-5/6" />
-             </div>
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-11/12" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-4/5" />
+
+            <div className="pt-8 pb-4">
+              <Skeleton className="h-8 w-1/2 mb-6" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-5/6" />
+            </div>
           </div>
 
           {/* Right Sidebar: Related Posts (Sticky) */}

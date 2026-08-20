@@ -60,12 +60,13 @@ export function FeaturesBento() {
         
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
          <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-gray-500">
-            Features
+            See What Works
+
           </span>
           
           {/* Heading (Removed the word 'Features') */}
           <h2 className="text-2xl md:text-5xl font-semibold text-gray-900 tracking-tight">
-            Designed for <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-700">Growth.</span>
+            Link Up Your Marketing with  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-700">MinifyLinks.</span>
           </h2>
         </div>
 
@@ -74,7 +75,7 @@ export function FeaturesBento() {
           {/* 1. LIGHTNING FAST (Vertical) */}
           <BentoCard 
             title="Lightning Fast"
-            description="Global edge network ensures <50ms redirects."
+            description="Our global server ensures network redirects in under 50 ms."
             bgClass="bg-[#FFF8E6]" 
             graphic={
               <div className="relative w-full h-full">
@@ -93,7 +94,7 @@ export function FeaturesBento() {
           {/* 2. MOBILE OPTIMIZED (Vertical) */}
           <BentoCard 
             title="Mobile Optimized"
-            description="Perfect experience on every device."
+            description="Perfect experience on every device, including mobile phones."
             bgClass="bg-[#F3E8FF]" 
             graphic={
               <div className="relative w-full h-full">
@@ -112,7 +113,7 @@ export function FeaturesBento() {
           {/* 3. SECURE & ENCRYPTED (Vertical) */}
           <BentoCard 
             title="Secure & Encrypted"
-            description="Enterprise-grade HTTPS encryption."
+            description="Enterprise-grade security with HTTPS protocols to keep users safe."
             bgClass="bg-[#E6F4F1]" 
             graphic={
                 <div className="relative w-full h-full">
@@ -130,8 +131,8 @@ export function FeaturesBento() {
 
           {/* 4. PRIVACY FOCUSED (Vertical) */}
           <BentoCard 
-            title="Privacy Focused"
-            description="Your data is yours. We are GDPR compliant."
+            title="Interactive QR Codes"
+            description="Trusted and logo-imbued QR codes with customizable elements."
             bgClass="bg-[#EFF6FF]" 
             graphic={
                <div className="relative w-full h-full">
@@ -151,7 +152,7 @@ export function FeaturesBento() {
           <BentoCard 
             variant="horizontal" // <--- This switches the layout
             title="Global Infrastructure"
-            description="99.9% uptime guaranteed with servers distributed worldwide."
+            description="99.9% uptime guaranteed with our worldwide server distribution."
             bgClass="bg-[#E0F2FE] md:col-span-2" 
             graphic={
                <div className="relative w-full h-full ">

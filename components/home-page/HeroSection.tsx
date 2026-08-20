@@ -14,7 +14,7 @@ export function HeroSection() {
   const [customUrl, setCustomUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'shortener' | 'qr'>('shortener');
-  const {setMyVariable} = useGlobalVariable()
+  const { setMyVariable } = useGlobalVariable()
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -44,7 +44,7 @@ export function HeroSection() {
       if (res.ok) {
         setMyVariable(data?.usage)
         toast.success("Link processed successfully!");
-        
+
         sessionStorage.setItem('latest_short_code', data?.shortCode);
         sessionStorage.setItem('latest_original_url', url);
 
@@ -52,7 +52,7 @@ export function HeroSection() {
 
         router.push(`/result/success`);
       } else {
-         
+
         toast.error(data.error || "Failed to process request.");
       }
     } catch (err) {
@@ -76,13 +76,12 @@ export function HeroSection() {
           <h1 className="text-xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">
             Shorten links, create QR codes, <br className="hidden sm:inline" />
             <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-500 to-indigo-700">
-              and expand your reach.
+              Easily. No Sign-Up Required
             </span>
           </h1>
 
           <p className="text-xs sm:text-md text-slate-600 max-w-2xl mx-auto font-normal">
-            Minifylinks gives you total control over your short links with custom alias branding and instant QR code generation.
-          </p>
+            Turn long, messy web addresses into clean, branded short links in seconds. MinifyLinks is the free web URL shortener built for creators, marketers, and businesses who want to take control of every link they share without signing up.          </p>
 
           {/* Segmented Switcher */}
           <div className="flex items-center justify-center pt-3">
@@ -132,7 +131,7 @@ export function HeroSection() {
                 setCustomUrl={setCustomUrl}
                 loading={loading}
                 handleSubmit={(e) => handleSubmit(e)}
-             
+
               />
             </div>
           ) : (

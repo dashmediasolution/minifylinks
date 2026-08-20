@@ -19,7 +19,7 @@ import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-export   function QRPlatformSection() {
+export function QRPlatformSection() {
     return (
         <main className="w-full overflow-hidden bg-white">
 
@@ -44,14 +44,16 @@ export   function QRPlatformSection() {
                         </div>
 
                         <h2 className="max-w-md text-3xl font-bold leading-tight tracking-tight text-slate-900">
-                            Use your QR Codes to demand attention and inspire instant action
+                            Get 2x More Click-Through Rate with Custom Links
+
                         </h2>
 
                         <div className="mt-6 space-y-3">
                             {[
-                                "Create dynamic QR Codes that you can update anytime",
-                                "Add logos, colors, and branding to match your identity",
-                                "Boost engagement across print, digital & offline",
+                                'Users trust clean links more than long strings of random letters.',
+                                'Turn any long link into a short URL with our custom alias feature.',
+                                'Clear links get higher click-through rates on social posts and emails.',
+
                             ].map((item) => (
                                 <div
                                     key={item}
@@ -101,14 +103,14 @@ export   function QRPlatformSection() {
                         </div>
 
                         <h2 className="max-w-md text-3xl font-bold leading-tight tracking-tight text-slate-900">
-                            Learn how your audience interacts with every QR Code
+                            Easily Identify What’s Effective and Create Professional Link Strategie
                         </h2>
 
                         <div className="mt-6 space-y-3">
                             {[
-                                "Real-time scan analytics and performance insights",
-                                "Track by location, device, time and platform",
-                                "Make data-driven decisions that drive results",
+                                "Add Google UTM parameters to your shortened links for analytics.",
+                                "Organize campaign links using tags, folders, and custom aliases.",
+                                "Develop a high-scale custom workflow for link shortening with MinifyLinks.",
                             ].map((item) => (
                                 <div
                                     key={item}
@@ -140,14 +142,16 @@ export   function QRPlatformSection() {
                         </div>
 
                         <h2 className="max-w-md text-3xl font-bold leading-tight tracking-tight text-slate-900">
-                            Build unforgettable brand connections in a single unified platform
+                            Take Control of Shared Links to Boost Customer Targeting
+
                         </h2>
 
                         <div className="mt-6 space-y-3">
                             {[
-                                "Manage all your QR Codes, links & campaigns in one place",
-                                "Team collaboration with roles and permissions",
-                                "Powerful APIs and integrations to scale your workflow",
+                                '  Keep your links organized and easy to manage from one place.',
+                                'Custom URL shortening without making links generic and spammy-looking. ',
+                                'Use link insights to understand your audience and improve campaigns.',
+
                             ].map((item) => (
                                 <div
                                     key={item}
@@ -161,7 +165,7 @@ export   function QRPlatformSection() {
 
                     </div>
 
-                   
+
                     <Image
                         src="/images/UrlShortImage.png"
                         alt="URL Short"
@@ -183,11 +187,13 @@ export   function QRPlatformSection() {
 
                 <div className="mb-8 text-center">
                     <h2 className="text-2xl font-bold text-slate-900">
-                        The Linkora Platform
+                        MinifyLinks: Best URL Shortener
+
                     </h2>
 
                     <p className="mt-2 text-sm text-slate-500">
-                        Everything you need to create, manage and optimize QR experiences.
+                        Create fast, clean, and professional short URLs for websites, social media, or campaigns.
+
                     </p>
                 </div>
 
@@ -196,29 +202,29 @@ export   function QRPlatformSection() {
 
                     <PlatformCard
                         icon={<Link2 />}
-                        title="URL Shortener"
-                        description="Create clean, reliable short links in seconds."
+                        title="Reliable URL Shortener"
+                        description="Turn long URLs into short, clean, and shareable links in seconds."
                         color="blue"
                     />
 
                     <PlatformCard
                         icon={<Sparkles />}
                         title="Custom URL Alias"
-                        description="Personalize your links with branded custom slugs."
+                        description="Create personalized short links with memorable custom aliases for easy recognition."
                         color="purple"
                     />
 
                     <PlatformCard
                         icon={<QrCode />}
-                        title="Dynamic QR Code Studio"
-                        description="Design custom QR codes with patterns, colors & logos."
+                        title="Secure Link Protection"
+                        description="HTTPS destination support for all URLs. Protects your users from unsafe redirects."
                         color="emerald"
                     />
 
                     <PlatformCard
                         icon={<ScanQrCode />}
-                        title="Instant Standard QR"
-                        description="Generate clean, scannable QR codes automatically for any link."
+                        title="Easy Link Sharing"
+                        description="Use easy-to-use short URLs for sharing across websites, social media, etc."
                         color="orange"
                     />
 
@@ -283,24 +289,24 @@ export   function QRPlatformSection() {
 
                                     {/* Avatar */}
                                     <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-slate-200 to-slate-400 text-lg font-bold text-white">
-                                        JW
+                                        ER
                                     </div>
 
                                     <div>
 
                                         <p className="text-sm leading-6 text-slate-600">
-                                            Linkora has completely transformed the way we use QR
-                                            Codes. The analytics and customization help us deliver
-                                            better experiences to our audience every day.
+                                            MinifyLinks is amazing. I had been using multiple online tools but had no idea something like this existed. It is easy to use and does what it says: custom links without intrusion.
+
                                         </p>
 
                                         <div className="mt-5">
                                             <p className="text-sm font-bold text-slate-900">
-                                                Jenny Wilson
+                                               Elena Rostova 
+
                                             </p>
 
                                             <p className="mt-1 text-xs text-slate-500">
-                                                Marketing Manager, Acme Inc.
+                                               Social Media Lead, Vanguard Group 
                                             </p>
                                         </div>
 

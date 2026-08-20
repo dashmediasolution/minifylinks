@@ -11,9 +11,18 @@ const AbstractCtaBanner = dynamic(() => import("@/components/home-page/CtaBanner
 const QRPlatformSection = dynamic(() => import("@/components/QRComponent").then((mod) => mod.QRPlatformSection));
 
  export const metadata: Metadata = {
-  title: "Free URL Shortener & Custom Links",
-  description: "Minifylinks offers a fast and reliable shortening service with advanced features like enterprise-grade encryption and a global edge network with 99.9% uptime. We also keep your links short and manageable, helping you create branded URLs that boost trust and provide deep analytics to grow your brand.",
-  keywords: ["minifylinks", "free url shortener", "link shortener", "free url shortener"],
+  title: "Web URL Shortener & Custom QR Code Generator",
+  description: "Shorten links and generate custom QR codes with logos instantly. MinifyLinks is a 100% free web URL shortener and QR generator with no sign-up required.",
+  keywords:[
+  "Free URL Shortener",
+  "Personalized Link Shortener",
+  "Create Short Links",
+  "URL Shortener Generator",
+  "QR Code Generator",
+  "Custom QR Code Generator",
+  "QR Code Generator With Logo",
+  "Best Free URL Shortener",
+],
   alternates: {
     canonical: "https://minifylinks.com",
   },

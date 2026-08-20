@@ -50,22 +50,22 @@ export default function Banner() {
     }
 
     if (banners.length === 0) {
-        return 
+        return
     }
 
     // 3. Dynamic Carousel View
     return (
-        
+
         <div className="w-full bg-slate-50 pt-10 pb-12 px-4 md:px-8">
             <div className="mx-auto w-full sm:max-w-xl md:max-w-3xl lg:max-w-5xl xl:max-w-6xl">
 
                 <div className="relative z-10 mb-16 text-center sm:mb-20 max-w-2xl mx-auto space-y-4">
                     <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-blue-600 bg-blue-100/50 px-4 py-2 rounded-full">
-                        Exclusive Promotions
+                        Keep Updated
 
                     </span>
                     <h2 className="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight leading-tight mt-4">
-                        Daily <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-700">Updates.</span>
+                        Strategic Insights to <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-700">Maximize Impact.</span>
                     </h2>
                 </div>
                 <Carousel
@@ -83,10 +83,8 @@ export default function Banner() {
                                         src={slide.image}
                                         alt={slide.title}
                                         fill
-                                        priority
-
+                                        priority 
                                     />
-
                                 </div>
                             );
 
@@ -105,7 +103,7 @@ export default function Banner() {
                         })}
                     </CarouselContent>
 
-                    {/* Only render nav buttons if there are multiple slides */}
+
                     {banners.length > 1 && (
                         <div className="hidden sm:block">
                             <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white backdrop-blur text-slate-800 border-0 z-30" />

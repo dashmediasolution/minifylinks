@@ -67,7 +67,7 @@ export default function TermsPage() {
                 </ul>
               </div>
             </div>
-
+    
             <div className="space-y-3 bg-muted p-4 rounded-lg mt-4">
               <h3 className="scroll-m-20 text-lg font-semibold tracking-tight">No Account Required</h3>
               <p className="leading-7">You do not need to create an account to use MinifyLinks. However:</p>

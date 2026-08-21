@@ -2,6 +2,7 @@ import { HeroSection } from "@/components/home-page/HeroSection";
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import Banner from "@/components/home-page/banner";
+import { QrCode, BarChart3, Sparkles,ScanQrCode ,Link2} from "lucide-react";
 import ProcessAndFeatures from "@/components/home-page/ProcessAndFeature";
 // Dynamically import below-the-fold components to reduce initial JS/CSS bundle size
 const HowItWorks = dynamic(() => import("@/components/home-page/HowItWorks").then((mod) => mod.HowItWorks));
@@ -10,23 +11,83 @@ const FaqSection = dynamic(() => import("@/components/home-page/FaqSection").the
 const AbstractCtaBanner = dynamic(() => import("@/components/home-page/CtaBanner").then((mod) => mod.AbstractCtaBanner));
 const QRPlatformSection = dynamic(() => import("@/components/QRComponent").then((mod) => mod.QRPlatformSection));
 
- export const metadata: Metadata = {
+export const metadata: Metadata = {
   title: "Web URL Shortener & Custom QR Code Generator",
   description: "Shorten links and generate custom QR codes with logos instantly. MinifyLinks is a 100% free web URL shortener and QR generator with no sign-up required.",
-  keywords:[
-  "Free URL Shortener",
-  "Personalized Link Shortener",
-  "Create Short Links",
-  "URL Shortener Generator",
-  "QR Code Generator",
-  "Custom QR Code Generator",
-  "QR Code Generator With Logo",
-  "Best Free URL Shortener",
-],
+  keywords: [
+    "Free URL Shortener",
+    "Personalized Link Shortener",
+    "Create Short Links",
+    "URL Shortener Generator",
+    "QR Code Generator",
+    "Custom QR Code Generator",
+    "QR Code Generator With Logo",
+    "Best Free URL Shortener",
+  ],
   alternates: {
     canonical: "https://minifylinks.com",
   },
 };
+
+const props = [
+  {
+    title: "Create Clean, Custom Alias Short Links for Every Campaign Your Brand Runs",
+    points: [
+      'Clear wording helps because people click readable links more often.',
+      'Custom aliases are easy to remember and even say out loud or type.',
+      'Organized tags help you see which campaign or post drives your traffic.',
+    ],
+    image: "/images/QRImage.png",
+    icon: <QrCode className="h-4 w-4 text-purple-600" />
+  },
+  {
+    title: "Generate Dynamic, Custom QR Codes with Logos to Elevate Your Marketing",
+    points: [
+      'Logos on QR codes prove they belong to a brand instead of spam.',
+      'Unique colors and logos catch attention, which leads to more scanning.',
+      'When users see your brand logo consistently, it helps improve brand recall.',
+
+    ],
+    image: "/images/QRCodeImage.png",
+    icon: <BarChart3 className="h-4 w-4 text-orange-500" />
+  },
+  {
+    title: "Manage Professional Link Building & Branding with MinifyLinks Free Tools",
+    points: [
+      '   Replace the randomized, messy brand link with tidy and professional ones.',
+      'Subtle linking strategy that conveys the message clearly in few words.',
+      'Free and fast tools let you create links and QR without sign-ups or fees.'
+    ],
+    image: "/images/UrlShortImage.png",
+    icon: <Sparkles className="h-4 w-4 text-purple-600" />
+  },
+]
+
+const cards = {
+  heading: "Best Free URL Shortener & Branded QR Codes",
+  subheading: "Create, manage, and optimize your branding with our free web URL shortener generator  and custom QR code generator with logo.",
+  items: [
+    {
+      title: "URL Shortener",
+      text: "Create clean, reliable short links in seconds.",
+      icon:<Link2 />
+    },
+    {
+      title: "Custom URL Alias",
+      text: "Personalize your links with a branded custom alias.",
+      icon:<Sparkles />
+    },
+    {
+      title: "Dynamic QR Code Studio",
+      text: "Create custom QR codes featuring unique patterns, colors, etc.",
+      icon:<QrCode />
+    },
+    {
+      title: "Instant Standard QR",
+      text: "Generate clear, easy-to-scan QR codes using any URL.",
+          icon:<ScanQrCode />
+    },]
+}
 function StatItem({ number, label }: { number: string; label: string }) {
   return (
     <div className="flex flex-col items-center space-y-1">
@@ -197,13 +258,13 @@ export default function Home() {
       {/* 1. Hero */}
       <HeroSection />
       {/* <ProcessAndFeatures/> */}
-        <div className="grid grid-cols-2 w-screen md:grid-cols-4 gap-8 md:gap-0 py-12 px-6 sm:px-10 bg-linear-to-r from-blue-600 to-indigo-700 max-w-full mx-0 relative z-10 shadow-inner">
+      <div className="grid grid-cols-2 w-screen md:grid-cols-4 gap-8 md:gap-0 py-12 px-6 sm:px-10 bg-linear-to-r from-blue-600 to-indigo-700 max-w-full mx-0 relative z-10 shadow-inner">
         <StatItem number="350K+" label="Short Links Created" />
         <StatItem number="5M+" label="Clicks this Month" />
         <StatItem number="99.9%" label="Uptime Guarantee" />
         <StatItem number="100%" label="Free to Use" />
       </div>
-      <Banner/>
+      <Banner />
       {/* 3. Steps */}
       <HowItWorks />
       {/* 4. Features */}
@@ -212,7 +273,7 @@ export default function Home() {
       {/* 5. FAQ */}
       {/* 6. NEW CTA BANNER */}
       <AbstractCtaBanner />
-      <QRPlatformSection/>
+      <QRPlatformSection props={props} cards={cards}/>
 
       <FaqSection />
     </div>

@@ -2,18 +2,19 @@
 import {
   Palette,
   ImageIcon,
-  Sparkles,
   Focus,
   Grid,
   ShieldCheck,
   FileCode,
 } from "lucide-react";
 import GenerateQRCode from "@/components/home-page/generateQRcode";
-import { FaqSection } from "@/components/home-page/FaqSection";
 import { Card, } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { FaqSection } from "@/components/FAQs/QRStudioFAQ";
 import { QRPlatformSection } from "@/components/QRComponent";
 import { Metadata } from "next";
+import { QrCode, BarChart3, Sparkles, ScanQrCode, Link2 } from "lucide-react";
+
 export const metadata: Metadata = {
   title: " Free QR Code Generator with Logo | Custom QR by MinifyLinks",
 
@@ -38,11 +39,71 @@ export const metadata: Metadata = {
 export default function CustomizeQrPage() {
 
 
+  const props = [
+    {
+      title: "Design Custom QR Codes That Match Your Brand & Inspire Instant Action",
+      points: [
+        'Unlimited color combinations.',
+        'Custom eye & corner styles.',
+        'Logo embedding with smart spacing.'
 
+      ],
+      image: "/images/QRImage.png",
+      icon: <QrCode className="h-4 w-4 text-purple-600" />
+    },
+    {
+      title: "Created for Fast & Reliable Scanning, Ready for Your Audience Interactions",
+      points: [
+        'Print-ready quality QR Codes.',
+        'Crystal-clear downloads in PNG format.',
+        'Fast recognition with mobile-friendly scanning.'
+
+
+      ],
+      image: "/images/QRCodeImage.png",
+      icon: <BarChart3 className="h-4 w-4 text-orange-500" />
+    },
+    {
+      title: "Use Memorable QR Codes for Branded Experiences on Every Platform",
+      points: [
+        'Generate short links & QR Codes together',
+        'Custom QR for social media, websites, and campaigns',
+        'Instantly redirect users with lightning-fast cloud routing.'
+
+
+      ],
+      image: "/images/UrlShortImage.png",
+      icon: <Sparkles className="h-4 w-4 text-purple-600" />
+    },
+  ]
+
+  const cards = {
+    heading: "How to Use Custom QR Studio",
+    subheading: "Design and edit all QR Codes via MinifyLinks and engage with your audience effortlessly.",
+    items: [
+      {
+        title: "Enter Your Destination",
+        text: "Copy and paste your landing page URL into the destination field.",
+        icon: <Link2 />
+      },
+      {
+        title: "Customize QR Codes",
+        text: "Personalize your QR with elements like color, style, and logo.",
+        icon: <Sparkles />
+      },
+      {
+        title: "Download Custom QR",
+        text: "Once everything is finalized, click the Download Custom QR button.",
+        icon: <QrCode />
+      },
+      {
+        title: "Share Across Platforms",
+        text: "Use new QR code in marketing and engage better with your audience.",
+        icon: <ScanQrCode />
+      },]
+  }
   return (
     <div className="pb-24 bg-slate-50 pt-30 md:pt-30 text-slate-900 selection:bg-indigo-500 selection:text-white">
-
-
       <section className=" pb-12 px-6 max-w-5xl mx-auto text-center relative z-10">
         <Badge variant="outline" className="mb-6 py-1.5 px-4 border-indigo-200 bg-indigo-50/80 text-indigo-700 font-medium rounded-full shadow-sm">
           <Sparkles className="w-3.5 h-3.5 mr-2 text-indigo-600" />
@@ -149,7 +210,7 @@ export default function CustomizeQrPage() {
       </section>
 
 
-      <QRPlatformSection />
+      <QRPlatformSection props={props} cards={cards} />
 
       <FaqSection />
 

@@ -19,165 +19,63 @@ import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-export function QRPlatformSection() {
-    return (
+export function QRPlatformSection({ props, cards }: any) {
+        return (
         <main className="w-full overflow-hidden bg-white">
 
 
 
-            <section className="mx-auto max-w-6xl px-6 py-20">
+            <section className="mx-auto max-w-6xl flex flex-col px-6 py-20 gap-24">
+                {props.map((item: any, index: any) => {
 
-                {/* Feature 01 */}
-                <div className="grid items-center gap-12 md:grid-cols-2">
+                    const isImageRight = index % 2 === 0;
 
-                    {/* Text */}
-                    <div className="order-2 md:order-1">
+                    return (
+                        <div className="grid items-center gap-12 md:grid-cols-2" key={item.title}>
 
-                        <div className="mb-4 flex items-center gap-3">
-                            <div className="flex h-9 w-9 items-center justify-center rounded-full border border-purple-100 bg-purple-50">
-                                <QrCode className="h-4 w-4 text-purple-600" />
+                            {/* Text */}
+                            <div className={`order-2 ${isImageRight ? "md:order-1" : "md:order-2"}`}>
+                                <div className="mb-4 flex items-center gap-3">
+                                    <div className="flex h-9 w-9 items-center justify-center rounded-full border border-purple-100 bg-purple-50">
+                                        {item?.icon}
+                                    </div>
+
+                                    <span className="text-xs font-bold text-orange-500">
+                                        0{index + 1}
+                                    </span>
+                                </div>
+
+                                <h2 className="max-w-md text-3xl font-bold leading-tight tracking-tight text-slate-900">
+                                    {item?.title}
+                                </h2>
+
+                                <div className="mt-6 space-y-3">
+                                    {item?.points?.map((point: string) => (
+                                        <div
+                                            key={point}
+                                            className="flex items-start gap-2 text-sm text-slate-600"
+                                        >
+                                            <Check className="mt-0.5 h-4 w-4 shrink-0 text-orange-500" />
+                                            <span>{point}</span>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
 
-                            <span className="text-xs font-bold text-orange-500">
-                                01
-                            </span>
+                            {/* Dashboard / Image */}
+                            <Image
+                                src={item?.image}
+                                alt={item?.title || "Feature Image"}
+                                width={500}
+                                height={300}
+                                // Changed object-cover to object-contain so nothing gets cut off
+                                className={`order-1 mx-auto border shadow-md rounded-xl p-4 w-full h-auto max-w-125 aspect-5/4 object-contain bg-white ${isImageRight ? "md:order-2" : "md:order-1"
+                                    }`}
+                            />
                         </div>
-
-                        <h2 className="max-w-md text-3xl font-bold leading-tight tracking-tight text-slate-900">
-                            Get 2x More Click-Through Rate with Custom Links
-
-                        </h2>
-
-                        <div className="mt-6 space-y-3">
-                            {[
-                                'Users trust clean links more than long strings of random letters.',
-                                'Turn any long link into a short URL with our custom alias feature.',
-                                'Clear links get higher click-through rates on social posts and emails.',
-
-                            ].map((item) => (
-                                <div
-                                    key={item}
-                                    className="flex items-start gap-2 text-sm text-slate-600"
-                                >
-                                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-orange-500" />
-                                    <span>{item}</span>
-                                </div>
-                            ))}
-                        </div>
-
-                    </div>
-
-                    {/* Dashboard */}
-                    <Image
-                        src="/images/QRImage.png"
-                        alt="QR Code"
-                        width={500}
-                        height={300}
-                        className="order-1 md:order-2 border shadow-md rounded-xl p-4 "
-                    />
-
-
-                </div>
-
-
-                {/* Feature 02 */}
-                <div className="mt-24 grid items-center gap-12 md:grid-cols-2">
-
-                    <Image
-                        src="/images/QRCodeImage.png"
-                        alt="QR Code"
-                        width={400}
-                        height={400}
-                        className="  border shadow-md rounded-xl p-4 "
-                    />
-
-                    <div>
-                        <div className="mb-4 flex items-center gap-3">
-                            <div className="flex h-9 w-9 items-center justify-center rounded-full border border-orange-100 bg-orange-50">
-                                <BarChart3 className="h-4 w-4 text-orange-500" />
-                            </div>
-
-                            <span className="text-xs font-bold text-orange-500">
-                                02
-                            </span>
-                        </div>
-
-                        <h2 className="max-w-md text-3xl font-bold leading-tight tracking-tight text-slate-900">
-                            Easily Identify What’s Effective and Create Professional Link Strategie
-                        </h2>
-
-                        <div className="mt-6 space-y-3">
-                            {[
-                                "Add Google UTM parameters to your shortened links for analytics.",
-                                "Organize campaign links using tags, folders, and custom aliases.",
-                                "Develop a high-scale custom workflow for link shortening with MinifyLinks.",
-                            ].map((item) => (
-                                <div
-                                    key={item}
-                                    className="flex items-start gap-2 text-sm text-slate-600"
-                                >
-                                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-orange-500" />
-                                    <span>{item}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                </div>
-
-
-                {/* Feature 03 */}
-                <div className="mt-24 grid items-center gap-12 md:grid-cols-2">
-
-                    <div className="order-2 md:order-1">
-
-                        <div className="mb-4 flex items-center gap-3">
-                            <div className="flex h-9 w-9 items-center justify-center rounded-full border border-purple-100 bg-purple-50">
-                                <Sparkles className="h-4 w-4 text-purple-600" />
-                            </div>
-
-                            <span className="text-xs font-bold text-orange-500">
-                                03
-                            </span>
-                        </div>
-
-                        <h2 className="max-w-md text-3xl font-bold leading-tight tracking-tight text-slate-900">
-                            Take Control of Shared Links to Boost Customer Targeting
-
-                        </h2>
-
-                        <div className="mt-6 space-y-3">
-                            {[
-                                '  Keep your links organized and easy to manage from one place.',
-                                'Custom URL shortening without making links generic and spammy-looking. ',
-                                'Use link insights to understand your audience and improve campaigns.',
-
-                            ].map((item) => (
-                                <div
-                                    key={item}
-                                    className="flex items-start gap-2 text-sm text-slate-600"
-                                >
-                                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-orange-500" />
-                                    <span>{item}</span>
-                                </div>
-                            ))}
-                        </div>
-
-                    </div>
-
-
-                    <Image
-                        src="/images/UrlShortImage.png"
-                        alt="URL Short"
-                        width={500}
-                        height={500}
-                        className="order-1 md:order-2 border shadow-md rounded-xl p-4 "
-                    />
-
-                </div>
-
+                    );
+                })}
             </section>
-
 
             {/* ===================================================== */}
             {/* PLATFORM FEATURES */}
@@ -187,46 +85,32 @@ export function QRPlatformSection() {
 
                 <div className="mb-8 text-center">
                     <h2 className="text-2xl font-bold text-slate-900">
-                        MinifyLinks: Best URL Shortener
+                        {cards?.heading}
 
                     </h2>
 
                     <p className="mt-2 text-sm text-slate-500">
-                        Create fast, clean, and professional short URLs for websites, social media, or campaigns.
-
+                        {cards?.subheading}
                     </p>
                 </div>
 
 
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 
-                    <PlatformCard
-                        icon={<Link2 />}
-                        title="Reliable URL Shortener"
-                        description="Turn long URLs into short, clean, and shareable links in seconds."
-                        color="blue"
-                    />
+                 
+                    {
+                        cards?.items?.map((item:any) => (
+                            <PlatformCard
+                                key={item?.title}
+                                icon={item?.icon}
+                                title={item?.title}
+                                description={item?.text}
+                                color="purple"
+                            />
+                        ))
 
-                    <PlatformCard
-                        icon={<Sparkles />}
-                        title="Custom URL Alias"
-                        description="Create personalized short links with memorable custom aliases for easy recognition."
-                        color="purple"
-                    />
-
-                    <PlatformCard
-                        icon={<QrCode />}
-                        title="Secure Link Protection"
-                        description="HTTPS destination support for all URLs. Protects your users from unsafe redirects."
-                        color="emerald"
-                    />
-
-                    <PlatformCard
-                        icon={<ScanQrCode />}
-                        title="Easy Link Sharing"
-                        description="Use easy-to-use short URLs for sharing across websites, social media, etc."
-                        color="orange"
-                    />
+                    }
+               
 
                 </div>
 
@@ -301,12 +185,12 @@ export function QRPlatformSection() {
 
                                         <div className="mt-5">
                                             <p className="text-sm font-bold text-slate-900">
-                                               Elena Rostova 
+                                                Elena Rostova
 
                                             </p>
 
                                             <p className="mt-1 text-xs text-slate-500">
-                                               Social Media Lead, Vanguard Group 
+                                                Social Media Lead, Vanguard Group
                                             </p>
                                         </div>
 

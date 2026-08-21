@@ -26,41 +26,43 @@ export function FaqSection() {
           {/* 1. Free (Removed ad mention) */}
           <AccordionItem value="item-1" className="bg-white px-6 border-b rounded-none">
             <AccordionTrigger className="text-md font-semibold text-gray-800 hover:text-blue-600 hover:no-underline py-6 text-left">
-              Do I need an account to shorten a URL with MinifyLinks?
+              Do I need to create an account to use MinifyLinks?
             </AccordionTrigger>
             <AccordionContent className="text-gray-600 text-sm leading-relaxed pb-6">
-              No account is required. You can simply paste your URL, set a custom alias, and generate a shortened link immediately without a dashboard or plan purchase.
-            </AccordionContent>
+              Absolutely not. You are free to use MinifyLinks tools to shorten your links and generate custom QR codes instantly without any worry about signing up, logging in, or learning a new dashboard just to use essential marketing tools.            </AccordionContent>
           </AccordionItem>
 
           {/* 2. Daily Limit */}
           <AccordionItem value="item-2" className="bg-white px-6 border-b rounded-none">
             <AccordionTrigger className="text-md font-semibold text-gray-800 hover:text-blue-600 hover:no-underline py-6 text-left">
-              Can I create custom short links with my own branding?
+              Are the shortened links and QR Codes permanent?
+
             </AccordionTrigger>
             <AccordionContent className="text-gray-600 text-sm leading-relaxed pb-6">
-              Yes. MinifyLinks lets you create custom short links with personalized aliases that match your brand name or tagline. Add something memorable to the alias of your URLs to make them more recognizable and trustworthy for your audience.             </AccordionContent>
+              Yes. Your shortened links and generated QR codes are permanent, and they remain active indefinitely until your destination link is inaccessible, with a 99.9% uptime guarantee.                      </AccordionContent>
+
           </AccordionItem>
 
           {/* 3. Account / Dashboard */}
           <AccordionItem value="item-3" className="bg-white px-6 border-b rounded-none">
             <AccordionTrigger className="text-md font-semibold text-gray-800 hover:text-blue-600 hover:no-underline py-6 text-left">
-              Do your shortened links expire or stop working?
+              How do QR Code generation credits work?
 
             </AccordionTrigger>
             <AccordionContent className="text-gray-600 text-sm leading-relaxed pb-6">
-              No, MinifyLinks-generated shortened links are backed by a lifetime guarantee. They will remain active indefinitely, redirecting users to your desired destination URL.
+              Every user gets free initial credits to create custom QR codes. If your credits run out, you have to watch an ad to instantly renew your credits and claim 100% free QR Code generation.
             </AccordionContent>
           </AccordionItem>
 
           {/* 4. Expiration Policy */}
           <AccordionItem value="item-4" className="bg-white px-6 border-b rounded-none">
             <AccordionTrigger className="text-md font-semibold text-gray-800 hover:text-blue-600 hover:no-underline py-6 text-left">
-              Is MinifyLinks Free? Are there any hidden charges?
+              Can I customize the link back half and QR Code design?
+
 
             </AccordionTrigger>
             <AccordionContent className="text-gray-600 text-sm leading-relaxed pb-6">
-              MinifyLinks is completely free with no hidden fees or even sign-ups. Simply create unlimited custom short URLs and QR Codes with branding. We only offer custom features that are free to use for all, and there are no advanced plans that charge.
+              Yes. You can create short links with custom back-half slugs and add different colors, patterns, and brand logos to your QR Codes using our Custom QR Studio.
             </AccordionContent>
           </AccordionItem>
 

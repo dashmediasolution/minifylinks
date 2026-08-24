@@ -6,7 +6,7 @@ import { FaqSection } from "@/components/FAQs/ORCodeFAQ";
 import { QRPlatformSection } from "@/components/QRComponent";
 import GenerateQRCode from "@/components/home-page/generateQRcode";
 import { QrCode, BarChart3, Sparkles, ScanQrCode, Link2 } from "lucide-react";
-
+import TestimonialSection from "@/components/Testimonial";
 export default function QuickQrGeneratorPage() {
   const props = [
     {
@@ -70,6 +70,29 @@ export default function QuickQrGeneratorPage() {
         icon: <ScanQrCode />
       },]
   }
+    const reviews = [
+    {
+      id: 1,
+      initials: "CB",
+      quote: "MinifyLinks makes generating QR Codes with custom logos so much easier. I just paste my link, add a logo, grab the QR code, and I'm ready to share it online. No registration or paywall",
+      author: "Chloe Bennett",
+      role: "Social Media Lead, Acme Inc."
+    },
+    {
+      id: 2,
+      initials: "DR",
+      quote: "The unlimited generation factor is unmatched. We needed standard QR Codes for an event brochure on short notice, and MinifyLinks helps us a lot with that by creating QR Codes in seconds",
+      author: "Devyn Ross",
+      role: "Community Builder, The Daily Hustle"
+    },
+      {
+      id: 3,
+      initials: "MV",
+      quote: "Having a simple QR tool alongside a link shortener saves time for our whole team every week. It just works with minimal effort and provides resources that are used in every marketing effort for the business",
+      author: "Nina Vasquez",
+      role: "E-commerce Store Owner, Thread & Timber"
+    }
+  ];
   return (
     <div className="pb-24 bg-slate-50 pt-20 text-slate-900 selection:bg-indigo-500 selection:text-white min-h-screen">
       {/* Hero Header */}
@@ -94,6 +117,7 @@ export default function QuickQrGeneratorPage() {
       {/* PLATFORM FEATURES & FAQS */}
       <div className="mt-16 sm:mt-24">
         <QRPlatformSection props={props} cards={cards} />
+      <TestimonialSection testimonials={reviews} />
 
         <FaqSection />
       </div>

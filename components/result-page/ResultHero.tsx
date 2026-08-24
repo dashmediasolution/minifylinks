@@ -158,7 +158,7 @@ export function ResultHero({ initialCode }: ResultHeroProps) {
     <section className="relative pt-30  pb-16 text-center space-y-8 min-h-[90vh] flex flex-col justify-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto overflow-hidden">
 
       {/* Background Glow Overlay */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[600px] h-[320px] sm:h-[600px] bg-gradient-to-br from-blue-300/30 via-indigo-200/20 to-purple-300/30 blur-[60px] rounded-full pointer-events-none -z-10" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-150 h-80 sm:h-150 bg-linear-to-br from-blue-300/30 via-indigo-200/20 to-purple-300/30 blur-[60px] rounded-full pointer-events-none -z-10" />
 
       {/* Hero Badge & Header Text */}
       <div className="relative z-10 space-y-3 max-w-2xl mx-auto">
@@ -167,7 +167,7 @@ export function ResultHero({ initialCode }: ResultHeroProps) {
           Link & QR Generated Successfully
         </div>
         <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight">
-          Your Link is <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Ready!</span>
+          Your Link is <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-indigo-600">Ready!</span>
         </h1>
         <p className="text-sm sm:text-base text-slate-500 max-w-md mx-auto">
           Copy your link below or download your custom QR code to share instantly.
@@ -186,7 +186,7 @@ export function ResultHero({ initialCode }: ResultHeroProps) {
               </label>
 
               {displayOriginal && (
-                <div className="text-[11px] text-slate-400 truncate max-w-[180px] sm:max-w-[280px]">
+                <div className="text-[11px] text-slate-400 truncate max-w-45 sm:max-w-70">
                   Target: {displayOriginal}
                 </div>
               )}
@@ -255,7 +255,7 @@ export function ResultHero({ initialCode }: ResultHeroProps) {
                 href={shareWhatsApp}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 min-w-[100px] inline-flex items-center justify-center gap-1.5 py-2 px-3 bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-200 border border-transparent rounded-xl text-xs font-semibold text-slate-700 transition-all"
+                className="flex-1 min-w-25 inline-flex items-center justify-center gap-1.5 py-2 px-3 bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-200 border border-transparent rounded-xl text-xs font-semibold text-slate-700 transition-all"
               >
                 WhatsApp
               </a>
@@ -263,7 +263,7 @@ export function ResultHero({ initialCode }: ResultHeroProps) {
                 href={shareTwitter}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 min-w-[100px] inline-flex items-center justify-center gap-1.5 py-2 px-3 bg-slate-100 hover:bg-sky-50 hover:text-sky-700 hover:border-sky-200 border border-transparent rounded-xl text-xs font-semibold text-slate-700 transition-all"
+                className="flex-1 min-w-25 inline-flex items-center justify-center gap-1.5 py-2 px-3 bg-slate-100 hover:bg-sky-50 hover:text-sky-700 hover:border-sky-200 border border-transparent rounded-xl text-xs font-semibold text-slate-700 transition-all"
               >
                 X (Twitter)
               </a>
@@ -271,7 +271,7 @@ export function ResultHero({ initialCode }: ResultHeroProps) {
                 href={shareLinkedIn}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 min-w-[100px] inline-flex items-center justify-center gap-1.5 py-2 px-3 bg-slate-100 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 border border-transparent rounded-xl text-xs font-semibold text-slate-700 transition-all"
+                className="flex-1 min-w-25 inline-flex items-center justify-center gap-1.5 py-2 px-3 bg-slate-100 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 border border-transparent rounded-xl text-xs font-semibold text-slate-700 transition-all"
               >
                 LinkedIn
               </a>

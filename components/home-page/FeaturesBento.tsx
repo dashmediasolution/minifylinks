@@ -46,7 +46,7 @@ const BentoCard = ({
       "relative",
       variant === "horizontal" 
         ? "absolute right-0 top-0 w-[60%] h-full" // Horizontal: Absolute Right
-        : "flex-1 w-full min-h-[100px] flex items-end justify-center" // Vertical: Bottom Center
+        : "flex-1 w-full min-h-25 flex items-end justify-center" // Vertical: Bottom Center
     )}>
       {graphic}
     </div>
@@ -66,7 +66,7 @@ export function FeaturesBento() {
           
           {/* Heading (Removed the word 'Features') */}
           <h2 className="text-2xl md:text-5xl font-semibold text-gray-900 tracking-tight">
-            Link Up Your Marketing with  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-700">MinifyLinks.</span>
+            Link Up Your Marketing with  <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-500 to-indigo-700">MinifyLinks.</span>
           </h2>
         </div>
 

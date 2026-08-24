@@ -18,7 +18,7 @@ function StepCard({ number, title, description, icon: Icon }: StepCardProps) {
       </div>
 
       {/* Icon Circle */}
-      <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-50 to-indigo-50 flex items-center justify-center text-blue-600 group-hover:scale-110 group-hover:from-blue-600 group-hover:to-indigo-600 group-hover:text-white transition-all duration-500 shadow-sm mb-6 relative z-10 rotate-3 group-hover:rotate-0">
+      <div className="w-20 h-20 rounded-2xl bg-linear-to-tr from-blue-50 to-indigo-50 flex items-center justify-center text-blue-600 group-hover:scale-110 group-hover:from-blue-600 group-hover:to-indigo-600 group-hover:text-white transition-all duration-500 shadow-sm mb-6 relative z-10 rotate-3 group-hover:rotate-0">
         <Icon className="w-10 h-10" />
       </div>
 
@@ -52,14 +52,14 @@ export function HowItWorks() {
             HOW IT WORKS
           </span>
           <h2 className="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight leading-tight mt-4">
-            Use MinifyLinks in <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-700">3 Steps.</span>
+            Use MinifyLinks in <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-500 to-indigo-700">3 Steps.</span>
           </h2>
         </div>
 
         {/* 3-Card Grid */}
         <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12">
           {/* Connecting dashed line (Desktop only) */}
-          <div className="hidden md:block absolute top-[5rem] left-[16%] right-[16%] h-0 border-t-[3px] border-dashed border-slate-200 z-0" />
+          <div className="hidden md:block absolute top-20 left-[16%] right-[16%] h-0 border-t-[3px] border-dashed border-slate-200 z-0" />
 
           <StepCard
             number="01"

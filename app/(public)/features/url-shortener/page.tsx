@@ -4,6 +4,7 @@ import { FaqSection } from "@/components/FAQs/urlFAQ";
 import { QRPlatformSection } from "@/components/QRComponent";
 import { Globe, ShieldCheck } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import TestimonialSection from "@/components/Testimonial";
 import { QrCode, BarChart3, Sparkles, ScanQrCode, Link2 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -89,7 +90,29 @@ const cards = {
       icon: <ScanQrCode />
     },]
 }
-
+  const reviews = [
+    {
+      id: 1,
+      initials: "ER",
+      quote: "MinifyLinks is amazing. I had been using multiple online tools but had no idea something like this existed. It is easy to use and does what it says: custom links without intrusion. ",
+      author: "Elena Rostova",
+      role: "Social Media Lead, Vanguard Group"
+    },
+    {
+      id: 2,
+      initials: "DV",
+      quote: "When it comes to a fast, reliable, and free way to generate a custom link with QR codes, there is no one near MinifyLinks. If I have to choose, I'll pick Minify without a second thought",
+      author: "David Vance",
+      role: "E-commerce Specialist, Apex Goods"
+    },
+      {
+      id: 3,
+      initials: "WB",
+      quote: "MinifyLinks has completely changed how we share content online. The features are incredible and detailed, and the custom short links give my brand a professional edge",
+      author: "William Brown",
+      role: "Content Strategist, Brand Pulse Agency"
+    }
+  ];  
 export default function ShortUrlPage() {
   return (
     <div className="pb-24 pt-20">
@@ -144,7 +167,7 @@ export default function ShortUrlPage() {
       </section>
 
       <QRPlatformSection props={props} cards={cards} />
-
+      <TestimonialSection testimonials={reviews} />
       <FaqSection />
     </div>
   );

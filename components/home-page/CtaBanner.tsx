@@ -20,7 +20,7 @@ export function AbstractCtaBanner() {
         
 
         {/* 5. Bottom Left: Soft Indigo Circle (Was Gray) */}
-        <div className="absolute -bottom-20 left-20 w-36 sm:w-56 h-36 sm:h-56 bg-gradient-to-tr from-indigo-50 to-blue-50 rounded-full pointer-events-none" />
+        <div className="absolute -bottom-20 left-20 w-36 sm:w-56 h-36 sm:h-56 bg-linear-to-tr from-indigo-50 to-blue-50 rounded-full pointer-events-none" />
 
         {/* 6. Bottom Right: Vibrant Blue Pill */}
         <div className="absolute -bottom-24 -right-12 w-40 h-55 sm:h-80 bg-blue-600 rounded-t-full rounded-b-none pointer-events-none opacity-90" />
@@ -33,7 +33,7 @@ export function AbstractCtaBanner() {
           </span>
           
           <h2 className="text-2xl sm:text-4xl md:text-6xl font-semibold tracking-tight leading-[1.1] text-gray-900">
-            Shorten URL with QR <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-700">Free & Instantly.</span>
+            Shorten URL with QR <br/><span className="text-transparent bg-clip-text bg-linear-to-r from-blue-500 to-indigo-700">Free & Instantly.</span>
           </h2>
           
           <p className="text-md sm:text-lg md:text-xl text-gray-600 leading-relaxed max-w-lg mx-auto font-medium">

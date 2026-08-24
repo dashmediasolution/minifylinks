@@ -457,7 +457,7 @@ export default function GenerateQRCode() {
                     <div className="pl-0 sm:pl-10 relative">
                       <label
                         htmlFor="logo-upload"
-                        className={`group flex min-h-[80px] sm:min-h-[100px] w-full cursor-pointer items-center justify-between rounded-2xl border-2 border-dashed p-3 sm:p-4 transition-all ${logoUrl
+                        className={`group flex min-h-20 sm:min-h-25 w-full cursor-pointer items-center justify-between rounded-2xl border-2 border-dashed p-3 sm:p-4 transition-all ${logoUrl
                           ? "border-blue-200 bg-blue-50/40"
                           : "border-slate-200 bg-slate-50/50 hover:border-blue-400 hover:bg-blue-50/30"
                           }`}
@@ -574,7 +574,7 @@ export default function GenerateQRCode() {
             <div className={isQRGeneratorPage ? 'w-full flex flex-col items-center p-4 sm:p-6 bg-slate-50 border border-slate-100 rounded-2xl space-y-4 text-center' : 'order-1 lg:order-2 lg:col-span-5 w-full flex flex-col items-center h-fit p-0 sm:p-6 bg-slate-50 border border-slate-100 rounded-2xl space-y-4 text-center lg:sticky lg:top-6'}>
 
               {/* Total Credit Usage & Watch Ads Banner */}
-              <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 rounded-xl border border-blue-100 bg-gradient-to-r from-white to-blue-50/40 p-3 sm:p-4 shadow-sm">
+              <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 rounded-xl border border-blue-100 bg-linear-to-r from-white to-blue-50/40 p-3 sm:p-4 shadow-sm">
                 <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
                   <div className="text-left">
                     <p className="text-xs font-semibold text-slate-800">
@@ -613,7 +613,7 @@ export default function GenerateQRCode() {
               </div>
 
               {/* QR Code Canvas Preview */}
-              <div className="w-full p-3 sm:p-4 bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200/60 flex items-center justify-center min-h-[100px] sm:min-h-[140px] md:h-[260px]">
+              <div className="w-full p-3 sm:p-4 bg-white rounded-xl sm:rounded-2xl shadow-sm border border-slate-200/60 flex items-center justify-center min-h-25 sm:min-h-35 md:h-65">
                 <div ref={ref} className="w-full flex items-center justify-center " />
               </div>
               <p className="text-xs text-slate-500 max-w-xs">
@@ -676,10 +676,11 @@ export default function GenerateQRCode() {
                     </div>
                     <div className="min-w-0">
                       <h3 className="truncate text-[11px] sm:text-xs font-semibold text-slate-900">
-                        Trackable
+                       Unlimited QR Scans
+
                       </h3>
                       <p className="hidden sm:block truncate text-[10px] sm:text-[11px] text-slate-500">
-                        Real-time analytics
+                       Scan fearless
                       </p>
                     </div>
                   </div>

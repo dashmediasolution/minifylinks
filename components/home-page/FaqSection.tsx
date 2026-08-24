@@ -16,7 +16,7 @@ export function FaqSection() {
             Support
           </span>
           <h2 className="text-2xl md:text-5xl font-semibold text-gray-900 tracking-tight">
-            Everything you <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-700">need to know.</span>
+            Everything you <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-500 to-indigo-700">need to know.</span>
           </h2>
         </div>
 

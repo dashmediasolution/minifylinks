@@ -130,7 +130,7 @@ export default function CreateBannerDialog({ open, onOpenChange }: BannerFormDia
            <div className="space-y-1.5">
             <Label htmlFor="image" className="text-sm font-semibold text-slate-700">Banner Background Image</Label>
             
-            <div className="relative flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-xl overflow-hidden bg-slate-50 hover:bg-slate-100/70 transition-colors group min-h-[140px]">
+            <div className="relative flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-xl overflow-hidden bg-slate-50 hover:bg-slate-100/70 transition-colors group min-h-35">
               
               {previewUrl ? (
                  <div className="relative w-full aspect-[16/9] bg-slate-950 flex items-center justify-center">
@@ -189,7 +189,7 @@ export default function CreateBannerDialog({ open, onOpenChange }: BannerFormDia
             <Button type="button" variant="outline" className="rounded-full" onClick={handleCancel}>
               Cancel
             </Button>
-            <Button type="submit" className="rounded-full bg-blue-600 hover:bg-blue-700 text-white px-6 min-w-[100px]" disabled={loading}>
+            <Button type="submit" className="rounded-full bg-blue-600 hover:bg-blue-700 text-white px-6 min-w-25" disabled={loading}>
               {loading ? "Saving..." : "Create Slide"}
             </Button>
           </div>

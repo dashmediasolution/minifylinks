@@ -112,7 +112,7 @@ const STEPS: StepItem[] = [
     badgeText: "text-white",
     preview: (
       <div className="flex h-8 w-24 items-center justify-center rounded-lg border border-slate-200 bg-white p-1.5 shadow-sm">
-        <div className="h-1 w-full rounded-full bg-gradient-to-r from-rose-300 to-rose-500"></div>
+        <div className="h-1 w-full rounded-full bg-linear-to-r from-rose-300 to-rose-500"></div>
       </div>
     ),
   },
@@ -244,7 +244,7 @@ const FEATURES: FeatureItem[] = [
 
 export default function ProcessAndFeatures() {
   return (
-    <section className="w-full bg-gradient-to-b from-slate-50/50 to-white py-16 px-4 sm:px-6 lg:px-8 font-sans">
+    <section className="w-full bg-linear-to-b from-slate-50/50 to-white py-16 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-6xl mx-auto">
         {/* --- Header --- */}
         <div className="text-center mb-16">
@@ -256,7 +256,7 @@ export default function ProcessAndFeatures() {
         {/* --- Top 5-Step Process Section --- */}
         <div className="relative mb-24">
           {/* Connector Line for Desktop */}
-          <div className="hidden lg:block absolute top-8 left-[10%] right-[10%] h-[2px] border-t-2 border-dashed border-slate-200 z-0" />
+          <div className="hidden lg:block absolute top-8 left-[10%] right-[10%] h-0.5 border-t-2 border-dashed border-slate-200 z-0" />
 
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8 relative z-10">
             {STEPS.map((step) => {
@@ -298,7 +298,7 @@ export default function ProcessAndFeatures() {
             >
               {/* Feature Visual / Preview UI */}
               <div className="w-full lg:w-1/2 flex justify-center">
-                <div className="w-full max-w-md rounded-3xl bg-gradient-to-tr from-slate-100 to-blue-50/50 p-4 sm:p-6 shadow-inner">
+                <div className="w-full max-w-md rounded-3xl bg-linear-to-tr from-slate-100 to-blue-50/50 p-4 sm:p-6 shadow-inner">
                   {feature.previewUI}
                 </div>
               </div>
@@ -321,7 +321,7 @@ export default function ProcessAndFeatures() {
                 <ul className="space-y-2 pt-2">
                   {feature.highlights.map((item, hIdx) => (
                     <li key={hIdx} className="flex items-center gap-2.5 text-xs sm:text-sm text-slate-700 font-medium">
-                      <div className="flex-shrink-0 h-4 w-4 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                      <div className="shrink-0 h-4 w-4 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
                         <Check size={10} strokeWidth={3} />
                       </div>
                       {item}

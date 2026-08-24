@@ -85,9 +85,9 @@ export function Navbar() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 6 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute left-30 -translate-x-1/2 top-full pt-2 w-[540px] z-50"
-                  >
-                    <div className="p-3 bg-white rounded-2xl shadow-xl border border-slate-200/80 grid grid-cols-3 gap-2">
+                    className="absolute left-30 -translate-x-1/2 top-full pt-2 w-135 z-50"
+                  >a
+                    <div className="p-3 bg-white rounded-2xl shdow-xl border border-slate-200/80 grid grid-cols-3 gap-2">
                       {featureItems.map((item) => {
                         const Icon = item.icon;
                         return (

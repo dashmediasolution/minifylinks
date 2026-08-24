@@ -65,7 +65,7 @@ export function HeroSection() {
   return (
     <>
       <section className="relative pt-24 sm:pt-32 pb-16 text-center px-4 sm:px-6 lg:px-8 overflow-hidden" id="hero-section">
-        <div className="absolute  left-1/2 -translate-x-1/2 w-[500px] sm:w-[800px] h-[350px] bg-gradient-to-tr from-blue-200/50 to-indigo-200/40 blur-[100px] rounded-full pointer-events-none -z-10" />
+        <div className="absolute  left-1/2 -translate-x-1/2 w-125 sm:w-200 h-87.5 bg-linear-to-tr from-blue-200/50 to-indigo-200/40 blur-[100px] rounded-full pointer-events-none -z-10" />
 
         <div className="relative z-10 max-w-4xl mx-auto space-y-6">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs sm:text-sm font-semibold tracking-wide">
@@ -74,9 +74,9 @@ export function HeroSection() {
           </div>
 
           <h1 className="text-xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">
-            Shorten links, create QR codes, <br className="hidden sm:inline" />
+            Shorten Links, Generate QR Codes<br className="hidden sm:inline" />
             <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-500 to-indigo-700">
-              Easily. No Sign-Up Required
+             Easily. No Sign-Up Required
             </span>
           </h1>
 

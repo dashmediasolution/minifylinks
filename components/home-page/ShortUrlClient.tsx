@@ -71,7 +71,7 @@ export default function ShortUrlClient() {
 
         <h1 className="text-xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">
           Create Custom Links Using <br className="hidden sm:inline" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-700">
+          <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-500 to-indigo-700">
             Our Powerful URL Shortener
           </span>
         </h1>
@@ -85,7 +85,7 @@ export default function ShortUrlClient() {
       {/* Main Interactive Tool Card */}
       <section className="px-6 max-w-full md:max-w-[85%] mx-auto">
         <Card className="border-none rounded-2xl w-full overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-slate-50 border-2 rounded-2xl to-indigo-50/40 border-b border-slate-100 p-8">
+          <CardHeader className="bg-linear-to-r from-slate-50 border-2 rounded-2xl to-indigo-50/40 border-b border-slate-100 p-8">
             <div className="flex items-center justify-between mb-2">
               <div className="p-3 rounded-xl bg-indigo-600 text-white shadow-md shadow-indigo-600/20">
                 <Link2 className="w-6 h-6" />

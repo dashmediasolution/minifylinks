@@ -14,7 +14,7 @@ import { FaqSection } from "@/components/FAQs/QRStudioFAQ";
 import { QRPlatformSection } from "@/components/QRComponent";
 import { Metadata } from "next";
 import { QrCode, BarChart3, Sparkles, ScanQrCode, Link2 } from "lucide-react";
-
+import TestimonialSection from "@/components/Testimonial";
 export const metadata: Metadata = {
   title: " Free QR Code Generator with Logo | Custom QR by MinifyLinks",
 
@@ -37,7 +37,29 @@ export const metadata: Metadata = {
   },
 };
 export default function CustomizeQrPage() {
-
+  const reviews = [
+    {
+      id: 1,
+      initials: "SM",
+      quote: "The UI was good, and I can constantly see a live preview of my QR and customize details according to that. The QR works well, and it features my logo in the center, which looks cool while scanning.",
+      author: "Sophia Martinez",
+      role: "E-commerce Store Owner, Craft & Code"
+    },
+    {
+      id: 2,
+      initials: "ER",
+      quote: "The website does exactly what it says, which is generate unlimited free QR Codes. There was literally no login and no hidden paywall, only easy generation with lots of useful customization elements",
+      author: "Elena Rostova",
+      role: "Marketing Manager"
+    },
+    {
+      id: 3,
+      initials: "LW",
+      quote: "It was really nice and simple to customize, and it provides professional looking results. I created a QR code for my café feedback form, and it was worth adding because it showed me lots of genuine reviews.",
+      author: "Lucas Wright",
+      role: "Owner, Cafe Owner"
+    }
+  ];
 
   const props = [
     {
@@ -102,8 +124,9 @@ export default function CustomizeQrPage() {
         icon: <ScanQrCode />
       },]
   }
+
   return (
-    <div className="pb-24 bg-slate-50 pt-30 md:pt-30 text-slate-900 selection:bg-indigo-500 selection:text-white">
+    <div className="bg-slate-50 pt-30 md:pt-30 text-slate-900 selection:bg-indigo-500 selection:text-white">
       <section className=" pb-12 px-6 max-w-5xl mx-auto text-center relative z-10">
         <Badge variant="outline" className="mb-6 py-1.5 px-4 border-indigo-200 bg-indigo-50/80 text-indigo-700 font-medium rounded-full shadow-sm">
           <Sparkles className="w-3.5 h-3.5 mr-2 text-indigo-600" />
@@ -132,7 +155,6 @@ export default function CustomizeQrPage() {
           <Badge variant="outline" className="border-slate-300 text-slate-600 mb-3">Our QR Studio Feature</Badge>
           <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
             Create QR Codes for ROI-Driven Campaigns
-
           </h2>
           <p className="text-slate-600 mt-4 text-lg">
             Rethink the way you reach, share, and overall engage with your audience.
@@ -211,7 +233,7 @@ export default function CustomizeQrPage() {
 
 
       <QRPlatformSection props={props} cards={cards} />
-
+      <TestimonialSection testimonials={reviews} />
       <FaqSection />
 
     </div>

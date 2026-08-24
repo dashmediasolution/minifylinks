@@ -160,7 +160,7 @@ export default function UrlShortner({
             <div className="  lg:col-span-5  flex flex-col items-center h-fit p-0 sm:p-6 bg-slate-50 border border-slate-100 rounded-2xl
                space-y-4 text-center   lg:top-6">
                 {/* Ad/Credits Banner */}
-                <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 rounded-xl border border-blue-100 bg-gradient-to-r from-white to-blue-50/40 p-3 sm:p-4 shadow-sm">
+                <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 rounded-xl border border-blue-100 bg-linear-to-r from-white to-blue-50/40 p-3 sm:p-4 shadow-sm">
                     <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
                         <div className="text-left">
                             <p className="text-xs font-semibold text-slate-800">
@@ -192,7 +192,7 @@ export default function UrlShortner({
                             type="button"
                             onClick={() => setShowModal(true)}
                             className="inline-flex h-8 sm:h-9 shrink-0 items-center justify-center gap-1.5 rounded-md border border-blue-400 bg-white px-3 text-xs font-semibold text-blue-600 shadow-sm transition-all hover:bg-blue-50 hover:shadow-md cursor-pointer"
-                        >
+                         >
                             Watch Ads
                         </button>
                     </div>

@@ -8,6 +8,5 @@ export default function robots(): MetadataRoute.Robots {
       disallow: ['/admin/', '/api/', '/result/success'],
     },
     sitemap: 'https://minifylinks.com/sitemap.xml',
-    host: 'https://minifylinks.com',
-  }
+   }
 }

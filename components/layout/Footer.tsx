@@ -11,6 +11,7 @@ export function Footer() {
     { name: "FAQs", href: "/faqs" },
     { name: "Privacy Policy", href: "/privacy" },
     { name: "Terms of Service", href: "/terms" },
+    { name: "Sitemap", href: "/sitemap" },
   ];
 
   return (

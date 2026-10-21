@@ -40,6 +40,12 @@ type Props = {
 /**
  * Dynamically generate SEO metadata for each blog post page.
  */
+
+function normalizeArticleHeadings(content: string) {
+  return content.replace(/<h1(\s[^>]*)?>/gi, (tag) =>
+    tag.replace(/h1/i, "h2")
+  ).replace(/<\/h1\s*>/gi, "</h2>");
+}
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolvedParams = await params;
   const post = await getCachedPost(resolvedParams.slug)
@@ -183,11 +189,13 @@ export default async function BlogPostPage({ params }: Props) {
           {/* Main Content */}
           <div className="flex-1 min-w-0">
             <div
-              className="prose prose-lg max-w-none prose-slate 
-                         prose-headings:font-bold prose-headings:text-slate-800 
-                         prose-a:text-blue-600 hover:prose-a:text-blue-700 prose-a:transition-colors
-                         prose-img:rounded-xl"
-              dangerouslySetInnerHTML={{ __html: post.content }}
+              className="prose prose-lg max-w-none prose-slate
+             prose-headings:font-bold prose-headings:text-slate-800
+             prose-a:text-blue-600 hover:prose-a:text-blue-700 prose-a:transition-colors
+             prose-img:rounded-xl"
+              dangerouslySetInnerHTML={{
+                __html: normalizeArticleHeadings(post.content),
+              }}
             />
           </div>
 

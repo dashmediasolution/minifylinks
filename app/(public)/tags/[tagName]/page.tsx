@@ -8,12 +8,18 @@ interface TagPageProps {
   params: Promise<{ tagName: string }>;
 }
 
-export async function generateMetadata({ params }: TagPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: TagPageProps): Promise<Metadata> {
   const { tagName } = await params;
-  const decodedTag = decodeURIComponent(tagName).replace(/-/g, ' ');
+  const decodedTag = decodeURIComponent(tagName).replace(/-/g, " ");
+
   return {
     title: `Posts tagged "${decodedTag}" | Minifylinks`,
     description: `Read all blog posts related to ${decodedTag}`,
+    alternates: {
+      canonical: `/tags/${encodeURIComponent(tagName)}`,
+    },
   };
 }
 

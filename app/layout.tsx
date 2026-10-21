@@ -17,6 +17,8 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+
+
   openGraph: {
     type: "website",
     title: "Free URL Shortener | MinifyLinks",
@@ -68,6 +70,25 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  authors: [{ name: "minifylinks.com" }],
+  publisher: "minifylinks.com",
+
+  other: {
+    copyright: "minifylinks.com",
+    distribution: "Global",
+    language: "English",
+    rating: "general",
+    country: "USA",
+    Googlebot: "index, follow",
+    "googlebot-image": "index, follow",
+    "MSNBot-Media": "index, follow",
+    YahooSeeker: "index, follow",
+    "geo.region": "US-AK",
+    "geo.placename": "Anchorage",
+    "geo.position": "61.400784;-149.468355",
+    ICBM: "61.400784, -149.468355",
+
+  },
 };
 
 export default function RootLayout({
@@ -77,11 +98,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        </head>      
+
       <body className={inter.className}>
         <ThemeProvider>
-        {children}
+          {children}
         </ThemeProvider>
         <Toaster position="bottom-right" richColors />
       </body>

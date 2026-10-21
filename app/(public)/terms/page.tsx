@@ -1,6 +1,18 @@
 import React from 'react';
 import { Scale, Calendar, Mail, AlertTriangle, ShieldAlert } from 'lucide-react';
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Terms of Service | MinifyLinks",
+  description:
+    "Read the MinifyLinks Terms of Service to understand the rules, responsibilities, and conditions for using our URL shortening and QR code generation tools.",
+  alternates: {
+    canonical: "https://minifylinks.com/terms",
+  },
+ 
+};
+
 export default function TermsPage() {
   return (
     <main className="min-h-screen bg-background py-12 relative top-16 px-4 sm:px-6 lg:px-8">

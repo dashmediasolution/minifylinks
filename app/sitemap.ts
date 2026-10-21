@@ -1,109 +1,117 @@
-import { MetadataRoute } from 'next'
-import { prisma } from '@/lib/prisma' // Make sure this path matches your project
+import { MetadataRoute } from "next";
+import { prisma } from "@/lib/prisma";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://minifylinks.com'
+  const baseUrl = "https://minifylinks.com";
+  const currentDate = new Date();
 
-  // 1. Get all your dynamic blog posts
   const posts = await prisma.blogPost.findMany({
-    where: { isPublished: true },
+    where: {
+      isPublished: true,
+    },
     select: {
       slug: true,
       updatedAt: true,
-      categories: true,
+      categories: {
+        select: {
+          slug: true,
+        },
+      },
       image: true,
       metaKeywords: true,
     },
-  })
+  });
 
-  // 2. Format blog posts for the sitemap
-  const blogUrls = posts.map((post) => ({
+  const blogUrls: MetadataRoute.Sitemap = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: post.updatedAt,
-    changeFrequency: 'weekly' as const,
-    priority: 0.8, // Blogs are important, but less than the homepage
-    images: post.image ? [post.image] : undefined,
-  }))
+    changeFrequency: "weekly",
+    priority: 0.8,
+    ...(post.image ? { images: [post.image] } : {}),
+  }));
 
-  // 3. Get unique categories and format them for the sitemap
-  const uniqueCategories = Array.from(
-    new Set(
+  const uniqueCategories = [
+    ...new Set(
+      posts.flatMap((post) =>
+        post.categories
+          .map((category) => category.slug)
+          .filter((slug): slug is string => Boolean(slug))
+      )
+    ),
+  ];
+
+  const categoryUrls: MetadataRoute.Sitemap = uniqueCategories.map(
+    (slug) => ({
+      url: `${baseUrl}/category/${slug}`,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    })
+  );
+
+  const uniqueTags = [
+    ...new Set(
       posts
-        .flatMap((post) => post.categories || [])
-        .map((cat) => cat.slug) // Extract the slug from the category object
-        .filter((slug) => slug) // Filter out any empty/null slugs
-    )
-  )
-  const categoryUrls = uniqueCategories.map((slug) => ({
-    // Use the slug directly as it's already URL-safe
-    url: `${baseUrl}/category/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.7, // Category archives are slightly lower priority than individual articles
-  }))
+        .flatMap((post) =>
+          (post.metaKeywords ?? "")
+            .split(",")
+            .map((tag) => tag.trim())
+            .filter(Boolean)
+            .map((tag) =>
+              tag.toLowerCase().replace(/\s+/g, "-")
+            )
+        )
+    ),
+  ];
 
-  // 4. Get unique tags and format them for the sitemap
-  const uniqueTags = Array.from(
-    new Set(
-      posts
-        .flatMap((post) => {
-          if (!post.metaKeywords) return [];
-          return post.metaKeywords.split(',').map((t) => t.trim());
-        })
-        .filter((tag) => tag.length > 0)
-        .map((tag) => tag.toLowerCase().replace(/\s+/g, '-'))
-    )
-  )
-  const tagUrls = uniqueTags.map((tagSlug) => ({
-    url: `${baseUrl}/tags/${tagSlug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.6, // Individual tag archives
-  }))
+  const tagUrls: MetadataRoute.Sitemap = uniqueTags.map((tagSlug) => ({
+    url: `${baseUrl}/tags/${encodeURIComponent(tagSlug)}`,
+    changeFrequency: "weekly",
+    priority: 0.6,
+  }));
 
-  // 5. Define your static pages (Home, Blog List, Privacy, Tags Index)
-  const staticRoutes = [
+  const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'daily' as const,
-      priority: 1, // Homepage is the most important
+      lastModified: currentDate,
+      changeFrequency: "daily",
+      priority: 1,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: new Date(),
-      changeFrequency: 'daily' as const,
-      priority: 0.9, // Main blog feed is very important
+      lastModified: currentDate,
+      changeFrequency: "daily",
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/privacy`,
-      lastModified: new Date(), // You can hardcode a date here if you rarely update it
-      changeFrequency: 'monthly' as const,
-      priority: 0.5, // Legal pages are low priority for search ranking
-    },
-    {
-      url: `${baseUrl}/tags`,
-
-      lastModified: new Date(), // You can hardcode a date here if you rarely update it
-      changeFrequency: 'monthly' as const,
-      priority: 0.5, // Legal pages are low priority for search ranking
-    },
-    {
-      url: `${baseUrl}/faqs`,
-
-      lastModified: new Date(), // You can hardcode a date here if you rarely update it
-      changeFrequency: 'monthly' as const,
-      priority: 0.5, // Legal pages are low priority for search ranking
+      lastModified: currentDate,
+      changeFrequency: "yearly",
+      priority: 0.3,
     },
     {
       url: `${baseUrl}/terms`,
-
-      lastModified: new Date(), // You can hardcode a date here if you rarely update it
-      changeFrequency: 'monthly' as const,
-      priority: 0.5, // Legal pages are low priority for search ranking
+      lastModified: currentDate,
+      changeFrequency: "yearly",
+      priority: 0.3,
     },
-  ]
+    {
+      url: `${baseUrl}/faqs`,
+      lastModified: currentDate,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/tags`,
+      lastModified: currentDate,
+      changeFrequency: "weekly",
+      priority: 0.5,
+    },
+  ];
 
-  // 6. Combine them
-  return [...staticRoutes, ...categoryUrls, ...tagUrls, ...blogUrls,]
+  return [
+    ...staticRoutes,
+    ...categoryUrls,
+    ...tagUrls,
+    ...blogUrls,
+  ];
 }

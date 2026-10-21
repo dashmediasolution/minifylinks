@@ -1,6 +1,15 @@
 import React from 'react';
 import { ShieldCheck, Calendar, Mail } from 'lucide-react';
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Privacy Policy | MinifyLinks",
+  description:
+    "Read the MinifyLinks Privacy Policy to learn how we collect, use, store, and protect your information.",
+  alternates: {
+    canonical: "/privacy",
+  },
+};
 export default function PrivacyPolicy() {
   return (
     <main className="min-h-screen bg-background py-12 relative top-16 px-4 sm:px-6 lg:px-8">

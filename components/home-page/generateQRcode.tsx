@@ -133,7 +133,7 @@ export default function GenerateQRCode() {
   };
 
 
-
+  
   useEffect(() => {
     qrCode.current = new QRCodeStyling({
       width: 260,

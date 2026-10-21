@@ -1,0 +1,12 @@
+services:
+  app:
+    image: dashmedia1/minifylinks:latest
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - app_data:/minifylinks/data
+
+volumes:
+  app_data:

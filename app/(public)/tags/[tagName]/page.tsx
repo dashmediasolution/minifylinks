@@ -85,7 +85,7 @@ export default async function TagPage({ params }: TagPageProps) {
           Posts tagged with <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-700">&quot;{decodedTag}&quot;</span>
         </h1>
       </div>
-
+    
       <div className="space-y-6">
         {posts.map((post) => (
           <article key={post.id} className="p-6 bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 hover:shadow-md transition-shadow">

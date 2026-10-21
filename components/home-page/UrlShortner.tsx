@@ -119,7 +119,7 @@ export default function UrlShortner({
                             </Label>
                             <div className="flex flex-col sm:flex-row items-stretch gap-2">
                                 <div className="flex items-center px-3.5 h-10 md:h-12 bg-slate-100 border border-slate-200 text-slate-600 text-xs md:text-sm font-medium rounded-xl select-none sm:w-1/2">
-                                    minifylinks.com/
+                                    minifylinks.com
                                 </div>
                                 <Input
                                     id="custom-alias"
@@ -136,7 +136,7 @@ export default function UrlShortner({
                             type="submit"
                             disabled={loading}
                             className="w-full h-10 md:h-12 text-xs md:text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md transition-all flex items-center justify-center gap-2"
-                        >
+                         >
                             {loading ? (
                                 <>
                                     <Loader2 className="w-5 h-5 animate-spin" />
